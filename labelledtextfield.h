@@ -160,9 +160,12 @@ class SM_WIDGETS_SHARED_EXPORT LabelledTextField : public AbstractLabelledWidget
    Q_OBJECT
 
 public:
+   //! Constructs a text field with the given parent, and empty label and text properties.
    explicit LabelledTextField(QWidget* parent = nullptr);
+   //! Constructs a text field with the given parent, and supplied label and empty text properties.
    explicit LabelledTextField(const QString& labelText,
                               QWidget* parent = nullptr);
+   //! Constructs a text field with the given parent, and supplied label and text properties.
    explicit LabelledTextField(const QString& labelText,
                               const QString& contents = QString(),
                               QWidget* parent = nullptr);
@@ -267,11 +270,11 @@ public:
    //! @reimplements QLabel::clear().
    void clearField();
 
-//   //! @reimplements QFrame::sizeHint().
-//   QSize sizeHint() const;
+   //   //! @reimplements QFrame::sizeHint().
+   //   QSize sizeHint() const;
 
-//   //! @reimplements QFrame::minimumSizeHint().
-//   QSize minimumSizeHint() const;
+   //   //! @reimplements QFrame::minimumSizeHint().
+   //   QSize minimumSizeHint() const;
 signals:
    /*!
        \fn LabelledTextField::linkActivated(const QString&)
@@ -292,7 +295,7 @@ signals:
    void linkHovered(const QString& link);
 
 private:
-  void initGui(const QString& contents=QString());
+   void initGui(const QString& contents = QString());
 };
 
 #endif // LABELLEDTEXTFIELD_H

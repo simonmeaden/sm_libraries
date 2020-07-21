@@ -232,16 +232,16 @@ public:
 
 
    //! @reimplements QLineEdit::addAction(QAction, QLineEdit::ActionPosition).
-   void addAction(QAction* action, QLineEdit::ActionPosition labelPosition);
+  void addAction(QAction* action, QLineEdit::ActionPosition labelPosition);
 
-   //! @reimplements QLineEdit::addAction(const QIcon&, QLineEdit::ActionPosition).
+  //! @reimplements QLineEdit::addAction(const QIcon&, QLineEdit::ActionPosition).
    QAction* addAction(const QIcon& icon, QLineEdit::ActionPosition labelPosition);
 
    //! @reimplements QLineEdit::backspace().
    void backspace();
 
    //! @reimplements QLineEdit::completer().
-   QCompleter* completer() const;
+   QCompleter *completer() const;
 
    //! @reimplements QLineEdit::backspace().
    QMenu* createStandardContextMenu();
@@ -301,7 +301,7 @@ public:
    QMargins textMargins() const;
 
    //! @reimplements QLineEdit::validator().
-   const QValidator* validator() const;
+   const QValidator *validator() const;
 
    //! @reimplements QLineEdit::text().
    QString text() const;
@@ -334,7 +334,7 @@ public:
    int cursorPosition() const;
 
    //! @reimplements QLineEdit::setCursorPosition().
-   void setCursorPosition(int labelPosition);
+   void setCursorPosition(int position);
 
    //! @reimplements QLineEdit::displayText().
    QString displayText() const;
@@ -470,7 +470,7 @@ signals:
    void inputRejected();
 
 private:
-   void initGui(QString contents);
+   void initGui(QString contents=QString());
 };
 
 #endif // LABELLEDLINEEDIT_H

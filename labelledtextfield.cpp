@@ -21,65 +21,47 @@
 */
 #include "labelledtextfield.h"
 
-LabelledTextField::LabelledTextField(const QString& text, QWidget* parent)
-   : AbstractLabelledWidget(text, parent)
+LabelledTextField::LabelledTextField(QWidget* parent)
+   : AbstractLabelledWidget()
 {
-   initGui(text);
+   initGui();
 }
 
-/*!
-   \brief Returns the fields text value.
+LabelledTextField::LabelledTextField(const QString& labelText,
+                                     QWidget* parent)
+   : AbstractLabelledWidget(labelText, parent)
+{
+   initGui();
+}
 
-   If no text has been set this will return an empty string. Setting the text
-    clears any previous content.
+LabelledTextField::LabelledTextField(const QString& labelText,
+                                     const QString& contents,
+                                     QWidget* parent)
+   : AbstractLabelledWidget(labelText, parent)
+{
+   initGui(contents);
+}
 
-   \ref LabelledTextField::text property
-*/
 QString LabelledTextField::text() const
 {
    return qobject_cast<QLabel*>(m_widget)->text();
 }
 
-/*!
-   \brief Sets the fields text value.
-
-   Setting the text clears any previous content.
-
-   \ref LabelledTextField::text
-*/
 void LabelledTextField::setText(const QString& text)
 {
    qobject_cast<QLabel*>(m_widget)->setText(text);
 }
 
-/*!
-   \brief Returns the fields text format.
-
-   \ref LabelledTextField::textFormat property
-*/
 Qt::TextFormat LabelledTextField::textFormat() const
 {
    return qobject_cast<QLabel*>(m_widget)->textFormat();
 }
 
-/*!
-   \brief Sets the fields text format.
-
-   See the Qt::TextFormat enum for an explanation of the possible options.
-   The default format is Qt::AutoText.
-
-   \ref LabelledTextField::text
-*/
 void LabelledTextField::setTextFormat(Qt::TextFormat format)
 {
    qobject_cast<QLabel*>(m_widget)->setTextFormat(format);
 }
 
-/*!
-   \brief Returns the pixmap from the text field if set.
-
-   \ref LabelledTextField::pixmap
-*/
 QPixmap LabelledTextField::pixmap() const
 {
 #if QT_DEPRECATED_SINCE(5, 15)
@@ -89,39 +71,12 @@ QPixmap LabelledTextField::pixmap() const
 #endif
 }
 
-/*!
-   \brief Sets the pixmap property of the text field.
-
-   \ref LabelledTextField::pixmap
-*/
 void LabelledTextField::setPixmap(const QPixmap& pixmap)
 {
    qobject_cast<QLabel*>(m_widget)->setPixmap(pixmap);
 }
 
 #ifndef QT_NO_PICTURE
-/*!
-   \brief Returns the label's picture.
-
-   Previously, Qt provided a version of picture() which returned the picture
-   by-pointer. That version is now deprecated. To maintain compatibility with
-   old code, you can explicitly differentiate between the by-pointer function
-   and the by-value function:
-
-   \code
-   const QPicture *picPtr = label->picture();
-   QPicture picVal = label->picture(Qt::ReturnByValue);
-   \endcode
-
-   If you disable the deprecated version using the QT_DISABLE_DEPRECATED_BEFORE
-   macro, then you can omit Qt::ReturnByValue as shown below:
-
-   \code
-   QPicture picVal = label->picture();
-   \endcode
-
-   This function was introduced in Qt 5.15.
-*/
 QPicture LabelledTextField::picture() const
 {
 #if QT_DEPRECATED_SINCE(5, 15)
@@ -131,11 +86,6 @@ QPicture LabelledTextField::picture() const
 #endif
 }
 
-/*!
-   \brief Sets the label contents to picture. Any previous content is cleared.
-
-   The buddy shortcut, if any, is disabled.
-*/
 void LabelledTextField::setPicture(const QPicture& picture)
 {
    qobject_cast<QLabel*>(m_widget)->setPicture(picture);
@@ -143,21 +93,11 @@ void LabelledTextField::setPicture(const QPicture& picture)
 #endif
 
 #if QT_CONFIG(movie)
-/*!
-   \brief Returns a pointer to the label's movie, or nullptr if no movie has
-   been set.
-*/
 QMovie* LabelledTextField::movie() const
 {
    return qobject_cast<QLabel*>(m_widget)->movie();
 }
 
-/*!
-   \brief Sets the label contents to movie. Any previous content is cleared. The
-   label does NOT take ownership of the movie.
-
-   The buddy shortcut, if any, is disabled.
-*/
 void LabelledTextField::setMovie(QMovie* movie)
 {
    qobject_cast<QLabel*>(m_widget)->setMovie(movie);

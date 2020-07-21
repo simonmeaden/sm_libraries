@@ -32,7 +32,7 @@ LabelledSpinBox::LabelledSpinBox(const QString& text, QWidget* parent)
   initGui();
 }
 
-void LabelledSpinBox::initGui()
+void LabelledSpinBox::initGui(const QString& /*text*/)
 {
   m_widget = new QSpinBox(this);
   m_layout->addWidget(m_widget, 0, 1);
