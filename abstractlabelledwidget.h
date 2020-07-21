@@ -1,11 +1,11 @@
 #ifndef ABSTRACTLABELLEDWIDGET_H
 #define ABSTRACTLABELLEDWIDGET_H
 
+#include <QGridLayout>
+#include <QLabel>
 #include <QWidget>
 #include <Qt>
 #include <QtGlobal>
-#include <QGridLayout>
-#include <QLabel>
 
 /*!
    \file abstractlabelledwidget.h abstractlabelledwidget.cpp
@@ -15,22 +15,24 @@
    \license The MIT License
    \copyright © 2019 - 2020 Simon Meaden. All rights reserved.
 
-   The class is designed as a common super class for widgets like LabelledSpinBox
-   and LabelledComboBox.
+   The class is designed as a common super class for widgets like
+   LabelledSpinBox and LabelledComboBox.
 
-   The label can be on either side of the combo box, above it or below, with the position
-   being set using the LabelledComboBox::setPosition() method.
+   The label can be on either side of the combo box, above it or below, with the
+   position being set using the LabelledComboBox::setPosition() method.
 
-   The label's value can be set/recovered using the text() and setText methods, and their
-   format can be modified using textFormat() and setTextFormat().
+   The label's value can be set/recovered using the text() and setText methods,
+   and their format can be modified using textFormat() and setTextFormat().
 
-   The label has full alignment capability using LabelledComboBox::setLabelAlignment().
-   Use the LabelledComboBox::value() method to access.
+   The label has full alignment capability using
+   LabelledComboBox::setLabelAlignment(). Use the LabelledComboBox::value()
+   method to access.
 
-   Stylesheets can be set for the individual components using either setLabelStyleSheet()
-   or setWrapperStyleSheet(). Alternatively you can set a combined stypesheet using
-   setStyleSheet() of the wrapping QWidget, however stylesheets set for individual
-   components will override those set for the wrapper.
+   Stylesheets can be set for the individual components using either
+   setLabelStyleSheet() or setWrapperStyleSheet(). Alternatively you can set a
+   combined stypesheet using setStyleSheet() of the wrapping QWidget, however
+   stylesheets set for individual components will override those set for the
+   wrapper.
 
    QSizeSizePolicy can be set for either component using setLabelSizePolicy() or
    setWidgetSizePolicy().
@@ -58,7 +60,8 @@ class AbstractLabelledWidget : public QWidget
 
       @accessor %labelTextFormat(), %setTextFormat(Qt::TextFormat)
    */
-   Q_PROPERTY(Qt::TextFormat labelTextFormat READ labelTextFormat WRITE setLabelTextFormat)
+   Q_PROPERTY(Qt::TextFormat labelTextFormat READ labelTextFormat WRITE
+              setLabelTextFormat)
 
    /*!
       \property AbstractLabelledWidget::labelAlignment
@@ -67,22 +70,33 @@ class AbstractLabelledWidget : public QWidget
 
       @accessor %labelAlignment(), %setLabelAlignment()
    */
-   Q_PROPERTY(Qt::Alignment labelAlignment READ labelAlignment WRITE setLabelAlignment)
+   Q_PROPERTY(
+      Qt::Alignment labelAlignment READ labelAlignment WRITE setLabelAlignment)
 
    /*!
       \property AbstractLabelledWidget::labelPosition
 
       \brief This property holds the position of the label. Possible values
-      are AbstractLabelledWidget::Left, the default and AbstractLabelledWidget::Right.
+      are AbstractLabelledWidget::Left, the default and
+      AbstractLabelledWidget::Right.
 
       @accessor %position(), %setPosition()
    */
-   Q_PROPERTY(AbstractLabelledWidget::LabelPosition labelPosition READ labelPosition WRITE setLabelPosition)
+   Q_PROPERTY(AbstractLabelledWidget::LabelPosition labelPosition READ
+              labelPosition WRITE setLabelPosition)
 
    enum Widget
    {
       Widget = 0,
       Label,
+   };
+
+protected:
+   struct WidgetFactory
+   {
+      virtual QWidget* newWidget(QWidget*) const {
+         return nullptr;
+      }
    };
 
 public:
@@ -100,7 +114,8 @@ public:
    //! Constructs an abstract spinbox with the given parent with default parent,
    //! and label text property.
    explicit AbstractLabelledWidget(QString labelText = QString(),
-                                   QWidget* parent = nullptr);
+                                   QWidget* parent = nullptr,
+                                   WidgetFactory const& factory = WidgetFactory());
    //! Called when the AbstractLabelledWidget is destroyed.
    virtual ~AbstractLabelledWidget();
 
@@ -119,15 +134,6 @@ public:
    //! Sets the label alignment.
    void setLabelAlignment(const Qt::Alignment& widgetAlignment);
 
-   //! Returns the widget alignment.
-   //! This returns 0, indicating that the widget doesn't support text alignment.
-   virtual Qt::Alignment widgetAlignment() const {
-      return QFlags<Qt::Alignment>();
-   }
-   //! Sets the widget alignment.
-   //! This doesn't do anything and should be overridden in derived classes.
-   virtual void setWidgetAlignment(const Qt::Alignment&) {}
-
    //! returns the label text format.
    Qt::TextFormat labelTextFormat() const;
    //! Sets the label text format.
@@ -143,13 +149,15 @@ public:
    void setLabelSizePolicy(QSizePolicy policy);
    //! Sets the size policy for the label.
    //! \see QWidget::setSizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
-   void setLabelSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical);
+   void setLabelSizePolicy(QSizePolicy::Policy horizontal,
+                           QSizePolicy::Policy vertical);
    //! Sets the size policy for the widget.
    //! \see QWidget::setSizePolicy(QSizePolicy)
    void setWidgetSizePolicy(QSizePolicy policy);
    //! Sets the size policy for the widget.
    //! \see QWidget::setSizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
-   void setWidgetSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical);
+   void setWidgetSizePolicy(QSizePolicy::Policy horizontal,
+                            QSizePolicy::Policy vertical);
    //! Returns the size policy for the widget.
    //! \see QLabel::sesizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
    QSizePolicy labelSizePolicy();
@@ -169,7 +177,9 @@ public:
    void clearLabel();
 
 protected:
-   QLabel* m_label;            //!< pointer to the Label.
+   WidgetFactory* m_factory;
+
+   QLabel* m_label;          //!< pointer to the Label.
    QWidget* m_widget;        //!< pointer to the widget.
    QGridLayout* m_layout;    //!< widget layout
    LabelPosition m_position; //!< the label position
@@ -178,6 +188,39 @@ protected:
 private:
    //! you should override this for extensions to the abstract class.
    virtual void initGui(const QString& text = QString());
+};
+
+/*!
+   \file abstractlabelledwidget.h abstractlabelledwidget.cpp
+   \class AbstractAlignableLabelledWidget abstractlabelledwidget.h
+   \brief The alignable LabelledWidget abstract base class.
+   \since 5.7.0
+   \license The MIT License
+   \copyright © 2019 - 2020 Simon Meaden. All rights reserved.
+
+   Not all QWidgets are text alignable, QComboBox for instance. Use this class
+   for those that are alignable and AbstractLabelledWidget for those that
+   aren't.
+
+
+*/
+class AbstractAlignableLabelledWidget : public AbstractLabelledWidget
+{
+public:
+   explicit AbstractAlignableLabelledWidget(
+      QString labelText = QString(),
+      QWidget* parent = nullptr,
+      WidgetFactory const& factory = WidgetFactory());
+
+   //! Returns the widget alignment.
+   //! This returns 0, indicating that the widget doesn't support text alignment.
+   virtual Qt::Alignment widgetAlignment() const {
+      return (Qt::AlignLeft | Qt::AlignVCenter);
+   }
+
+   //! Sets the widget alignment.
+   //! This doesn't do anything and should be overridden in derived classes.
+   virtual void setWidgetAlignment(const Qt::Alignment&) {}
 };
 
 #endif // ABSTRACTLABELLEDWIDGET_H

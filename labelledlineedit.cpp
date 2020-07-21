@@ -21,14 +21,14 @@
 */
 #include "labelledlineedit.h"
 
-LabelledLineEdit::LabelledLineEdit(const QString& labelText, QWidget* parent)
-   : AbstractLabelledWidget(labelText, parent)
+LabelledLineEdit::LabelledLineEdit(const QString& labelText, QWidget* parent, const WidgetFactory& factory)
+   : AbstractAlignableLabelledWidget(labelText, parent, factory)
 {}
 
 LabelledLineEdit::LabelledLineEdit(const QString& labelText,
                                    const QString& contents,
-                                   QWidget* parent)
-   : AbstractLabelledWidget(labelText, parent)
+                                   QWidget* parent, const WidgetFactory& factory)
+   : AbstractAlignableLabelledWidget(labelText, parent, factory)
 {
    initGui(contents);
 }
@@ -202,7 +202,7 @@ void LabelledLineEdit::setCursorMoveStyle(Qt::CursorMoveStyle style)
 
 int LabelledLineEdit::cursorPosition() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->cursorPosition();
+   return qobject_cast<QLineEdit*>(m_widget)->cursorPosition();
 }
 
 void LabelledLineEdit::setCursorPosition(int position)
@@ -212,12 +212,12 @@ void LabelledLineEdit::setCursorPosition(int position)
 
 QString LabelledLineEdit::displayText() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->displayText();
+   return qobject_cast<QLineEdit*>(m_widget)->displayText();
 }
 
 bool LabelledLineEdit::dragEnabled() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->dragEnabled();
+   return qobject_cast<QLineEdit*>(m_widget)->dragEnabled();
 }
 
 void LabelledLineEdit::setDragEnabled(bool enabled)
@@ -227,7 +227,7 @@ void LabelledLineEdit::setDragEnabled(bool enabled)
 
 QLineEdit::EchoMode LabelledLineEdit::echoMode() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->echoMode();
+   return qobject_cast<QLineEdit*>(m_widget)->echoMode();
 }
 
 void LabelledLineEdit::setEchoMode(QLineEdit::EchoMode echomode)
@@ -237,12 +237,12 @@ void LabelledLineEdit::setEchoMode(QLineEdit::EchoMode echomode)
 
 bool LabelledLineEdit::hasSelectedText() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->hasSelectedText();
+   return qobject_cast<QLineEdit*>(m_widget)->hasSelectedText();
 }
 
 QString LabelledLineEdit::inputMask() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->inputMask();
+   return qobject_cast<QLineEdit*>(m_widget)->inputMask();
 }
 
 void LabelledLineEdit::setInputMask(const QString& inputMask)
@@ -252,7 +252,7 @@ void LabelledLineEdit::setInputMask(const QString& inputMask)
 
 int LabelledLineEdit::maxLength() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->maxLength();
+   return qobject_cast<QLineEdit*>(m_widget)->maxLength();
 }
 
 void LabelledLineEdit::setMaxLength(int length)
@@ -262,7 +262,7 @@ void LabelledLineEdit::setMaxLength(int length)
 
 bool LabelledLineEdit::isModified() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->isModified();
+   return qobject_cast<QLineEdit*>(m_widget)->isModified();
 }
 
 void LabelledLineEdit::setModified(bool modified)
@@ -272,7 +272,7 @@ void LabelledLineEdit::setModified(bool modified)
 
 QString LabelledLineEdit::placeholderText() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->placeholderText();
+   return qobject_cast<QLineEdit*>(m_widget)->placeholderText();
 }
 
 void LabelledLineEdit::setPlaceholderText(const QString& placeholderText)
@@ -282,7 +282,7 @@ void LabelledLineEdit::setPlaceholderText(const QString& placeholderText)
 
 bool LabelledLineEdit::isReadOnly() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->isReadOnly();
+   return qobject_cast<QLineEdit*>(m_widget)->isReadOnly();
 }
 
 void LabelledLineEdit::setReadOnly(bool readonly)
@@ -292,32 +292,32 @@ void LabelledLineEdit::setReadOnly(bool readonly)
 
 bool LabelledLineEdit::isRedoAvailable() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->isRedoAvailable();
+   return qobject_cast<QLineEdit*>(m_widget)->isRedoAvailable();
 }
 
 QString LabelledLineEdit::selectedText() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->selectedText();
+   return qobject_cast<QLineEdit*>(m_widget)->selectedText();
 }
 
 bool LabelledLineEdit::isUndoAvailable() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->isUndoAvailable();
+   return qobject_cast<QLineEdit*>(m_widget)->isUndoAvailable();
 }
 
 bool LabelledLineEdit::isEmpty() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->text().isEmpty();
+   return qobject_cast<QLineEdit*>(m_widget)->text().isEmpty();
 }
 
 int LabelledLineEdit::size() const
 {
-return qobject_cast<QLineEdit*>(m_widget)->text().size();
+   return qobject_cast<QLineEdit*>(m_widget)->text().size();
 }
 
 int LabelledLineEdit::length() const
 {
-  return qobject_cast<QLineEdit*>(m_widget)->text().size();
+   return qobject_cast<QLineEdit*>(m_widget)->text().size();
 }
 
 void LabelledLineEdit::clear()
@@ -327,5 +327,33 @@ void LabelledLineEdit::clear()
 
 void LabelledLineEdit::initGui(QString contents)
 {
-   m_widget = new QLineEdit(contents, this);
+  qobject_cast<QLineEdit*>(m_widget)->setText(contents);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::cursorPositionChanged,
+          this,
+          &LabelledLineEdit::cursorPositionChanged);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::editingFinished,
+          this,
+          &LabelledLineEdit::editingFinished);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::inputRejected,
+          this,
+          &LabelledLineEdit::inputRejected);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::returnPressed,
+          this,
+          &LabelledLineEdit::returnPressed);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::editingFinished,
+          this,
+          &LabelledLineEdit::selectionChanged);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::textChanged,
+          this,
+          &LabelledLineEdit::textChanged);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::textEdited,
+          this,
+          &LabelledLineEdit::textEdited);
 }

@@ -37,7 +37,7 @@
 
    All properties of the text QLabel are copied across to this widget.
 */
-class SM_WIDGETS_SHARED_EXPORT LabelledTextField : public AbstractLabelledWidget
+class SM_WIDGETS_SHARED_EXPORT LabelledTextField : public AbstractAlignableLabelledWidget
 {
    /*!
       \property LabelledTextField::text
@@ -159,16 +159,27 @@ class SM_WIDGETS_SHARED_EXPORT LabelledTextField : public AbstractLabelledWidget
 
    Q_OBJECT
 
-public:
+ protected:
+   struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
+   {
+     virtual QWidget* newWidget(QWidget *parent) const {
+       return new QLabel(parent);
+     }
+   };
+
+ public:
    //! Constructs a text field with the given parent, and empty label and text properties.
-   explicit LabelledTextField(QWidget* parent = nullptr);
+   explicit LabelledTextField(QWidget* parent = nullptr,
+                              WidgetFactory const& factory = WidgetFactory());
    //! Constructs a text field with the given parent, and supplied label and empty text properties.
    explicit LabelledTextField(const QString& labelText,
-                              QWidget* parent = nullptr);
+                              QWidget* parent = nullptr,
+                              WidgetFactory const& factory = WidgetFactory());
    //! Constructs a text field with the given parent, and supplied label and text properties.
    explicit LabelledTextField(const QString& labelText,
                               const QString& contents = QString(),
-                              QWidget* parent = nullptr);
+                              QWidget* parent = nullptr,
+                              WidgetFactory const& factory = WidgetFactory());
 
    //! @reimplements QLabel::text() const.
    QString text() const;

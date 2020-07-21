@@ -40,7 +40,7 @@
    All properties of the QLineEdit are copied across to this widget.
 
 */
-class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit : public AbstractLabelledWidget
+class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit : public AbstractAlignableLabelledWidget
 {
 
    /*!
@@ -222,13 +222,24 @@ class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit : public AbstractLabelledWidget
    Q_PROPERTY(bool undoAvailable READ isUndoAvailable)
 
    Q_OBJECT
-public:
+
+ protected:
+   struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
+   {
+     virtual QWidget* newWidget(QWidget *parent) const {
+       return new QLineEdit(parent);
+     }
+   };
+
+ public:
    //   explicit LabelledLineEdit(QWidget* parent = nullptr);
    explicit LabelledLineEdit(const QString& labelText,
-                             QWidget* parent = nullptr);
+                             QWidget* parent = nullptr,
+                             WidgetFactory const& factory = WidgetFactory());
    explicit LabelledLineEdit(const QString& labelText,
                              const QString& contents,
-                             QWidget* parent = nullptr);
+                             QWidget* parent = nullptr,
+                             WidgetFactory const& factory = WidgetFactory());
 
 
    //! @reimplements QLineEdit::addAction(QAction, QLineEdit::ActionPosition).
@@ -468,6 +479,7 @@ signals:
       @from QLineEdit::inputRejected.
    */
    void inputRejected();
+
 
 private:
    void initGui(QString contents=QString());

@@ -295,7 +295,7 @@ bool ExTabWidgetPrivate::mouseReleaseEvent(QMouseEvent* /*event*/)
 
          if (isLoggedIn()) { // if it's logged in already then log out.
             m_loggedIn = false;
-            displayLogin();
+            displayLoginText();
             emit q->loggedOut();
 
          } else {
@@ -305,7 +305,7 @@ bool ExTabWidgetPrivate::mouseReleaseEvent(QMouseEvent* /*event*/)
                m_loginDlg->exec();
 
                if (isLoggedIn()) {
-                  displayLogout();
+                  displayLogoutText();
                }
 
                break;
@@ -316,7 +316,7 @@ bool ExTabWidgetPrivate::mouseReleaseEvent(QMouseEvent* /*event*/)
                m_loginDlg->exec();
 
                if (isLoggedIn()) {
-                  displayLogout();
+                  displayLogoutText();
                }
 
                break;
@@ -326,7 +326,7 @@ bool ExTabWidgetPrivate::mouseReleaseEvent(QMouseEvent* /*event*/)
                m_loginDlg->exec();
 
                if (isLoggedIn()) {
-                  displayLogout();
+                  displayLogoutText();
                }
 
                break;
@@ -621,12 +621,12 @@ void ExTabWidgetPrivate::paint(QPainter* painter, QPaintEvent* event)
    }
 }
 
-void ExTabWidgetPrivate::displayLogin()
+void ExTabWidgetPrivate::displayLoginText()
 {
    m_loginText = LOGIN;
 }
 
-void ExTabWidgetPrivate::displayLogout()
+void ExTabWidgetPrivate::displayLogoutText()
 {
    m_loginText = LOGOUT;
 }
@@ -898,17 +898,23 @@ void ExTabWidgetPrivate::setMessage(uint timeout)
 LoginDialog::LoginDialog(QWidget* parent)
    : AbstractLoginDialog(parent)
 {
-   initBuild(false);
+   initGui(false);
 }
 
 LoginDialog::~LoginDialog() {}
 
-void LoginDialog::acceptLogin()
+void LoginDialog::clearText()
 {
-   emit loginData(userEdit->text(), passEdit->text());
+  m_userEdit->clear();
+  m_passEdit->clear();
 }
 
-void LoginDialog::initBuild(bool largeText)
+void LoginDialog::acceptLogin()
+{
+   emit loginData(m_userEdit->text(), m_passEdit->text());
+}
+
+void LoginDialog::initGui(bool largeText)
 {
    QFont f = font();
 
@@ -920,19 +926,19 @@ void LoginDialog::initBuild(bool largeText)
 
    QLabel* lbl1 = new QLabel("User name :", this);
    lbl1->setFont(f);
-   userEdit = new QLineEdit(this);
+   m_userEdit = new QLineEdit(this);
    QLabel* lbl2 = new QLabel("Password :", this);
    lbl2->setFont(f);
-   passEdit = new QLineEdit(this);
-   passEdit->setEchoMode(QLineEdit::Password);
+   m_passEdit = new QLineEdit(this);
+   m_passEdit->setEchoMode(QLineEdit::Password);
 
    QGridLayout* layout = new QGridLayout(this);
    setLayout(layout);
 
    layout->addWidget(lbl1, 0, 0);
-   layout->addWidget(userEdit, 0, 1);
+   layout->addWidget(m_userEdit, 0, 1);
    layout->addWidget(lbl2, 1, 0);
-   layout->addWidget(passEdit, 1, 1);
+   layout->addWidget(m_passEdit, 1, 1);
 
    QDialogButtonBox* buttons = new QDialogButtonBox(this);
    buttons->addButton(QDialogButtonBox::Ok);
@@ -964,12 +970,17 @@ void LoginDialog::initBuild(bool largeText)
 SimpleLoginDialog::SimpleLoginDialog(QWidget* parent)
    : AbstractLoginDialog(parent)
 {
-   initBuild(false);
+   initGui(false);
 }
 
 SimpleLoginDialog::~SimpleLoginDialog() {}
 
-void SimpleLoginDialog::initBuild(bool largeText)
+void SimpleLoginDialog::clearText()
+{
+  m_passEdit->clear();
+}
+
+void SimpleLoginDialog::initGui(bool largeText)
 {
    QFont f = font();
 
@@ -982,15 +993,15 @@ void SimpleLoginDialog::initBuild(bool largeText)
    QLabel* lbl1 = new QLabel("Password :", this);
    lbl1->setFont(f);
 
-   passEdit = new QLineEdit(this);
-   passEdit->setFont(f);
-   passEdit->setEchoMode(QLineEdit::Password);
+   m_passEdit = new QLineEdit(this);
+   m_passEdit->setFont(f);
+   m_passEdit->setEchoMode(QLineEdit::Password);
 
    QGridLayout* layout = new QGridLayout(this);
    setLayout(layout);
 
    layout->addWidget(lbl1, 0, 0);
-   layout->addWidget(passEdit, 0, 1);
+   layout->addWidget(m_passEdit, 0, 1);
 
    QDialogButtonBox* buttons = new QDialogButtonBox(this);
    buttons->addButton(QDialogButtonBox::Ok);
@@ -1021,5 +1032,5 @@ void SimpleLoginDialog::initBuild(bool largeText)
 
 void SimpleLoginDialog::acceptLogin()
 {
-   emit loginData(passEdit->text());
+   emit loginData(m_passEdit->text());
 }

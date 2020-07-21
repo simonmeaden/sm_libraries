@@ -60,12 +60,9 @@ set(WIDGET_HEADER_FILES
    extabwidget.h
    private/extabwidget_p.h
    sm_widgets_global.h
-   collection.h
-   comment.h
-   emitter.h
-   node.h
-   parse.h
+   collection.h comment.h emitter.h node.h parse.h qyamlcpp.h
    )
+set(EXTRA_FILES QYamlCpp)
 set(WIDGET_HEADER_FILES_P
    private/extabwidget_p.h
 )
@@ -86,16 +83,19 @@ set(WIDGET_SOURCE_FILES
 
 set(CORE_HEADER_FILES
    sm_widgets_global.h
-   QCircularBuffer.h
    )
 set(CORE_HEADER_FILES_P
    )
 set(CORE_SOURCE_FILES
    )
+set(HEADER_ONLY_FILES
+   private/circularbuffer.h
+   CircularBuffer.h
+   )
 
-add_custom_target(sm_widgets_p SOURCES circularbuffer.h)
+add_custom_target(sm_widgets_p SOURCES private/circularbuffer.h)
 add_library(sm_widgets STATIC
-   "${WIDGET_HEADER_FILES};${WIDGET_HEADER_FILES_P};${WIDGET_SOURCE_FILES};${WIDGET_SOURCE_FILES_P}"
+   "${WIDGET_HEADER_FILES};${WIDGET_HEADER_FILES_P};${WIDGET_SOURCE_FILES};${WIDGET_SOURCE_FILES_P};${HEADER_ONLY_FILES}"
    )
 #add_library(sm_core STATIC
 #   "${CORE_HEADER_FILES}"#;${CORE_HEADER_FILES_P};${CORE_SOURCE_FILES};${CORE_SOURCE_FILES_P}"
@@ -141,7 +141,7 @@ add_custom_command(
    TARGET sm_widgets
    PRE_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory ${INCLUDE_OUTPUT_DIRECTORY})
 # copies include files into the include directory
-file(COPY ${WIDGET_HEADER_FILES} circularbuffer.h
+file(COPY ${WIDGET_HEADER_FILES} ${HEADER_ONLY_FILES} ${EXTRA_FILES}
     DESTINATION ${INCLUDE_OUTPUT_DIRECTORY}
 )
 

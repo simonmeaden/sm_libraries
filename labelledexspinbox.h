@@ -79,9 +79,18 @@ class SM_WIDGETS_SHARED_EXPORT LabelledExSpinBox : public AbstractLabelledSpinBo
 
    Q_OBJECT
 
-public:
+ protected:
+   struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
+   {
+     virtual QWidget* newWidget(QWidget *parent) const {
+       return new ExSpinBox(parent);
+     }
+   };
+
+ public:
    explicit LabelledExSpinBox(const QString& labelText = QString(),
-                              QWidget* parent = nullptr);
+                              QWidget* parent = nullptr,
+                              WidgetFactory const& factory = WidgetFactory());
 
    /*!
       \brief Returns the number of displayable digits in the text string. By default 2.
@@ -108,11 +117,6 @@ public:
    */
    void setShowLeadingZeroes(bool showLeadingZeroes);
 
-   //! @reimplements QSpinBox::setAlignment() const.
-   void setWidgetAlignment(const Qt::Alignment& widgetAlignment);
-
-   //! @reimplements QSpinBox::alignment() const.
-   Qt::Alignment widgetAlignment() const;
 
 signals:
    /*!
@@ -121,7 +125,6 @@ signals:
       This signal is sent when the user changes the display type of the spin box.
    */
    void displayTypeChanged(ExSpinBox::DisplayType);
-
 
 
 private:

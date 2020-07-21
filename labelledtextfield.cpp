@@ -21,23 +21,26 @@
 */
 #include "labelledtextfield.h"
 
-LabelledTextField::LabelledTextField(QWidget* parent)
-   : AbstractLabelledWidget()
+LabelledTextField::LabelledTextField(QWidget* parent,
+                                     WidgetFactory const& factory)
+   : AbstractAlignableLabelledWidget(QString(), parent, factory)
 {
    initGui();
 }
 
 LabelledTextField::LabelledTextField(const QString& labelText,
-                                     QWidget* parent)
-   : AbstractLabelledWidget(labelText, parent)
+                                     QWidget* parent,
+                                     const WidgetFactory& factory)
+   : AbstractAlignableLabelledWidget(labelText, parent, factory)
 {
    initGui();
 }
 
 LabelledTextField::LabelledTextField(const QString& labelText,
                                      const QString& contents,
-                                     QWidget* parent)
-   : AbstractLabelledWidget(labelText, parent)
+                                     QWidget* parent,
+                                     const WidgetFactory& factory)
+   : AbstractAlignableLabelledWidget(labelText, parent, factory)
 {
    initGui(contents);
 }
@@ -216,5 +219,13 @@ void LabelledTextField::clearField()
 
 void LabelledTextField::initGui(const QString& text)
 {
-   m_widget = new QLabel(text, this);
+   setText(text);
+   connect(qobject_cast<QLabel*>(m_widget),
+           &QLabel::linkHovered,
+           this,
+           &LabelledTextField::linkHovered);
+   connect(qobject_cast<QLabel*>(m_widget),
+           &QLabel::linkActivated,
+           this,
+           &LabelledTextField::linkActivated);
 }

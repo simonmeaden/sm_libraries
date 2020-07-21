@@ -17,43 +17,43 @@
    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
       SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-#ifndef LABELLEDSPINBOX_H
-#define LABELLEDSPINBOX_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include "abstractlabelledspinbox.h"
-#include "sm_widgets_global.h"
+#include <QMainWindow>
+#include <QtWidgets>
 
-/*!
-   \file labelledspinbox.h labelledspinbox.cpp
-   \class LabelledSpinBox labelledspinbox.h
-   \brief The LabelledSpinBox is a wrapper for QLabel and QSpinBox that
-          provides a labelled spin box.
-   \since 5.7.0
-   \license The MIT License
-   \copyright © 2019 - 2020 Simon Meaden. All rights reserved.
+//#include "sm_widgets/qyamlcpp.h"
+#include "sm_widgets/labelledwidgets.h"
 
-   All properties of the QSpinBox  are copied across to this widget.
-*/
-class SM_WIDGETS_SHARED_EXPORT LabelledSpinBox : public AbstractLabelledSpinBox
+class MainWindow : public QMainWindow
 {
    Q_OBJECT
 
-protected:
-  struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
-   {
-      QWidget* newWidget(QWidget* parent) const {
-         return new QSpinBox(parent);
-      }
-   };
-
 public:
-   explicit LabelledSpinBox(const QString& labelText = QString(),
-                            QWidget* parent = nullptr,
-                           WidgetFactory const& factory = WidgetFactory());
+   explicit MainWindow(QWidget* parent = nullptr);
+   ~MainWindow();
 
 private:
-   void initGui(const QString& text = QString());
+   QTabWidget* m_tabs;
+
+   LabelledComboBox* m_comboBox;
+   LabelledSpinBox* m_spinBox;
+   LabelledExSpinBox* m_exSpinBox;
+   LabelledTextField* m_textField;
+   LabelledLineEdit* m_lineEdit;
+
+   LabelledComboBox* m_widgetChoiceBox;
+   LabelledLineEdit* m_labelText, *m_widgetText;
+   AbstractLabelledWidget* m_currentWidget;
+
+   void chooseWidget(const QString& text);
+   void labelTextHasChanged(const QString& text);
+
+
+   void initGui();
+   QWidget* initLabelledWidgets();
+
 };
 
-
-#endif // LABELLEDSPINBOX_H
+#endif // MAINWINDOW_H

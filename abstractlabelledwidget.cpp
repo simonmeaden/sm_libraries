@@ -19,11 +19,15 @@
 */
 #include "abstractlabelledwidget.h"
 
-AbstractLabelledWidget::AbstractLabelledWidget(QString text, QWidget* parent)
+AbstractLabelledWidget::AbstractLabelledWidget(QString text,
+      QWidget* parent,
+      const WidgetFactory& factory)
    : QWidget(parent)
    , m_position(Left)
 {
+   m_widget = factory.newWidget(this);
    initGui(text);
+   positionLabel();
 }
 
 AbstractLabelledWidget::~AbstractLabelledWidget() {}
@@ -108,7 +112,6 @@ void AbstractLabelledWidget::initGui(const QString& text)
    setLayout(m_layout);
 
    m_label = new QLabel(text, this);
-   positionLabel();
 }
 
 /*!
@@ -118,20 +121,24 @@ QSize AbstractLabelledWidget::sizeHint() const
 {
    QSize lsh = m_label->sizeHint();
    QSize wsh = m_widget->sizeHint();
+   QMargins m = m_layout->contentsMargins();
    int h, w;
 
    switch (m_position) {
-   case Left:
-   case Right:
-      h = lsh.height() > wsh.height() ? lsh.height() : wsh.height();
-      w = lsh.width() + wsh.width() + m_layout->spacing();
-      break;
+     case Left:
+     case Right:
+       h = lsh.height() > wsh.height() ? lsh.height() : wsh.height();
+       w = lsh.width() + wsh.width() + m_layout->spacing();
+       break;
 
-   case Above:
-   case Below:
-      h = lsh.height() + wsh.height() + m_layout->spacing();
-      w = lsh.width() > wsh.width() ? lsh.width() : wsh.width();
+     case Above:
+     case Below:
+       h = lsh.height() + wsh.height() + m_layout->spacing();
+       w = lsh.width() > wsh.width() ? lsh.width() : wsh.width() ;
    }
+
+   h += (m.top() + m.bottom());
+   w += (m.left() + m.right());
 
    return QSize(w, h);
 }
@@ -144,6 +151,7 @@ QSize AbstractLabelledWidget::minimumSizeHint() const
 {
    QSize lsh = m_label->minimumSizeHint();
    QSize wsh = m_widget->minimumSizeHint();
+   QMargins m = m_layout->contentsMargins();
    int h, w;
 
    switch (m_position) {
@@ -156,10 +164,13 @@ QSize AbstractLabelledWidget::minimumSizeHint() const
    case Above:
    case Below:
       h = lsh.height() + wsh.height() + m_layout->spacing();
-      w = lsh.width() > wsh.width() ? lsh.width() : wsh.width();
+      w = lsh.width() > wsh.width() ? lsh.width() : wsh.width() ;
    }
 
-   return QSize(w, h);
+   h += (m.top() + m.bottom());
+   w += (m.left() + m.right());
+
+  return QSize(w, h);
 }
 
 void AbstractLabelledWidget::setLabelSizePolicy(QSizePolicy policy)
@@ -179,30 +190,39 @@ void AbstractLabelledWidget::setWidgetSizePolicy(QSizePolicy policy)
 
 void AbstractLabelledWidget::setWidgetSizePolicy(QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical)
 {
-  m_widget->setSizePolicy(horizontal, vertical);
+   m_widget->setSizePolicy(horizontal, vertical);
 }
 
 QSizePolicy AbstractLabelledWidget::labelSizePolicy()
 {
-  return m_label->sizePolicy();
+   return m_label->sizePolicy();
 }
 
 QSizePolicy AbstractLabelledWidget::widgetSizePolicy()
 {
-  return m_widget->sizePolicy();
+   return m_widget->sizePolicy();
 }
 
-void AbstractLabelledWidget::setLabelStyleSheet(const QString &styleSheet)
+void AbstractLabelledWidget::setLabelStyleSheet(const QString& styleSheet)
 {
-  m_label->setStyleSheet(styleSheet);
+   m_label->setStyleSheet(styleSheet);
 }
 
-void AbstractLabelledWidget::setWidgetStyleSheet(const QString &styleSheet)
+void AbstractLabelledWidget::setWidgetStyleSheet(const QString& styleSheet)
 {
-  m_widget->setStyleSheet(styleSheet);
+   m_widget->setStyleSheet(styleSheet);
 }
 
 void AbstractLabelledWidget::clearLabel()
 {
-  m_label->clear();
+   m_label->clear();
+}
+
+AbstractAlignableLabelledWidget::AbstractAlignableLabelledWidget(
+   QString labelText,
+   QWidget* parent,
+   const AbstractLabelledWidget::WidgetFactory& factory)
+   : AbstractLabelledWidget(labelText, parent, factory)
+{
+
 }

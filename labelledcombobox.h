@@ -159,8 +159,18 @@ class SM_WIDGETS_SHARED_EXPORT LabelledComboBox : public AbstractLabelledWidget
 
    Q_OBJECT
 
+protected:
+  struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
+   {
+      virtual QWidget* newWidget(QWidget* parent) const {
+         return new QComboBox(parent);
+      }
+   };
+
 public:
-  explicit LabelledComboBox(const QString& labelText, QWidget* parent = nullptr);
+   explicit LabelledComboBox(const QString& labelText,
+                            QWidget* parent = nullptr,
+                            WidgetFactory const& factory = WidgetFactory());
 
    //! @reimplements QComboBox::addItem(const QString& const QVariant&).
    void addItem(const QString& labelText, const QVariant& userdata = QVariant());
@@ -198,7 +208,7 @@ public:
    QString currentText() const;
 
    //! @reimplements QComboBox::duplicatesEnabled().
-   bool duplicatesEnabled();
+   bool duplicatesEnabled() const;
 
    //! @reimplements QComboBox::setDuplicatesEnabled().
    void setDuplicatesEnabled(bool enable);
@@ -398,9 +408,10 @@ signals:
    */
    void textHighlighted(const QString& labelText);
 
+
 private:
-   //! overridding initGui(QString) from AbstractLabelledWidget
-   void initGui(QString = QString());
+   // overridding initGui(QString) from AbstractLabelledWidget
+   void initGui(const QString& = QString());
 };
 
 #endif // LABELLEDCOMBOBOX_H

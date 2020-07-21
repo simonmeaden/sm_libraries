@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 //#include "gmock/gmock.h"
 
-#include "QCircularBuffer.h"
+#include "CircularBuffer.h"
 #include <QList>
 #include <QVector>
 #include <list>
