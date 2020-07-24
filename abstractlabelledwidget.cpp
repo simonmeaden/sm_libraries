@@ -27,6 +27,8 @@ AbstractLabelledWidget::AbstractLabelledWidget(QString text,
    , m_position(Left)
 {
    initGui(text);
+   m_label->setObjectName("label");
+   m_widget->setObjectName("widget");
    positionLabel();
 }
 
@@ -79,12 +81,12 @@ void AbstractLabelledWidget::setLabelAlignment(const Qt::Alignment& alignment)
 
 int AbstractLabelledWidget::spacing()
 {
-  return m_layout->spacing();
+   return m_layout->spacing();
 }
 
 void AbstractLabelledWidget::setSpacing(int spacing)
 {
-  m_layout->setSpacing(spacing);
+   m_layout->setSpacing(spacing);
 }
 
 Qt::TextFormat AbstractLabelledWidget::labelTextFormat() const

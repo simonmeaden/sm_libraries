@@ -313,6 +313,10 @@ void MainWindow::setWidgetStylesheet()
 
 void MainWindow::setStylesheet()
 {
+  if (!m_currentWidget) {
+    return;
+  }
+
   QString stylesheet = m_overallStylesheet->toPlainText();
   m_currentWidget->setStyleSheet(stylesheet);
 }
@@ -498,6 +502,8 @@ QWidget* MainWindow::initLabelledWidgets()
    QVBoxLayout* l = new QVBoxLayout;
    box->setLayout(l);
 
+//   box->setStyleSheet("background: blue;");
+
    m_lineEdit = new LabelledLineEdit(tr("QLineEdit :"), this);
    //   connect(m_lineEdit, &LabelledLineEdit::textChanged,
    //           this, &MainWindow::lineEditChanged);
@@ -587,17 +593,21 @@ QWidget* MainWindow::initChooseWidgetBox()
    layoutFrame->setLayout(layoutLayout);
 
    m_left = new LabelledSpinBox(tr("Left"), this);
+   m_left->setMinimum(-5);
    connect(m_left, &LabelledSpinBox::valueChanged, this, &MainWindow::setLeft);
-   layoutLayout->addWidget(m_left, 0, 1);
+   layoutLayout->addWidget(m_left, 1, 0);
    m_right = new LabelledSpinBox(tr("Right"), this);
+   m_right->setMinimum(-5);
    connect(m_right, &LabelledSpinBox::valueChanged, this, &MainWindow::setRight);
-   layoutLayout->addWidget(m_right, 1, 0);
+   layoutLayout->addWidget(m_right, 1, 2);
    m_top = new LabelledSpinBox(tr("Top"), this);
+   m_top->setMinimum(-5);
    connect(m_top, &LabelledSpinBox::valueChanged, this, &MainWindow::setTop);
-   layoutLayout->addWidget(m_top, 2, 1);
+   layoutLayout->addWidget(m_top, 0, 1);
    m_bottom = new LabelledSpinBox(tr("Bottom"), this);
+   m_bottom->setMinimum(-5);
    connect(m_bottom, &LabelledSpinBox::valueChanged, this, &MainWindow::setBottom);
-   layoutLayout->addWidget(m_bottom, 1, 2);
+   layoutLayout->addWidget(m_bottom, 2, 1);
    m_spacing = new LabelledSpinBox(tr("Spacing"), this);
    connect(m_spacing, &LabelledSpinBox::valueChanged, this, &MainWindow::setSpacing);
    layoutLayout->addWidget(m_spacing, 1, 1);
@@ -612,8 +622,6 @@ QWidget* MainWindow::initAlignmentBox()
    QGroupBox* box = new QGroupBox(tr("Alignment"), this);
    QGridLayout* l = new QGridLayout;
    box->setLayout(l);
-
-   int row = 0;
 
    m_labelVerticalBox = new QGroupBox(tr("Vertical Label"), this);
    m_labelHorizontalBox = new QGroupBox(tr("Horizontal Label"), this);
@@ -744,8 +752,8 @@ QWidget* MainWindow::initStylesheetBox()
    QPushButton* overallBtn  = new QPushButton(tr("Set"), this);
    overallBox->setAlignment(Qt::AlignCenter);
    connect(overallBtn, &QPushButton::clicked, this, &MainWindow::setStylesheet);
-   overallLayout->addWidget(widgetBtn, 1, 0);
-   l->addWidget(widgetBox);
+   overallLayout->addWidget(overallBtn, 1, 0);
+   l->addWidget(overallBox);
 
    return box;
 }
