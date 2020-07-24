@@ -113,9 +113,10 @@ public:
 
    //! Constructs an abstract spinbox with the given parent with default parent,
    //! and label text property.
-   explicit AbstractLabelledWidget(QString labelText = QString(),
-                                   QWidget* parent = nullptr,
-                                   WidgetFactory const& factory = WidgetFactory());
+   explicit AbstractLabelledWidget(
+      QString labelText = QString(),
+      QWidget* parent = nullptr,
+      WidgetFactory const& factory = WidgetFactory());
    //! Called when the AbstractLabelledWidget is destroyed.
    virtual ~AbstractLabelledWidget();
 
@@ -133,6 +134,11 @@ public:
    Qt::Alignment labelAlignment() const;
    //! Sets the label alignment.
    void setLabelAlignment(const Qt::Alignment& widgetAlignment);
+
+   //! Returns layout spacing.
+   int spacing();
+   //! Adjusts the layout spacing.
+   void setSpacing(int spacing);
 
    //! returns the label text format.
    Qt::TextFormat labelTextFormat() const;
@@ -165,9 +171,15 @@ public:
    //! \see QWidget::sizePolicy()
    QSizePolicy widgetSizePolicy();
 
+   //! Returns the stylesheet for the label.
+   //! For the entire widget use QWidget::setStyleSheet()
+   QString labelStyleSheet();
    //! Sets the stylesheet for the label.
    //! For the entire widget use QWidget::setStyleSheet()
    void setLabelStyleSheet(const QString& styleSheet);
+   //! Returns the stylesheet for the widget.
+   //! For the entire widget use QWidget::setStyleSheet()
+   QString widgetStyleSheet();
    //! Sets the stylesheet for the widget.
    //! For the entire widget use QWidget::setStyleSheet()
    void setWidgetStyleSheet(const QString& styleSheet);

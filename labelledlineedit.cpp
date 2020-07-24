@@ -23,7 +23,9 @@
 
 LabelledLineEdit::LabelledLineEdit(const QString& labelText, QWidget* parent, const WidgetFactory& factory)
    : AbstractAlignableLabelledWidget(labelText, parent, factory)
-{}
+{
+   initGui(QString());
+}
 
 LabelledLineEdit::LabelledLineEdit(const QString& labelText,
                                    const QString& contents,
@@ -327,33 +329,51 @@ void LabelledLineEdit::clear()
 
 void LabelledLineEdit::initGui(QString contents)
 {
-  qobject_cast<QLineEdit*>(m_widget)->setText(contents);
-  connect(qobject_cast<QLineEdit*>(m_widget),
-          &QLineEdit::cursorPositionChanged,
-          this,
-          &LabelledLineEdit::cursorPositionChanged);
-  connect(qobject_cast<QLineEdit*>(m_widget),
-          &QLineEdit::editingFinished,
-          this,
-          &LabelledLineEdit::editingFinished);
-  connect(qobject_cast<QLineEdit*>(m_widget),
-          &QLineEdit::inputRejected,
-          this,
-          &LabelledLineEdit::inputRejected);
-  connect(qobject_cast<QLineEdit*>(m_widget),
-          &QLineEdit::returnPressed,
-          this,
-          &LabelledLineEdit::returnPressed);
-  connect(qobject_cast<QLineEdit*>(m_widget),
-          &QLineEdit::editingFinished,
-          this,
-          &LabelledLineEdit::selectionChanged);
-  connect(qobject_cast<QLineEdit*>(m_widget),
-          &QLineEdit::textChanged,
-          this,
-          &LabelledLineEdit::textChanged);
-  connect(qobject_cast<QLineEdit*>(m_widget),
-          &QLineEdit::textEdited,
-          this,
-          &LabelledLineEdit::textEdited);
+   qobject_cast<QLineEdit*>(m_widget)->setText(contents);
+   connect(qobject_cast<QLineEdit*>(m_widget),
+           &QLineEdit::cursorPositionChanged,
+           this,
+           &LabelledLineEdit::cursorPositionChanged);
+   connect(qobject_cast<QLineEdit*>(m_widget),
+           &QLineEdit::editingFinished,
+           this,
+           &LabelledLineEdit::editingFinished);
+   connect(qobject_cast<QLineEdit*>(m_widget),
+           &QLineEdit::inputRejected,
+           this,
+           &LabelledLineEdit::inputRejected);
+   connect(qobject_cast<QLineEdit*>(m_widget),
+           &QLineEdit::returnPressed,
+           this,
+           &LabelledLineEdit::returnPressed);
+   connect(qobject_cast<QLineEdit*>(m_widget),
+           &QLineEdit::editingFinished,
+           this,
+           &LabelledLineEdit::selectionChanged);
+     connect(qobject_cast<QLineEdit*>(m_widget),
+             &QLineEdit::textChanged,
+             this,
+             &LabelledLineEdit::textChanged);
+//   connect(qobject_cast<QLineEdit*>(m_widget),
+//           &QLineEdit::textChanged,
+//           this,
+//           &LabelledLineEdit::textHasChanged);
+     connect(qobject_cast<QLineEdit*>(m_widget),
+             &QLineEdit::textEdited,
+             this,
+             &LabelledLineEdit::textEdited);
+//   connect(qobject_cast<QLineEdit*>(m_widget),
+//           &QLineEdit::textEdited,
+//           this,
+//           &LabelledLineEdit::textHasEdited);
 }
+
+//void LabelledLineEdit::textHasChanged(const QString& text)
+//{
+//   emit textChanged(text);
+//}
+
+//void LabelledLineEdit::textHasEdited(const QString& text)
+//{
+//   emit textEdited(text);
+//}

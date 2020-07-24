@@ -23,8 +23,8 @@
 #include <QMainWindow>
 #include <QtWidgets>
 
-//#include "sm_widgets/qyamlcpp.h"
-#include "sm_widgets/labelledwidgets.h"
+//#include "sm_libraries/qyamlcpp.h"
+#include "sm_libraries/labelledwidgets.h"
 
 class MainWindow : public QMainWindow
 {
@@ -34,8 +34,14 @@ public:
    explicit MainWindow(QWidget* parent = nullptr);
    ~MainWindow();
 
+   void enableWidgets(bool enable);
+
 private:
    QTabWidget* m_tabs;
+
+   //   Qt::Alignment m_alignment;
+   QGroupBox* m_labelVerticalBox, *m_labelHorizontalBox, *m_widgetVerticalBox, *m_widgetHorizontalBox;
+   QButtonGroup* m_labelVerticalGrp, *m_labelHorizontalGrp, *m_widgetVerticalGrp, *m_widgetHorizontalGrp;
 
    LabelledComboBox* m_comboBox;
    LabelledSpinBox* m_spinBox;
@@ -46,14 +52,44 @@ private:
    LabelledComboBox* m_widgetChoiceBox;
    LabelledLineEdit* m_labelText, *m_widgetText;
    AbstractLabelledWidget* m_currentWidget;
+   QPlainTextEdit* m_labelStylesheet, *m_widgetStylesheet, *m_overallStylesheet;
+   QPushButton* m_setLabelStylesheet, *m_setWidgetStylesheet;
+   LabelledComboBox* m_positionBox;
+   LabelledSpinBox* m_left, *m_right, *m_top, *m_bottom, *m_spacing;
+
+   void setLabelStylesheet();
+   void setWidgetStylesheet();
+   void setStylesheet();
+
+   void setLabelPosition(const QString& pos);
+   void setLeft();
+   void setRight();
+   void setTop();
+   void setBottom();
+   void setSpacing();
+
+   void lineEditChanged(const QString& text);
+   void comboBoxChanged(const QString& text);
+   void spinBoxChanged(int value);
+   void exSpinBoxChanged(int value);
+   void setAlign();
 
    void chooseWidget(const QString& text);
    void labelTextHasChanged(const QString& text);
+   void widgetTextHasChanged(const QString& text);
 
+   void setAlignmentStatus();
+   void setStylesheetStatus();
+   void setLabelPositionStatus();
+   void setLayoutStatus();
 
    void initGui();
    QWidget* initLabelledWidgets();
-
+   QWidget* initChooseWidgetBox();
+   QWidget* initAlignmentBox();
+   QWidget* initVAlignBox(const QString& type, QGroupBox* box, QButtonGroup* grp);
+   QWidget* initHAlignBox(const QString& direction, QGroupBox* box, QButtonGroup* grp);
+   QWidget* initStylesheetBox();
 };
 
 #endif // MAINWINDOW_H

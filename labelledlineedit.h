@@ -223,15 +223,15 @@ class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit : public AbstractAlignableLabell
 
    Q_OBJECT
 
- protected:
+protected:
    struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
-     virtual QWidget* newWidget(QWidget *parent) const {
-       return new QLineEdit(parent);
-     }
+      virtual QWidget* newWidget(QWidget* parent) const {
+         return new QLineEdit(parent);
+      }
    };
 
- public:
+public:
    //   explicit LabelledLineEdit(QWidget* parent = nullptr);
    explicit LabelledLineEdit(const QString& labelText,
                              QWidget* parent = nullptr,
@@ -243,16 +243,16 @@ class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit : public AbstractAlignableLabell
 
 
    //! @reimplements QLineEdit::addAction(QAction, QLineEdit::ActionPosition).
-  void addAction(QAction* action, QLineEdit::ActionPosition labelPosition);
+   void addAction(QAction* action, QLineEdit::ActionPosition labelPosition);
 
-  //! @reimplements QLineEdit::addAction(const QIcon&, QLineEdit::ActionPosition).
+   //! @reimplements QLineEdit::addAction(const QIcon&, QLineEdit::ActionPosition).
    QAction* addAction(const QIcon& icon, QLineEdit::ActionPosition labelPosition);
 
    //! @reimplements QLineEdit::backspace().
    void backspace();
 
    //! @reimplements QLineEdit::completer().
-   QCompleter *completer() const;
+   QCompleter* completer() const;
 
    //! @reimplements QLineEdit::backspace().
    QMenu* createStandardContextMenu();
@@ -312,7 +312,7 @@ class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit : public AbstractAlignableLabell
    QMargins textMargins() const;
 
    //! @reimplements QLineEdit::validator().
-   const QValidator *validator() const;
+   const QValidator* validator() const;
 
    //! @reimplements QLineEdit::text().
    QString text() const;
@@ -460,7 +460,7 @@ signals:
 
       @from QLineEdit::textEdited.
    */
-   void textChanged(const QString& text);
+   void textChanged(const QString&);
 
    /*!
       \fn LabelledLineEdit::textEdited(const QString&)
@@ -469,7 +469,7 @@ signals:
 
       @from QLineEdit::textEdited.
    */
-   void textEdited(const QString& text);
+   void textEdited(const QString&);
 
    /*!
       \fn LabelledLineEdit::inputRejected()
@@ -482,7 +482,9 @@ signals:
 
 
 private:
-   void initGui(QString contents=QString());
+   void initGui(QString contents = QString());
+//   void textHasChanged(const QString& text);
+//   void textHasEdited(const QString& text);
 };
 
 #endif // LABELLEDLINEEDIT_H
