@@ -210,25 +210,17 @@ private:
 /*!
    \file abstractlabelledwidget.h abstractlabelledwidget.cpp
    \class AbstractAlignableLabelledWidget abstractlabelledwidget.h
-   \brief The alignable LabelledWidget abstract base class.
+   \brief The alignable LabelledWidget interface class.
    \since 5.7.0
    \license The MIT License
    \copyright © 2019 - 2020 Simon Meaden. All rights reserved.
 
-   Not all QWidgets are text alignable, QComboBox for instance. Use this class
-   for those that are alignable and AbstractLabelledWidget for those that
-   aren't.
-
-
+   Not all QWidgets are text alignable, QComboBox for instance. Use this interface
+   for those that are alignable, or that you want to be alignable.
 */
-class AbstractAlignableLabelledWidget : public AbstractLabelledWidget
+class AlignableWidgetInterface
 {
 public:
-   explicit AbstractAlignableLabelledWidget(
-      QString labelText = QString(),
-      QWidget* parent = nullptr,
-      WidgetFactory const& factory = WidgetFactory());
-
    //! Returns the widget alignment.
    //! This returns 0, indicating that the widget doesn't support text alignment.
    virtual Qt::Alignment widgetAlignment() const = 0;
@@ -236,6 +228,38 @@ public:
    //! Sets the widget alignment.
    //! This doesn't do anything and should be overridden in derived classes.
    virtual void setWidgetAlignment(const Qt::Alignment&) = 0;
+};
+
+/*!
+   \file abstractlabelledwidget.h abstractlabelledwidget.cpp
+   \class AbstractAlignableLabelledWidget abstractlabelledwidget.h
+   \brief The LabelledWidget formatable text class.
+   \since 5.7.0
+   \license The MIT License
+   \copyright © 2019 - 2020 Simon Meaden. All rights reserved.
+
+   Not all QWidgets have formattable text capability, QComboBox for
+   instance. Use this interface for those that have that capability.
+*/
+class TextFormatInterface
+{
+   /*!
+       \property LabelledTextField::textFormat
+       \brief This property holds the field's text format
+
+      @reimplements QLabel::textFormat
+
+      @accessor %textFormat(), %setTextFormat(Qt::TextFormat)
+   */
+   Q_PROPERTY(Qt::TextFormat textFormat READ textFormat WRITE setTextFormat)
+
+public:
+
+   //! @reimplements QLabel::textFormat() const.
+   virtual Qt::TextFormat textFormat() const = 0;
+
+   //! @reimplements QLabel::setTextFormat().
+   virtual void setTextFormat(Qt::TextFormat format) = 0;
 };
 
 #endif // ABSTRACTLABELLEDWIDGET_H

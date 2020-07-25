@@ -40,7 +40,9 @@
    All properties of the QLineEdit are copied across to this widget.
 
 */
-class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit : public AbstractAlignableLabelledWidget
+class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit :
+  public AbstractLabelledWidget,
+  public AlignableWidgetInterface
 {
 
    /*!

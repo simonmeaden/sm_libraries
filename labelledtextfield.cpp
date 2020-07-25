@@ -23,7 +23,7 @@
 
 LabelledTextField::LabelledTextField(QWidget* parent,
                                      WidgetFactory const& factory)
-   : AbstractAlignableLabelledWidget(QString(), parent, factory)
+   : AbstractLabelledWidget(QString(), parent, factory)
 {
    initGui();
 }
@@ -31,7 +31,7 @@ LabelledTextField::LabelledTextField(QWidget* parent,
 LabelledTextField::LabelledTextField(const QString& labelText,
                                      QWidget* parent,
                                      const WidgetFactory& factory)
-   : AbstractAlignableLabelledWidget(labelText, parent, factory)
+   : AbstractLabelledWidget(labelText, parent, factory)
 {
    initGui();
 }
@@ -40,7 +40,7 @@ LabelledTextField::LabelledTextField(const QString& labelText,
                                      const QString& contents,
                                      QWidget* parent,
                                      const WidgetFactory& factory)
-   : AbstractAlignableLabelledWidget(labelText, parent, factory)
+   : AbstractLabelledWidget(labelText, parent, factory)
 {
    initGui(contents);
 }

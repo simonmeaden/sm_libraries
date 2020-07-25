@@ -38,7 +38,9 @@
 
    All properties of the QSpinBox  are copied across to this widget.
 */
-class AbstractLabelledSpinBox : public AbstractAlignableLabelledWidget
+class AbstractLabelledSpinBox
+   : public AbstractLabelledWidget
+   , public AlignableWidgetInterface
 {
    /*!
       \property AbstractLabelledSpinBox::value
@@ -129,7 +131,7 @@ public:
    //! Constructs a lineedit with the given parent, and supplied label.
    explicit AbstractLabelledSpinBox(const QString& labelText = QString(),
                                     QWidget* parent = nullptr,
-                                   WidgetFactory const& factory = WidgetFactory());
+                                    WidgetFactory const& factory = WidgetFactory());
 
    //! @reimplements QComboBox::value() const.
    int value() const;

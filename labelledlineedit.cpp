@@ -22,7 +22,7 @@
 #include "labelledlineedit.h"
 
 LabelledLineEdit::LabelledLineEdit(const QString& labelText, QWidget* parent, const WidgetFactory& factory)
-   : AbstractAlignableLabelledWidget(labelText, parent, factory)
+   : AbstractLabelledWidget(labelText, parent, factory)
 {
    initGui(QString());
 }
@@ -30,7 +30,7 @@ LabelledLineEdit::LabelledLineEdit(const QString& labelText, QWidget* parent, co
 LabelledLineEdit::LabelledLineEdit(const QString& labelText,
                                    const QString& contents,
                                    QWidget* parent, const WidgetFactory& factory)
-   : AbstractAlignableLabelledWidget(labelText, parent, factory)
+   : AbstractLabelledWidget(labelText, parent, factory)
 {
    initGui(contents);
 }

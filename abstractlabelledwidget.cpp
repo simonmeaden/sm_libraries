@@ -45,13 +45,13 @@ void AbstractLabelledWidget::setLabel(QLabel *label)
   update();
 }
 
-AbstractAlignableLabelledWidget::AbstractAlignableLabelledWidget(
-   QString labelText,
-   QWidget* parent,
-   const AbstractLabelledWidget::WidgetFactory& factory)
-   : AbstractLabelledWidget(labelText, parent, factory)
-{
-}
+//AbstractAlignableLabelledWidget::AbstractAlignableLabelledWidget(
+//   QString labelText,
+//   QWidget* parent,
+//   const AbstractLabelledWidget::WidgetFactory& factory)
+//   : AbstractLabelledWidget(labelText, parent, factory)
+//{
+//}
 
 void AbstractLabelledWidget::setLabelText(const QString& text)
 {

@@ -90,6 +90,7 @@ void MainWindow::chooseWidget(const QString& text)
    setStylesheetStatus();
    setLabelPositionStatus();
    setLayoutStatus();
+   setTextFormatStatus();
    enableWidgets(true);
 }
 
@@ -141,110 +142,162 @@ void MainWindow::widgetSizePolicyHasChanged(const QString&)
    m_currentWidget->setWidgetSizePolicy(hPolicy, vPolicy);
 }
 
-void MainWindow::setAlignmentStatus()
+void MainWindow::setFormattedText(Qt::TextFormat format)
+{
+   switch (format) {
+   case Qt::PlainText:
+      m_textFormatDisplay->setText("Plain text");
+      break;
+
+   case Qt::RichText:
+      m_textFormatDisplay->setText("{\\rtf1\\ansi\\ansicpg1252 {\\fonttbl\\f0\\fswiss\\fcharset0 Helvetica;} {\\colortbl;\\red255\\green0\\blue0;} \\f0 \\cf0 This is bold red text}");
+      break;
+
+   case Qt::AutoText:
+      // using markdown here as the label SHOULD auto detect it.
+      m_textFormatDisplay->setText("*Markdown* **text**");
+      break;
+
+   case Qt::MarkdownText:
+      m_textFormatDisplay->setText("_Markdown_ **text**");
+      break;
+   }
+}
+
+void MainWindow::labelTextFormatHasChanged(const QString&)
 {
    if (!m_currentWidget) {
-      m_labelVerticalBox->setEnabled(false);
-      m_labelHorizontalBox->setEnabled(false);
-      m_widgetVerticalBox->setEnabled(false);
-      m_widgetHorizontalBox->setEnabled(false);
       return;
    }
 
-   m_labelVerticalBox->setEnabled(true);
-   m_labelHorizontalBox->setEnabled(true);
-   Qt::Alignment labelAlighnment = m_currentWidget->labelAlignment();
+   TextFormatInterface* tfi = dynamic_cast<TextFormatInterface*>(m_currentWidget);
 
-   if (labelAlighnment.testFlag(Qt::AlignLeft)) {
-      m_labelHorizontalGrp->buttons().at(0)->setChecked(true);
+   if (tfi) {
+      Qt::TextFormat format = m_labelTextFormatBox->currentData(Qt::UserRole).value<Qt::TextFormat>();
+      tfi->setTextFormat(format);
+      setFormattedText(format);
+   }
+}
 
+void MainWindow::widgetTextFormatHasChanged(const QString&)
+{
+   if (!m_currentWidget) {
+      return;
    }
 
-   if (labelAlighnment.testFlag(Qt::AlignRight)) {
-      m_labelHorizontalGrp->buttons().at(1)->setChecked(true);
+   TextFormatInterface* tfi = dynamic_cast<TextFormatInterface*>(m_currentWidget);
 
+   if (tfi) {
+      Qt::TextFormat format = m_widgetTextFormatBox->currentData(Qt::UserRole).value<Qt::TextFormat>();
+      tfi->setTextFormat(format);
+      setFormattedText(format);
    }
+}
 
-   if (labelAlighnment.testFlag(Qt::AlignHCenter)) {
-      m_labelHorizontalGrp->buttons().at(2)->setChecked(true);
+void MainWindow::setAlignmentStatus()
+{
+   AlignableWidgetInterface* awi = dynamic_cast<AlignableWidgetInterface*>(m_currentWidget);
 
-   }
-
-   if (labelAlighnment.testFlag(Qt::AlignJustify)) {
-      m_labelHorizontalGrp->buttons().at(3)->setChecked(true);
-
-   }
-
-   if (labelAlighnment.testFlag(Qt::AlignTop)) {
-      m_labelVerticalGrp->buttons().at(0)->setChecked(true);
-
-   }
-
-   if (labelAlighnment.testFlag(Qt::AlignBottom)) {
-      m_labelVerticalGrp->buttons().at(1)->setChecked(true);
-
-   }
-
-   if (labelAlighnment.testFlag(Qt::AlignVCenter)) {
-      m_labelVerticalGrp->buttons().at(2)->setChecked(true);
-
-   }
-
-   if (labelAlighnment.testFlag(Qt::AlignBaseline)) {
-      m_labelVerticalGrp->buttons().at(3)->setChecked(true);
-   }
-
-   Qt::Alignment widgetAlignment;
-   AbstractAlignableLabelledWidget* alw =
-      dynamic_cast<AbstractAlignableLabelledWidget*>(m_currentWidget);
-
-   if (alw) {
-      m_widgetVerticalBox->setEnabled(true);
-      m_widgetHorizontalBox->setEnabled(true);
-      widgetAlignment = alw->widgetAlignment();
-
-      if (widgetAlignment.testFlag(Qt::AlignLeft)) {
-         m_widgetHorizontalGrp->buttons().at(0)->setChecked(true);
-
-      }
-
-      if (widgetAlignment.testFlag(Qt::AlignRight)) {
-         m_widgetHorizontalGrp->buttons().at(1)->setChecked(true);
-
-      }
-
-      if (widgetAlignment.testFlag(Qt::AlignHCenter)) {
-         m_widgetHorizontalGrp->buttons().at(2)->setChecked(true);
-
-      }
-
-      if (widgetAlignment.testFlag(Qt::AlignJustify)) {
-         m_widgetHorizontalGrp->buttons().at(3)->setChecked(true);
-
-      }
-
-      if (widgetAlignment.testFlag(Qt::AlignTop)) {
-         m_widgetVerticalGrp->buttons().at(0)->setChecked(true);
-
-      }
-
-      if (widgetAlignment.testFlag(Qt::AlignBottom)) {
-         m_widgetVerticalGrp->buttons().at(1)->setChecked(true);
-
-      }
-
-      if (widgetAlignment.testFlag(Qt::AlignVCenter)) {
-         m_widgetVerticalGrp->buttons().at(2)->setChecked(true);
-
-      }
-
-      if (widgetAlignment.testFlag(Qt::AlignBaseline)) {
-         m_widgetVerticalGrp->buttons().at(3)->setChecked(true);
-      }
-
-   } else {
+   if (!awi) {
       m_widgetVerticalBox->setEnabled(false);
       m_widgetHorizontalBox->setEnabled(false);
+      return;
+
+   } else {
+
+      m_widgetVerticalBox->setEnabled(true);
+      m_widgetHorizontalBox->setEnabled(true);
+      Qt::Alignment labelAlighnment = m_currentWidget->labelAlignment();
+
+      if (labelAlighnment.testFlag(Qt::AlignLeft)) {
+         m_labelHorizontalGrp->buttons().at(0)->setChecked(true);
+
+      }
+
+      if (labelAlighnment.testFlag(Qt::AlignRight)) {
+         m_labelHorizontalGrp->buttons().at(1)->setChecked(true);
+
+      }
+
+      if (labelAlighnment.testFlag(Qt::AlignHCenter)) {
+         m_labelHorizontalGrp->buttons().at(2)->setChecked(true);
+
+      }
+
+      if (labelAlighnment.testFlag(Qt::AlignJustify)) {
+         m_labelHorizontalGrp->buttons().at(3)->setChecked(true);
+
+      }
+
+      if (labelAlighnment.testFlag(Qt::AlignTop)) {
+         m_labelVerticalGrp->buttons().at(0)->setChecked(true);
+
+      }
+
+      if (labelAlighnment.testFlag(Qt::AlignBottom)) {
+         m_labelVerticalGrp->buttons().at(1)->setChecked(true);
+
+      }
+
+      if (labelAlighnment.testFlag(Qt::AlignVCenter)) {
+         m_labelVerticalGrp->buttons().at(2)->setChecked(true);
+
+      }
+
+      if (labelAlighnment.testFlag(Qt::AlignBaseline)) {
+         m_labelVerticalGrp->buttons().at(3)->setChecked(true);
+      }
+
+      Qt::Alignment widgetAlignment;
+
+      if (awi) {
+         m_widgetVerticalBox->setEnabled(true);
+         m_widgetHorizontalBox->setEnabled(true);
+         widgetAlignment = awi->widgetAlignment();
+
+         if (widgetAlignment.testFlag(Qt::AlignLeft)) {
+            m_widgetHorizontalGrp->buttons().at(0)->setChecked(true);
+
+         }
+
+         if (widgetAlignment.testFlag(Qt::AlignRight)) {
+            m_widgetHorizontalGrp->buttons().at(1)->setChecked(true);
+
+         }
+
+         if (widgetAlignment.testFlag(Qt::AlignHCenter)) {
+            m_widgetHorizontalGrp->buttons().at(2)->setChecked(true);
+
+         }
+
+         if (widgetAlignment.testFlag(Qt::AlignJustify)) {
+            m_widgetHorizontalGrp->buttons().at(3)->setChecked(true);
+
+         }
+
+         if (widgetAlignment.testFlag(Qt::AlignTop)) {
+            m_widgetVerticalGrp->buttons().at(0)->setChecked(true);
+
+         }
+
+         if (widgetAlignment.testFlag(Qt::AlignBottom)) {
+            m_widgetVerticalGrp->buttons().at(1)->setChecked(true);
+
+         }
+
+         if (widgetAlignment.testFlag(Qt::AlignVCenter)) {
+            m_widgetVerticalGrp->buttons().at(2)->setChecked(true);
+
+         }
+
+         if (widgetAlignment.testFlag(Qt::AlignBaseline)) {
+            m_widgetVerticalGrp->buttons().at(3)->setChecked(true);
+         }
+
+      } else {
+         m_widgetVerticalBox->setEnabled(false);
+         m_widgetHorizontalBox->setEnabled(false);
+      }
    }
 }
 
@@ -469,6 +522,20 @@ void MainWindow::setSizePolicyStatus()
    m_labelVPoliciesBox->setCurrentText(sizePolicyToString(policy.verticalPolicy()));
 }
 
+void MainWindow::setTextFormatStatus()
+{
+   if (!m_currentWidget) {
+      m_widgetTextFormatBox->setEnabled(false);
+      return;
+   }
+
+   TextFormatInterface* tfi = dynamic_cast<TextFormatInterface*>(m_currentWidget);
+
+   if (tfi) {
+      m_widgetTextFormatBox->setEnabled(true);
+   }
+}
+
 
 void MainWindow::lineEditChanged(const QString& text)
 {
@@ -498,7 +565,7 @@ void MainWindow::exSpinBoxChanged(int value)
    }
 }
 
-void MainWindow::setAlign()
+void MainWindow::setCurrentWidgetAlignment()
 {
    if (!m_currentWidget) {
       return;
@@ -511,19 +578,19 @@ void MainWindow::setAlign()
    Qt::Alignment existing;
    QString type = btn->property("widget").toString();
 
-   AbstractAlignableLabelledWidget* alw =
-      dynamic_cast<AbstractAlignableLabelledWidget*>(m_currentWidget);
+   AlignableWidgetInterface* awi =
+      dynamic_cast<AlignableWidgetInterface*>(m_currentWidget);
 
    switch (alignment) {
    case Qt::AlignLeft:
    case Qt::AlignRight:
    case Qt::AlignHCenter:
    case Qt::AlignJustify:
-      if (alw && type == "Widget") {
-         existing = alw->widgetAlignment();
+      if (awi && type == "Widget") {
+         existing = awi->widgetAlignment();
          existing &= Qt::AlignVertical_Mask;
          existing |= alignment;
-         alw->setWidgetAlignment(existing);
+         awi->setWidgetAlignment(existing);
 
       } else if (type == "Label") {
          existing = m_currentWidget->labelAlignment();
@@ -539,11 +606,11 @@ void MainWindow::setAlign()
    case Qt::AlignBottom:
    case Qt::AlignVCenter:
    case Qt::AlignBaseline:
-      if (alw && type == "Widget") {
-         existing = alw->widgetAlignment();
+      if (awi && type == "Widget") {
+         existing = awi->widgetAlignment();
          existing &= Qt::AlignHorizontal_Mask;
          existing |= alignment;
-         alw->setWidgetAlignment(existing);
+         awi->setWidgetAlignment(existing);
 
       } else if (type == "Label") {
          existing = m_currentWidget->labelAlignment();
@@ -700,6 +767,10 @@ QWidget* MainWindow::initAlignmentBox()
    l->addWidget(
       initVAlignBox("Widget", m_widgetVerticalBox, m_widgetVerticalGrp), 1, 1);
 
+   // label is always enabled, but widget only if it implements AlignableWidgetInterface.
+   m_widgetHorizontalBox->setEnabled(false);
+   m_widgetVerticalBox->setEnabled(false);
+
    return box;
 }
 
@@ -731,10 +802,10 @@ QWidget* MainWindow::initVAlignBox(const QString& type,
    baselineBtn->setProperty("widget", type);
    l->addWidget(baselineBtn);
 
-   connect(topBtn, &QRadioButton::clicked, this, &MainWindow::setAlign);
-   connect(bottomBtn, &QRadioButton::clicked, this, &MainWindow::setAlign);
-   connect(centreBtn, &QRadioButton::clicked, this, &MainWindow::setAlign);
-   connect(baselineBtn, &QRadioButton::clicked, this, &MainWindow::setAlign);
+   connect(topBtn, &QRadioButton::clicked, this, &MainWindow::setCurrentWidgetAlignment);
+   connect(bottomBtn, &QRadioButton::clicked, this, &MainWindow::setCurrentWidgetAlignment);
+   connect(centreBtn, &QRadioButton::clicked, this, &MainWindow::setCurrentWidgetAlignment);
+   connect(baselineBtn, &QRadioButton::clicked, this, &MainWindow::setCurrentWidgetAlignment);
 
    return box;
 }
@@ -767,10 +838,10 @@ QWidget* MainWindow::initHAlignBox(const QString& type,
    justifyBtn->setProperty("widget", type);
    l->addWidget(justifyBtn);
 
-   connect(leftBtn, &QRadioButton::clicked, this, &MainWindow::setAlign);
-   connect(rightBtn, &QRadioButton::clicked, this, &MainWindow::setAlign);
-   connect(centreBtn, &QRadioButton::clicked, this, &MainWindow::setAlign);
-   connect(justifyBtn, &QRadioButton::clicked, this, &MainWindow::setAlign);
+   connect(leftBtn, &QRadioButton::clicked, this, &MainWindow::setCurrentWidgetAlignment);
+   connect(rightBtn, &QRadioButton::clicked, this, &MainWindow::setCurrentWidgetAlignment);
+   connect(centreBtn, &QRadioButton::clicked, this, &MainWindow::setCurrentWidgetAlignment);
+   connect(justifyBtn, &QRadioButton::clicked, this, &MainWindow::setCurrentWidgetAlignment);
 
    return box;
 }
@@ -821,20 +892,20 @@ QWidget* MainWindow::initStylesheetBox()
    return box;
 }
 
-QWidget* MainWindow::initSizePolicyBox()
+QWidget* MainWindow::initPolicyBox()
 {
-   QGroupBox* box = new QGroupBox(tr("SizePolicy :"), this);
+   QGroupBox* box = new QGroupBox(this);
    QVBoxLayout* l = new QVBoxLayout;
    box->setLayout(l);
 
-   QGroupBox* labelBox = new QGroupBox(tr("Label :"), this);
+   QGroupBox* labelBox = new QGroupBox(tr("Label SizePolicy:"), this);
    QVBoxLayout* labelLayout = new QVBoxLayout;
    labelBox->setLayout(labelLayout);
 
    QStringList sizePolicies;
    sizePolicies << "Fixed" << "Minimum" << "Maximum" << "Preferred" << "Expanding"
                 << "MinimumExpanding" << "Ignored";
-   m_labelHPoliciesBox = new LabelledComboBox(tr("Horizontal SizePolicies"), this);
+   m_labelHPoliciesBox = new LabelledComboBox(tr("Horizontal"), this);
    m_labelHPoliciesBox->addItems(sizePolicies);
    m_labelHPoliciesBox->setItemData(0, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Fixed));
    m_labelHPoliciesBox->setItemData(1, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Minimum));
@@ -845,7 +916,7 @@ QWidget* MainWindow::initSizePolicyBox()
    m_labelHPoliciesBox->setItemData(6, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Ignored));
    labelLayout->addWidget(m_labelHPoliciesBox);
 
-   m_labelVPoliciesBox = new LabelledComboBox(tr("Vertical SizePolicies"), this);
+   m_labelVPoliciesBox = new LabelledComboBox(tr("Vertical"), this);
    m_labelVPoliciesBox->addItems(sizePolicies);
    m_labelVPoliciesBox->setItemData(0, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Fixed));
    m_labelVPoliciesBox->setItemData(1, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Minimum));
@@ -858,11 +929,11 @@ QWidget* MainWindow::initSizePolicyBox()
 
    l->addWidget(labelBox);
 
-   QGroupBox* widgetBox = new QGroupBox(tr("Widget :"), this);
+   QGroupBox* widgetBox = new QGroupBox(tr("Widget SizePolicy :"), this);
    QVBoxLayout* widgetLayout = new QVBoxLayout;
    widgetBox->setLayout(widgetLayout);
 
-   m_widgetHPoliciesBox = new LabelledComboBox(tr("Horizontal SizePolicies"), this);
+   m_widgetHPoliciesBox = new LabelledComboBox(tr("Horizontal"), this);
    m_widgetHPoliciesBox->addItems(sizePolicies);
    m_widgetHPoliciesBox->setItemData(0, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Fixed));
    m_widgetHPoliciesBox->setItemData(1, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Minimum));
@@ -873,7 +944,7 @@ QWidget* MainWindow::initSizePolicyBox()
    m_widgetHPoliciesBox->setItemData(6, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Ignored));
    widgetLayout->addWidget(m_widgetHPoliciesBox);
 
-   m_widgetVPoliciesBox = new LabelledComboBox(tr("Vertical SizePolicies"), this);
+   m_widgetVPoliciesBox = new LabelledComboBox(tr("Vertical"), this);
    m_widgetVPoliciesBox->addItems(sizePolicies);
    m_widgetVPoliciesBox->setItemData(0, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Fixed));
    m_widgetVPoliciesBox->setItemData(1, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Minimum));
@@ -894,6 +965,44 @@ QWidget* MainWindow::initSizePolicyBox()
    return box;
 }
 
+QWidget* MainWindow::initFormatBox()
+{
+   QGroupBox* box = new QGroupBox(tr("Label SizePolicy:"), this);
+   QVBoxLayout* l = new QVBoxLayout;
+   box->setLayout(l);
+
+   //   QStringList textFormats;
+   m_textFormats << "PlainText" << "RichText" << "AutoText" << "MarkdownText";
+   m_labelTextFormatBox = new LabelledComboBox(tr("Label Text Format"), this);
+   m_labelTextFormatBox->addItems(m_textFormats);
+   m_labelTextFormatBox->setItemData(0, QVariant::fromValue<Qt::TextFormat>(Qt::PlainText));
+   m_labelTextFormatBox->setItemData(1, QVariant::fromValue<Qt::TextFormat>(Qt::RichText));
+   m_labelTextFormatBox->setItemData(2, QVariant::fromValue<Qt::TextFormat>(Qt::AutoText));
+   m_labelTextFormatBox->setItemData(3, QVariant::fromValue<Qt::TextFormat>(Qt::MarkdownText));
+   l->addWidget(m_labelTextFormatBox);
+
+   m_widgetTextFormatBox = new LabelledComboBox(tr("Widget Text Format"), this);
+   m_widgetTextFormatBox->addItems(m_textFormats);
+   m_widgetTextFormatBox->setItemData(0, QVariant::fromValue<Qt::TextFormat>(Qt::PlainText));
+   m_widgetTextFormatBox->setItemData(1, QVariant::fromValue<Qt::TextFormat>(Qt::RichText));
+   m_widgetTextFormatBox->setItemData(2, QVariant::fromValue<Qt::TextFormat>(Qt::AutoText));
+   m_widgetTextFormatBox->setItemData(3, QVariant::fromValue<Qt::TextFormat>(Qt::MarkdownText));
+   l->addWidget(m_widgetTextFormatBox);
+
+   m_textFormatDisplay = new LabelledLineEdit(tr("Formatted Text"), this);
+   m_textFormatDisplay->setText("Plain text");
+   l->addWidget(m_textFormatDisplay);
+
+   QFrame dummy;
+   dummy.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   l->addWidget(&dummy);
+
+   connect(m_labelTextFormatBox, &LabelledComboBox::currentTextChanged, this, &MainWindow::labelTextFormatHasChanged);
+   connect(m_widgetTextFormatBox, &LabelledComboBox::currentTextChanged, this, &MainWindow::widgetTextFormatHasChanged);
+
+   return box;
+}
+
 void MainWindow::initGui()
 {
    m_tabs = new QTabWidget(this);
@@ -907,10 +1016,11 @@ void MainWindow::initGui()
 
    l->addWidget(initLabelledWidgets(), 0, 0);
    l->addWidget(initChooseWidgetBox(), 0, 1);
-   l->addWidget(initSizePolicyBox(), 0, 2);
+   l->addWidget(initPolicyBox(), 0, 2);
 
    l->addWidget(initStylesheetBox(), 1, 0);
    l->addWidget(initAlignmentBox(), 1, 1);
+   l->addWidget(initFormatBox(), 1, 2);
 
    chooseWidget(tr("None"));
    enableWidgets(false);

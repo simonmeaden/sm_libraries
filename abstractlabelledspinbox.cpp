@@ -23,7 +23,7 @@
 
 AbstractLabelledSpinBox::AbstractLabelledSpinBox(const QString& text,
       QWidget* parent, const WidgetFactory& factory)
-   : AbstractAlignableLabelledWidget(text, parent, factory)
+   : AbstractLabelledWidget(text, parent, factory)
 {}
 
 int AbstractLabelledSpinBox::value() const
