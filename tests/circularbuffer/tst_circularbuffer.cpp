@@ -2,7 +2,7 @@
 //#include "gmock/gmock.h"
 
 #include <string>
-#include "circularbuffer.h"
+#include "private/circularbuffer.h"
 
 TEST(circularbufferTestInt, ConstructorTest)
 {

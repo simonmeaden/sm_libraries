@@ -119,6 +119,28 @@ void MainWindow::widgetTextHasChanged(const QString& text)
    }
 }
 
+void MainWindow::labelSizePolicyHasChanged(const QString&)
+{
+   if (!m_currentWidget) {
+      return;
+   }
+
+   QSizePolicy::Policy hPolicy = m_labelHPoliciesBox->currentData(Qt::UserRole).value<QSizePolicy::Policy>();
+   QSizePolicy::Policy vPolicy = m_labelVPoliciesBox->currentData(Qt::UserRole).value<QSizePolicy::Policy>();
+   m_currentWidget->setLabelSizePolicy(hPolicy, vPolicy);
+}
+
+void MainWindow::widgetSizePolicyHasChanged(const QString&)
+{
+   if (!m_currentWidget) {
+      return;
+   }
+
+   QSizePolicy::Policy hPolicy = m_widgetHPoliciesBox->currentData(Qt::UserRole).value<QSizePolicy::Policy>();
+   QSizePolicy::Policy vPolicy = m_widgetVPoliciesBox->currentData(Qt::UserRole).value<QSizePolicy::Policy>();
+   m_currentWidget->setWidgetSizePolicy(hPolicy, vPolicy);
+}
+
 void MainWindow::setAlignmentStatus()
 {
    if (!m_currentWidget) {
@@ -233,13 +255,13 @@ void MainWindow::setStylesheetStatus()
    }
 
    QString labelStylesheet = m_currentWidget->labelStyleSheet();
-   m_labelStylesheet->setStyleSheet(labelStylesheet);
+   m_labelStylesheet->setPlainText(labelStylesheet);
 
    QString widgetStylesheet = m_currentWidget->widgetStyleSheet();
-   m_widgetStylesheet->setStyleSheet(widgetStylesheet);
+   m_widgetStylesheet->setPlainText(widgetStylesheet);
 
    QString overallStylesheet = m_currentWidget->styleSheet();
-   m_overallStylesheet->setStyleSheet(overallStylesheet);
+   m_overallStylesheet->setPlainText(overallStylesheet);
 }
 
 void MainWindow::setLabelPositionStatus()
@@ -303,22 +325,22 @@ void MainWindow::setLabelStylesheet()
 
 void MainWindow::setWidgetStylesheet()
 {
-  if (!m_currentWidget) {
-    return;
-  }
+   if (!m_currentWidget) {
+      return;
+   }
 
-  QString stylesheet = m_widgetStylesheet->toPlainText();
-  m_currentWidget->setWidgetStyleSheet(stylesheet);
+   QString stylesheet = m_widgetStylesheet->toPlainText();
+   m_currentWidget->setWidgetStyleSheet(stylesheet);
 }
 
 void MainWindow::setStylesheet()
 {
-  if (!m_currentWidget) {
-    return;
-  }
+   if (!m_currentWidget) {
+      return;
+   }
 
-  QString stylesheet = m_overallStylesheet->toPlainText();
-  m_currentWidget->setStyleSheet(stylesheet);
+   QString stylesheet = m_overallStylesheet->toPlainText();
+   m_currentWidget->setStyleSheet(stylesheet);
 }
 
 void MainWindow::setLabelPosition(const QString& pos)
@@ -408,6 +430,45 @@ void MainWindow::setLayoutStatus()
 
    m_spacing->setValue(m_currentWidget->spacing());
 }
+
+QString MainWindow::sizePolicyToString(QSizePolicy::Policy policy)
+{
+   if (policy == QSizePolicy::Fixed) {
+      return "Fixed";
+
+   } else if (policy == QSizePolicy::Minimum) {
+      return "Minimum";
+
+   } else if (policy == QSizePolicy::Maximum) {
+      return "Maximum";
+
+   } else if (policy == QSizePolicy::Preferred) {
+      return "Preferred";
+
+   } else if (policy == QSizePolicy::Expanding) {
+      return "Expanding";
+
+   } else if (policy == QSizePolicy::MinimumExpanding) {
+      return "MinimumExpanding";
+
+   } else if (policy == QSizePolicy::Ignored) {
+      return "Ignored";
+   }
+
+   return QString();
+}
+
+void MainWindow::setSizePolicyStatus()
+{
+   if (!m_currentWidget) {
+      return;
+   }
+
+   QSizePolicy policy = m_currentWidget->sizePolicy();
+   m_labelHPoliciesBox->setCurrentText(sizePolicyToString(policy.horizontalPolicy()));
+   m_labelVPoliciesBox->setCurrentText(sizePolicyToString(policy.verticalPolicy()));
+}
+
 
 void MainWindow::lineEditChanged(const QString& text)
 {
@@ -501,8 +562,6 @@ QWidget* MainWindow::initLabelledWidgets()
    QGroupBox* box = new QGroupBox(tr("Labelled Widgets :"), this);
    QVBoxLayout* l = new QVBoxLayout;
    box->setLayout(l);
-
-//   box->setStyleSheet("background: blue;");
 
    m_lineEdit = new LabelledLineEdit(tr("QLineEdit :"), this);
    //   connect(m_lineEdit, &LabelledLineEdit::textChanged,
@@ -722,10 +781,13 @@ QWidget* MainWindow::initStylesheetBox()
    QVBoxLayout* l = new QVBoxLayout;
    box->setLayout(l);
 
+   QString tempShit = "color:yellow;background:red;";
+
    QGroupBox* labelBox = new QGroupBox(tr("Label"), this);
    QGridLayout* labelLayout = new QGridLayout;
    labelBox->setLayout(labelLayout);
    m_labelStylesheet = new QPlainTextEdit(this);
+   m_labelStylesheet->setPlainText(tempShit);
    labelLayout->addWidget(m_labelStylesheet, 0, 0);
    QPushButton* labelBtn  = new QPushButton(tr("Set"), this);
    labelBox->setAlignment(Qt::AlignCenter);
@@ -737,6 +799,7 @@ QWidget* MainWindow::initStylesheetBox()
    QGridLayout* widgetLayout = new QGridLayout;
    widgetBox->setLayout(widgetLayout);
    m_widgetStylesheet = new QPlainTextEdit(this);
+   m_widgetStylesheet->setPlainText(tempShit);
    widgetLayout->addWidget(m_widgetStylesheet, 0, 0);
    QPushButton* widgetBtn  = new QPushButton(tr("Set"), this);
    widgetBox->setAlignment(Qt::AlignCenter);
@@ -758,6 +821,79 @@ QWidget* MainWindow::initStylesheetBox()
    return box;
 }
 
+QWidget* MainWindow::initSizePolicyBox()
+{
+   QGroupBox* box = new QGroupBox(tr("SizePolicy :"), this);
+   QVBoxLayout* l = new QVBoxLayout;
+   box->setLayout(l);
+
+   QGroupBox* labelBox = new QGroupBox(tr("Label :"), this);
+   QVBoxLayout* labelLayout = new QVBoxLayout;
+   labelBox->setLayout(labelLayout);
+
+   QStringList sizePolicies;
+   sizePolicies << "Fixed" << "Minimum" << "Maximum" << "Preferred" << "Expanding"
+                << "MinimumExpanding" << "Ignored";
+   m_labelHPoliciesBox = new LabelledComboBox(tr("Horizontal SizePolicies"), this);
+   m_labelHPoliciesBox->addItems(sizePolicies);
+   m_labelHPoliciesBox->setItemData(0, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Fixed));
+   m_labelHPoliciesBox->setItemData(1, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Minimum));
+   m_labelHPoliciesBox->setItemData(2, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Maximum));
+   m_labelHPoliciesBox->setItemData(3, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Preferred));
+   m_labelHPoliciesBox->setItemData(4, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Expanding));
+   m_labelHPoliciesBox->setItemData(5, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::MinimumExpanding));
+   m_labelHPoliciesBox->setItemData(6, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Ignored));
+   labelLayout->addWidget(m_labelHPoliciesBox);
+
+   m_labelVPoliciesBox = new LabelledComboBox(tr("Vertical SizePolicies"), this);
+   m_labelVPoliciesBox->addItems(sizePolicies);
+   m_labelVPoliciesBox->setItemData(0, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Fixed));
+   m_labelVPoliciesBox->setItemData(1, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Minimum));
+   m_labelVPoliciesBox->setItemData(2, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Maximum));
+   m_labelVPoliciesBox->setItemData(3, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Preferred));
+   m_labelVPoliciesBox->setItemData(4, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Expanding));
+   m_labelVPoliciesBox->setItemData(5, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::MinimumExpanding));
+   m_labelVPoliciesBox->setItemData(6, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Ignored));
+   labelLayout->addWidget(m_labelVPoliciesBox);
+
+   l->addWidget(labelBox);
+
+   QGroupBox* widgetBox = new QGroupBox(tr("Widget :"), this);
+   QVBoxLayout* widgetLayout = new QVBoxLayout;
+   widgetBox->setLayout(widgetLayout);
+
+   m_widgetHPoliciesBox = new LabelledComboBox(tr("Horizontal SizePolicies"), this);
+   m_widgetHPoliciesBox->addItems(sizePolicies);
+   m_widgetHPoliciesBox->setItemData(0, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Fixed));
+   m_widgetHPoliciesBox->setItemData(1, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Minimum));
+   m_widgetHPoliciesBox->setItemData(2, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Maximum));
+   m_widgetHPoliciesBox->setItemData(3, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Preferred));
+   m_widgetHPoliciesBox->setItemData(4, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Expanding));
+   m_widgetHPoliciesBox->setItemData(5, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::MinimumExpanding));
+   m_widgetHPoliciesBox->setItemData(6, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Ignored));
+   widgetLayout->addWidget(m_widgetHPoliciesBox);
+
+   m_widgetVPoliciesBox = new LabelledComboBox(tr("Vertical SizePolicies"), this);
+   m_widgetVPoliciesBox->addItems(sizePolicies);
+   m_widgetVPoliciesBox->setItemData(0, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Fixed));
+   m_widgetVPoliciesBox->setItemData(1, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Minimum));
+   m_widgetVPoliciesBox->setItemData(2, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Maximum));
+   m_widgetVPoliciesBox->setItemData(3, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Preferred));
+   m_widgetVPoliciesBox->setItemData(4, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Expanding));
+   m_widgetVPoliciesBox->setItemData(5, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::MinimumExpanding));
+   m_widgetVPoliciesBox->setItemData(6, QVariant::fromValue<QSizePolicy::Policy>(QSizePolicy::Ignored));
+   widgetLayout->addWidget(m_widgetVPoliciesBox);
+
+   l->addWidget(widgetBox);
+
+   connect(m_labelHPoliciesBox, &LabelledComboBox::currentTextChanged, this, &MainWindow::labelSizePolicyHasChanged);
+   connect(m_labelVPoliciesBox, &LabelledComboBox::currentTextChanged, this, &MainWindow::labelSizePolicyHasChanged);
+   connect(m_widgetHPoliciesBox, &LabelledComboBox::currentTextChanged, this, &MainWindow::widgetSizePolicyHasChanged);
+   connect(m_widgetVPoliciesBox, &LabelledComboBox::currentTextChanged, this, &MainWindow::widgetSizePolicyHasChanged);
+
+   return box;
+}
+
 void MainWindow::initGui()
 {
    m_tabs = new QTabWidget(this);
@@ -771,6 +907,8 @@ void MainWindow::initGui()
 
    l->addWidget(initLabelledWidgets(), 0, 0);
    l->addWidget(initChooseWidgetBox(), 0, 1);
+   l->addWidget(initSizePolicyBox(), 0, 2);
+
    l->addWidget(initStylesheetBox(), 1, 0);
    l->addWidget(initAlignmentBox(), 1, 1);
 

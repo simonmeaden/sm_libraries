@@ -188,6 +188,11 @@ public:
    //! @reimplements QLabel::clear().
    void clearLabel();
 
+   //! Returns a pointer to the internal QLabel.
+   QLabel* label() const;
+   //! Allows the user to replace the internal QLabel with an alternative.
+   void setLabel(QLabel* label);
+
 protected:
    WidgetFactory* m_factory;
 
@@ -226,13 +231,11 @@ public:
 
    //! Returns the widget alignment.
    //! This returns 0, indicating that the widget doesn't support text alignment.
-   virtual Qt::Alignment widgetAlignment() const {
-      return (Qt::AlignLeft | Qt::AlignVCenter);
-   }
+   virtual Qt::Alignment widgetAlignment() const = 0;
 
    //! Sets the widget alignment.
    //! This doesn't do anything and should be overridden in derived classes.
-   virtual void setWidgetAlignment(const Qt::Alignment&) {}
+   virtual void setWidgetAlignment(const Qt::Alignment&) = 0;
 };
 
 #endif // ABSTRACTLABELLEDWIDGET_H

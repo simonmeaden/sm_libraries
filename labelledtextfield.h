@@ -225,7 +225,7 @@ class SM_WIDGETS_SHARED_EXPORT LabelledTextField : public AbstractAlignableLabel
    Qt::Alignment widgetAlignment() const override;
 
    //! @reimplements QLabel::setAlignment().
-   void setWidgetAlignment(Qt::Alignment widgetAlignment) ;
+   void setWidgetAlignment(const Qt::Alignment &widgetAlignment) override;
 
    //! @reimplements QLabel::wordWrap() const.
    bool wordWrap() const;

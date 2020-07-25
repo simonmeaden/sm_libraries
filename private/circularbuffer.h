@@ -33,6 +33,7 @@
   #define CPP
 #endif
 
+/*! \cond INTERNAL */ // Blocks this class from documentation
 /******************************************************************************
    Iterators
  *****************************************************************************/
@@ -56,6 +57,7 @@ public:
   typedef circular_buffer_iterator<T, T_nonconst, elem_type> self_type;
 
   typedef T cbuf_type;
+
   typedef std::random_access_iterator_tag iterator_category;
   typedef typename cbuf_type::value_type value_type;
   typedef typename cbuf_type::size_type size_type;
@@ -854,5 +856,8 @@ bool operator<(const circular_buffer<T, consume_policy, Alloc>& a,
 {
   return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end());
 }
+
+/*! \endcond INTERNAL */
+
 
 #endif

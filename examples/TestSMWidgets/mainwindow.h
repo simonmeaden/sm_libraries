@@ -55,6 +55,8 @@ private:
    QPlainTextEdit* m_labelStylesheet, *m_widgetStylesheet, *m_overallStylesheet;
    QPushButton* m_setLabelStylesheet, *m_setWidgetStylesheet;
    LabelledComboBox* m_positionBox;
+   LabelledComboBox* m_labelHPoliciesBox, *m_labelVPoliciesBox;
+   LabelledComboBox* m_widgetHPoliciesBox, *m_widgetVPoliciesBox;
    LabelledSpinBox* m_left, *m_right, *m_top, *m_bottom, *m_spacing;
 
    void setLabelStylesheet();
@@ -77,11 +79,14 @@ private:
    void chooseWidget(const QString& text);
    void labelTextHasChanged(const QString& text);
    void widgetTextHasChanged(const QString& text);
+   void labelSizePolicyHasChanged(const QString&);
+   void widgetSizePolicyHasChanged(const QString&);
 
    void setAlignmentStatus();
    void setStylesheetStatus();
    void setLabelPositionStatus();
    void setLayoutStatus();
+   void setSizePolicyStatus();
 
    void initGui();
    QWidget* initLabelledWidgets();
@@ -90,6 +95,8 @@ private:
    QWidget* initVAlignBox(const QString& type, QGroupBox* box, QButtonGroup* grp);
    QWidget* initHAlignBox(const QString& direction, QGroupBox* box, QButtonGroup* grp);
    QWidget* initStylesheetBox();
+   QWidget* initSizePolicyBox();
+   QString sizePolicyToString(QSizePolicy::Policy policy);
 };
 
 #endif // MAINWINDOW_H

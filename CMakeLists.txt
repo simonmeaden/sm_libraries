@@ -58,7 +58,6 @@ set(WIDGET_HEADER_FILES
    labelledwidgets.h
    abstractlogindialog.h
    extabwidget.h
-   private/extabwidget_p.h
    sm_widgets_global.h
    collection.h comment.h emitter.h node.h parse.h qyamlcpp.h
    )
@@ -141,6 +140,9 @@ add_custom_command(
    TARGET sm_widgets
    PRE_BUILD COMMAND ${CMAKE_COMMAND} -E make_directory ${INCLUDE_OUTPUT_DIRECTORY})
 # copies include files into the include directory
+#file(REMOVE ${WIDGET_HEADER_FILES} ${HEADER_ONLY_FILES} ${EXTRA_FILES}
+#    DESTINATION ${INCLUDE_OUTPUT_DIRECTORY}
+#)
 file(COPY ${WIDGET_HEADER_FILES} ${HEADER_ONLY_FILES} ${EXTRA_FILES}
     DESTINATION ${INCLUDE_OUTPUT_DIRECTORY}
 )

@@ -122,7 +122,7 @@ Qt::Alignment LabelledTextField::widgetAlignment() const
    return qobject_cast<QLabel*>(m_widget)->alignment();
 }
 
-void LabelledTextField::setWidgetAlignment(Qt::Alignment alignment)
+void LabelledTextField::setWidgetAlignment(const Qt::Alignment& alignment)
 {
    qobject_cast<QLabel*>(m_widget)->setAlignment(alignment);
 }

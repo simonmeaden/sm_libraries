@@ -28,7 +28,7 @@
 #include <QList>
 #include <QVector>
 
-#include "circularbuffer.h"
+#include "private/circularbuffer.h"
 #include "sm_widgets_global.h"
 #include <list>
 #include <stddef.h>

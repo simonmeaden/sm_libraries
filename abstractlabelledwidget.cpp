@@ -34,18 +34,28 @@ AbstractLabelledWidget::AbstractLabelledWidget(QString text,
 
 AbstractLabelledWidget::~AbstractLabelledWidget() {}
 
+QLabel *AbstractLabelledWidget::label() const
+{
+  return m_label;
+}
+
+void AbstractLabelledWidget::setLabel(QLabel *label)
+{
+  m_label = label;
+  update();
+}
+
 AbstractAlignableLabelledWidget::AbstractAlignableLabelledWidget(
    QString labelText,
    QWidget* parent,
    const AbstractLabelledWidget::WidgetFactory& factory)
    : AbstractLabelledWidget(labelText, parent, factory)
 {
-
 }
 
 void AbstractLabelledWidget::setLabelText(const QString& text)
 {
-   m_label->setText(text);
+  m_label->setText(text);
 }
 
 QString AbstractLabelledWidget::labelText() const
