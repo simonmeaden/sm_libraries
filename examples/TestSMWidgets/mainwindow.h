@@ -25,6 +25,7 @@
 
 //#include "sm_libraries/qyamlcpp.h"
 #include "sm_libraries/labelledwidgets.h"
+#include "sm_libraries/extabwidget.h"
 
 class MainWindow : public QMainWindow
 {
@@ -55,12 +56,12 @@ private:
    QPlainTextEdit* m_labelStylesheet, *m_widgetStylesheet, *m_overallStylesheet;
    QPushButton* m_setLabelStylesheet, *m_setWidgetStylesheet;
    LabelledComboBox* m_positionBox;
-   LabelledComboBox* m_labelTextFormatBox, *m_widgetTextFormatBox;
    LabelledComboBox* m_labelHPoliciesBox, *m_labelVPoliciesBox;
    LabelledComboBox* m_widgetHPoliciesBox, *m_widgetVPoliciesBox;
    LabelledSpinBox* m_left, *m_right, *m_top, *m_bottom, *m_spacing;
-   QStringList m_textFormats;
-   LabelledLineEdit *m_textFormatDisplay;
+
+   ExTabWidget *m_exTabWidget;
+   QCheckBox *m_enableClockBox,*m_showSecondsBox;
 
    void setLabelStylesheet();
    void setWidgetStylesheet();
@@ -94,6 +95,12 @@ private:
    void setSizePolicyStatus();
    void setTextFormatStatus();
 
+   QString sizePolicyToString(QSizePolicy::Policy policy);
+   void setFormattedText(Qt::TextFormat format);
+
+   void showClock(bool enable);
+   void showSeconds(bool enable);
+
    void initGui();
    QWidget* initLabelledWidgets();
    QWidget* initChooseWidgetBox();
@@ -102,9 +109,8 @@ private:
    QWidget* initHAlignBox(const QString& direction, QGroupBox* box, QButtonGroup* grp);
    QWidget* initStylesheetBox();
    QWidget* initPolicyBox();
-   QWidget* initFormatBox();
-   QString sizePolicyToString(QSizePolicy::Policy policy);
-   void setFormattedText(Qt::TextFormat format);
+   QWidget *initLabelledWidgetFrame();
+   QWidget *initExTabWidget();
 };
 
 #endif // MAINWINDOW_H

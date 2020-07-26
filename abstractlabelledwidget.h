@@ -111,7 +111,7 @@ public:
       Below,    //!< The label is positioned below the widget.
    };
 
-   //! Constructs an abstract spinbox with the given parent with default parent,
+   //! Constructs an abstract spinbox with the given labelText and default parent,
    //! and label text property.
    explicit AbstractLabelledWidget(
       QString labelText = QString(),

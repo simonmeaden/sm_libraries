@@ -55,19 +55,19 @@ void ExTabWidgetPrivate::clearFrames()
 {
    if (m_loginRect) {
       delete m_loginRect;
-      m_loginRect = NULL;
+      m_loginRect = nullptr;
    }
 
    if (m_clockRect) {
       delete m_clockRect;
-      m_clockRect = NULL;
+      m_clockRect = nullptr;
    }
 
    if (m_messageRect) {
       delete m_messageRect;
-      m_messageRect = NULL;
+      m_messageRect = nullptr;
       delete m_messageClip;
-      m_messageClip = NULL;
+      m_messageClip = nullptr;
    }
 
    q_ptr->update();
@@ -99,10 +99,8 @@ void ExTabWidgetPrivate::showClock(bool clock)
 
       } else {
          m_clockTimer = new QTimer(q_ptr);
-         q_ptr->connect(m_clockTimer,
-                        SIGNAL(timeout()),
-                        q_ptr,
-                        SLOT(nextSecond()),
+         q_ptr->connect(m_clockTimer, &QTimer::timeout,
+                        q_ptr, &ExTabWidget::nextSecond,
                         Qt::UniqueConnection);
          m_clockTimer->start(CLOCK_TIME);
       }
@@ -111,7 +109,7 @@ void ExTabWidgetPrivate::showClock(bool clock)
       if (m_clockTimer && m_clockTimer->isActive()) {
          m_clockTimer->stop();
          m_clockTimer->deleteLater();
-         m_clockTimer = NULL;
+         m_clockTimer = nullptr;
       }
    }
 
@@ -171,7 +169,7 @@ void ExTabWidgetPrivate::stopMarqueeTimer()
    if (m_marqueeTimer) {
       m_marqueeTimer->stop();
       m_marqueeTimer->deleteLater();
-      m_marqueeTimer = NULL;
+      m_marqueeTimer = nullptr;
    }
 }
 
@@ -782,7 +780,7 @@ void ExTabWidgetPrivate::showSeconds(bool show)
 {
    m_showSeconds = show;
    q_ptr->update();
-   m_clockRect = NULL;
+   m_clockRect = nullptr;
    q_ptr->update();
 }
 
@@ -815,7 +813,7 @@ void ExTabWidgetPrivate::timeout()
    m_useTempColor = false;
    m_timeoutTimer->stop();
    m_timeoutTimer->deleteLater();
-   m_timeoutTimer = NULL;
+   m_timeoutTimer = nullptr;
    clearMessage();
 }
 
@@ -867,7 +865,7 @@ void ExTabWidgetPrivate::setMessage(uint timeout)
       if (m_timeoutTimer->isActive()) {
          m_timeoutTimer->stop();
          m_timeoutTimer->deleteLater();
-         m_timeoutTimer = NULL;
+         m_timeoutTimer = nullptr;
       }
    }
 

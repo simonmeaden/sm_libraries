@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget* parent)
    , m_currentWidget(nullptr)
 {
    initGui();
+
+   m_tabs->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow() {}
@@ -90,7 +92,7 @@ void MainWindow::chooseWidget(const QString& text)
    setStylesheetStatus();
    setLabelPositionStatus();
    setLayoutStatus();
-   setTextFormatStatus();
+   //   setTextFormatStatus();
    enableWidgets(true);
 }
 
@@ -140,58 +142,6 @@ void MainWindow::widgetSizePolicyHasChanged(const QString&)
    QSizePolicy::Policy hPolicy = m_widgetHPoliciesBox->currentData(Qt::UserRole).value<QSizePolicy::Policy>();
    QSizePolicy::Policy vPolicy = m_widgetVPoliciesBox->currentData(Qt::UserRole).value<QSizePolicy::Policy>();
    m_currentWidget->setWidgetSizePolicy(hPolicy, vPolicy);
-}
-
-void MainWindow::setFormattedText(Qt::TextFormat format)
-{
-   switch (format) {
-   case Qt::PlainText:
-      m_textFormatDisplay->setText("Plain text");
-      break;
-
-   case Qt::RichText:
-      m_textFormatDisplay->setText("{\\rtf1\\ansi\\ansicpg1252 {\\fonttbl\\f0\\fswiss\\fcharset0 Helvetica;} {\\colortbl;\\red255\\green0\\blue0;} \\f0 \\cf0 This is bold red text}");
-      break;
-
-   case Qt::AutoText:
-      // using markdown here as the label SHOULD auto detect it.
-      m_textFormatDisplay->setText("*Markdown* **text**");
-      break;
-
-   case Qt::MarkdownText:
-      m_textFormatDisplay->setText("_Markdown_ **text**");
-      break;
-   }
-}
-
-void MainWindow::labelTextFormatHasChanged(const QString&)
-{
-   if (!m_currentWidget) {
-      return;
-   }
-
-   TextFormatInterface* tfi = dynamic_cast<TextFormatInterface*>(m_currentWidget);
-
-   if (tfi) {
-      Qt::TextFormat format = m_labelTextFormatBox->currentData(Qt::UserRole).value<Qt::TextFormat>();
-      tfi->setTextFormat(format);
-      setFormattedText(format);
-   }
-}
-
-void MainWindow::widgetTextFormatHasChanged(const QString&)
-{
-   if (!m_currentWidget) {
-      return;
-   }
-
-   TextFormatInterface* tfi = dynamic_cast<TextFormatInterface*>(m_currentWidget);
-
-   if (tfi) {
-      Qt::TextFormat format = m_widgetTextFormatBox->currentData(Qt::UserRole).value<Qt::TextFormat>();
-      tfi->setTextFormat(format);
-      setFormattedText(format);
-   }
 }
 
 void MainWindow::setAlignmentStatus()
@@ -511,6 +461,17 @@ QString MainWindow::sizePolicyToString(QSizePolicy::Policy policy)
    return QString();
 }
 
+void MainWindow::showClock(bool enable)
+{
+  m_exTabWidget->showClock(enable);
+  m_showSecondsBox->setEnabled(enable);
+}
+
+void MainWindow::showSeconds(bool enable)
+{
+  m_exTabWidget->showSeconds(enable);
+}
+
 void MainWindow::setSizePolicyStatus()
 {
    if (!m_currentWidget) {
@@ -521,21 +482,6 @@ void MainWindow::setSizePolicyStatus()
    m_labelHPoliciesBox->setCurrentText(sizePolicyToString(policy.horizontalPolicy()));
    m_labelVPoliciesBox->setCurrentText(sizePolicyToString(policy.verticalPolicy()));
 }
-
-void MainWindow::setTextFormatStatus()
-{
-   if (!m_currentWidget) {
-      m_widgetTextFormatBox->setEnabled(false);
-      return;
-   }
-
-   TextFormatInterface* tfi = dynamic_cast<TextFormatInterface*>(m_currentWidget);
-
-   if (tfi) {
-      m_widgetTextFormatBox->setEnabled(true);
-   }
-}
-
 
 void MainWindow::lineEditChanged(const QString& text)
 {
@@ -965,54 +911,11 @@ QWidget* MainWindow::initPolicyBox()
    return box;
 }
 
-QWidget* MainWindow::initFormatBox()
+QWidget* MainWindow::initLabelledWidgetFrame()
 {
-   QGroupBox* box = new QGroupBox(tr("Label SizePolicy:"), this);
-   QVBoxLayout* l = new QVBoxLayout;
-   box->setLayout(l);
-
-   //   QStringList textFormats;
-   m_textFormats << "PlainText" << "RichText" << "AutoText" << "MarkdownText";
-   m_labelTextFormatBox = new LabelledComboBox(tr("Label Text Format"), this);
-   m_labelTextFormatBox->addItems(m_textFormats);
-   m_labelTextFormatBox->setItemData(0, QVariant::fromValue<Qt::TextFormat>(Qt::PlainText));
-   m_labelTextFormatBox->setItemData(1, QVariant::fromValue<Qt::TextFormat>(Qt::RichText));
-   m_labelTextFormatBox->setItemData(2, QVariant::fromValue<Qt::TextFormat>(Qt::AutoText));
-   m_labelTextFormatBox->setItemData(3, QVariant::fromValue<Qt::TextFormat>(Qt::MarkdownText));
-   l->addWidget(m_labelTextFormatBox);
-
-   m_widgetTextFormatBox = new LabelledComboBox(tr("Widget Text Format"), this);
-   m_widgetTextFormatBox->addItems(m_textFormats);
-   m_widgetTextFormatBox->setItemData(0, QVariant::fromValue<Qt::TextFormat>(Qt::PlainText));
-   m_widgetTextFormatBox->setItemData(1, QVariant::fromValue<Qt::TextFormat>(Qt::RichText));
-   m_widgetTextFormatBox->setItemData(2, QVariant::fromValue<Qt::TextFormat>(Qt::AutoText));
-   m_widgetTextFormatBox->setItemData(3, QVariant::fromValue<Qt::TextFormat>(Qt::MarkdownText));
-   l->addWidget(m_widgetTextFormatBox);
-
-   m_textFormatDisplay = new LabelledLineEdit(tr("Formatted Text"), this);
-   m_textFormatDisplay->setText("Plain text");
-   l->addWidget(m_textFormatDisplay);
-
-   QFrame dummy;
-   dummy.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   l->addWidget(&dummy);
-
-   connect(m_labelTextFormatBox, &LabelledComboBox::currentTextChanged, this, &MainWindow::labelTextFormatHasChanged);
-   connect(m_widgetTextFormatBox, &LabelledComboBox::currentTextChanged, this, &MainWindow::widgetTextFormatHasChanged);
-
-   return box;
-}
-
-void MainWindow::initGui()
-{
-   m_tabs = new QTabWidget(this);
-   setCentralWidget(m_tabs);
-
    QWidget* f = new QFrame(this);
    QGridLayout* l = new QGridLayout;
    f->setLayout(l);
-
-   m_tabs->addTab(f, tr("Labelled Widgets"));
 
    l->addWidget(initLabelledWidgets(), 0, 0);
    l->addWidget(initChooseWidgetBox(), 0, 1);
@@ -1020,9 +923,55 @@ void MainWindow::initGui()
 
    l->addWidget(initStylesheetBox(), 1, 0);
    l->addWidget(initAlignmentBox(), 1, 1);
-   l->addWidget(initFormatBox(), 1, 2);
 
    chooseWidget(tr("None"));
    enableWidgets(false);
    setAlignmentStatus();
+
+   return f;
+}
+
+QWidget* MainWindow::initExTabWidget()
+{
+   m_exTabWidget = new ExTabWidget(this);
+   QFrame* f1 = new QFrame(this);
+   QGridLayout *l1 = new QGridLayout;
+   f1->setLayout(l1);
+
+   QGroupBox *enableBox = new QGroupBox(tr("Enable Components"), this);
+   QVBoxLayout *enableLayout = new QVBoxLayout;
+   enableBox->setLayout(enableLayout);
+
+   m_enableClockBox = new QCheckBox(tr("Enable Clock"), this);
+   connect(m_enableClockBox, &QCheckBox::clicked, this, &MainWindow::showClock);
+   enableLayout->addWidget(m_enableClockBox);
+
+   m_showSecondsBox = new QCheckBox(tr("Show Seconds"), this);
+   m_showSecondsBox->setEnabled(false);
+   connect(m_showSecondsBox, &QCheckBox::clicked, this, &MainWindow::showSeconds);
+   enableLayout->addWidget(m_showSecondsBox);
+
+   l1->addWidget(enableBox, 0, 0);
+
+   QFrame* dummy=new QFrame(this);
+   dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   l1->addWidget(dummy, 7, 0);
+
+   QFrame* f2 = new QFrame(this);
+   m_exTabWidget->addTab(f1, tr("Tab 1"));
+   m_exTabWidget->addTab(f2, tr("Tab 2"));
+
+   return m_exTabWidget;
+}
+
+void MainWindow::initGui()
+{
+   m_tabs = new QTabWidget(this);
+   setCentralWidget(m_tabs);
+
+
+   m_tabs->addTab(initLabelledWidgetFrame(), tr("Labelled Widgets"));
+   m_tabs->addTab(initExTabWidget(), tr("Extended TabWidget"));
+
+   //   initLabelledWidgetFrame();
 }

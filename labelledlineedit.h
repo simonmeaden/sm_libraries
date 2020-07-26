@@ -235,9 +235,12 @@ protected:
 
 public:
    //   explicit LabelledLineEdit(QWidget* parent = nullptr);
+  //! Constructs a LabelledLineEdit with given labelText and default parent.
    explicit LabelledLineEdit(const QString& labelText,
                              QWidget* parent = nullptr,
                              WidgetFactory const& factory = WidgetFactory());
+   //! Constructs a LabelledLineEdit with given labelText and lineedit contents,
+   //! and default parent.
    explicit LabelledLineEdit(const QString& labelText,
                              const QString& contents,
                              QWidget* parent = nullptr,

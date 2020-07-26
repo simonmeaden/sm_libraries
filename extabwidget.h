@@ -176,12 +176,7 @@ public:
    /*!
       \brief Constructs an ExTabWidget with parent parent with an optional custom login dialog.
    */
-   explicit ExTabWidget(QWidget* parent = nullptr, LoginType type=None, AbstractLoginDialog* customDlg = nullptr)
-      : QTabWidget(parent)
-      , d_ptr(new ExTabWidgetPrivate(this, customDlg))
-      , m_loginType(type) {
-
-   }
+   explicit ExTabWidget(QWidget* parent = nullptr, LoginType type=None, AbstractLoginDialog* customDlg = nullptr);
 
    /*!
       \brief Destroys the tabbed widget.
@@ -193,53 +188,35 @@ public:
    /*!
       \brief Returns true if the user is logged in, otherwise false.
    */
-   bool isLoggedIn() {
-      Q_D(ExTabWidget);
-      return d->m_loggedIn;
-   }
+   bool isLoggedIn();
 
    /*!
       \brief Returns the username if logged in with the standard login,
       otherwise an empty string is returned.
    */
-   QString username() {
-      Q_D(ExTabWidget);
-      return d->m_username;
-   }
+   QString username();
 
    /*!
       \brief Returns true if the clock is enabled, otherwise false.
    */
-   bool isClockEnabled() {
-      Q_D(ExTabWidget);
-      return d->m_showClock;
-   }
+   bool isClockEnabled();
 
    /*!
       \brief Returns true if the login is enabled, otherwise false.
    */
-   bool isLoginEnabled() {
-      Q_D(ExTabWidget);
-      return (m_loginType != None);
-   }
+   bool isLoginEnabled();
 
    /*!
       \brief Returns true if the message box is enabled, otherwise false.
    */
-   bool isMessagesEnabled() {
-      Q_D(ExTabWidget);
-      return d->m_showMessages;
-   }
+   bool isMessagesEnabled();
 
    /*!
       \brief Returns the value of the ignore case flag.
 
       True if the character case of usernames and passwords are to be ignored.
    */
-   bool isIgnoreCase() {
-      Q_D(ExTabWidget);
-      return d->m_ignoreCase;
-   }
+   bool isIgnoreCase();
 
    /*!
       \brief Sets the message text scrolling.
@@ -247,10 +224,7 @@ public:
       Sets the text message to scrolling if the text is longer than the available space.
       If the text will fit inside the available space then this is ignored.
    */
-   bool isMarqueeEnabled() {
-      Q_D(ExTabWidget);
-      return d->m_marquee;
-   }
+   bool isMarqueeEnabled();
 
    /*!
       \brief The permanent background brush.
@@ -259,9 +233,7 @@ public:
 
       \sa setMessageBackground(QBrush)
    */
-   QBrush messageBackground() {
-      return d_ptr->messageBackgroundBrush();
-   }
+   QBrush messageBackground();
 
    /*!
       \brief The permanent background brush.
@@ -270,27 +242,21 @@ public:
 
       \sa setMessageColor(QColor)
    */
-   QColor messageTextColor() {
-      return d_ptr->messageTextColor();
-   }
+   QColor messageTextColor();
 
    /*!
       \brief Enables/disables the display of the digital clock
 
       Shows the clock if true, otherwise hides it.
    */
-   void showClock(bool showClock) {
-      d_ptr->showClock(showClock);
-   }
+   void showClock(bool showClock);
 
    /*!
       \brief Enables/disables the display of the login button
 
       Shows the login button if showLogin is true, otherwise hides it.
    */
-   void showLogin(bool showLogin) {
-      d_ptr->showLogin(showLogin);
-   }
+   void showLogin(bool showLogin);
    /*!
       \brief Sets the login type to one of ExTabWidget::LoginType values.
 
@@ -300,12 +266,7 @@ public:
 
       \sa loginType(), ExTabWidget::LoginType
    */
-   void setLoginType(LoginType type) {
-      if (type != m_loginType) {
-         m_loginType = type;
-         d_ptr->setLoginType();
-      }
-   }
+   void setLoginType(LoginType type);
 
    /*!
       \brief Returns the login type.
@@ -316,9 +277,7 @@ public:
 
       \sa setLoginType(), ExTabWidget::LoginType
    */
-   LoginType loginType() {
-      return m_loginType;
-   }
+   LoginType loginType();
 
    /*!
       \brief Sets a custom logging dialog.
@@ -327,16 +286,12 @@ public:
       To use the custom dialog you also need to call setLoginType(LoginType) method to
       ExTabWidget::Custom.
    */
-   void setCustomLoginDialog(AbstractLoginDialog* loginDlg) {
-      d_ptr->setCustomLoginDialog(loginDlg);
-   }
+   void setCustomLoginDialog(AbstractLoginDialog* loginDlg);
 
    /*!
       \brief Enables/disables the message box if the value is true.
    */
-   void showMessages(bool showMessages) {
-      d_ptr->showMessages(showMessages);
-   }
+   void showMessages(bool showMessages);
 
    /*!
       \brief Shows a frame around the displayed items if true.
@@ -344,38 +299,28 @@ public:
       The show frame flag operates on all of the extensions, so either they all
                                                               have frames or none of them have frames.
    */
-   void showFrame(bool showFrame) {
-      d_ptr->showFrame(showFrame);
-   }
+   void showFrame(bool showFrame);
 
    /*!
       \brief Sets the password for the simple login dialog.
    */
-   void setPassword(QString password) {
-      d_ptr->addPassword(password);
-   }
+   void setPassword(QString password);
    /*!
       \brief Adds a username/password pair for the standard login dialog.
 
       Usernames must be unique, inserting a repeat username will overwrite the earlier version.
    */
-   void addPassword(QString id, QString password) {
-      d_ptr->addPassword(id, password);
-   }
+   void addPassword(QString id, QString password);
    /*!
       \brief Clears all password/usernames.
    */
-   void clearPasswords() {
-      Q_D(ExTabWidget);
-      d->m_password.clear();
-      d->m_passwords.clear();
-   }
+   void clearPasswords();
+
    /*!
       \brief Sets the value of the ignore case flag. If set to true all password/username
       checks ignore the character case.
-   */  void setIgnoreCase(bool ignoreCase) {
-      d_ptr->setIgnoreCase(ignoreCase);
-   }
+   */
+   void setIgnoreCase(bool ignoreCase);
 
    /*!
       \brief Set the show seconds flag.
@@ -383,9 +328,7 @@ public:
       Show the optional show seconds flag. Displays seconds when true, otherwise the
       seconds are not displayed.
    */
-   void showSeconds(bool showSeconds) {
-      d_ptr->showSeconds(showSeconds);
-   }
+   void showSeconds(bool showSeconds);
 
    /*!
       \brief Sets the text colour the message is drawn in.
@@ -396,9 +339,7 @@ public:
       \sa messageBackground(), setMessageBackground(QBrush), setMessageBackground(QColor)
 
    */
-   void setMessageColor(QColor color) {
-      d_ptr->setMessageColor(color);
-   }
+   void setMessageColor(QColor color);
    /*!
       \brief Sets the background brush colour the message is drawn on.
 
@@ -407,9 +348,7 @@ public:
 
       \sa messageBackgroundBrush(), setMessageBackground(QBrush), setMessageColor(QColor)
    */
-   void setMessageBackground(QColor color) {
-      d_ptr->setMessageBackground(color);
-   }
+   void setMessageBackground(QColor color);
    /*!
       \brief Sets the background brush the message is drawn on.
 
@@ -418,9 +357,7 @@ public:
 
       \sa messageBackgroundBrush(), setMessageBackground(QColor), setMessageColor(QColor)
    */
-   void setMessageBackground(QBrush brush) {
-      d_ptr->setMessageBackground(brush);
-   }
+   void setMessageBackground(QBrush brush);
    /*!
       \brief Sets the message text, with an optional timeout in seconds.
 
@@ -428,9 +365,7 @@ public:
       characters are removed. There really is not enough room for a multi line MessageTabWidget
       within the tab bar.
    */
-   void setMessage(QString message, uint timeout = 0) {
-      d_ptr->setMessage(message, timeout);
-   }
+   void setMessage(QString message, uint timeout = 0);
    /*!
       \brief Sets the message text and text colour, with an optional timeout in seconds.
 
@@ -448,9 +383,7 @@ public:
       \endcode
 
    */
-   void setMessage(QColor color, QString message, uint timeout = 0) {
-      d_ptr->setMessage(color, message, timeout);
-   }
+   void setMessage(QColor color, QString message, uint timeout = 0);
    /*!
       \brief Sets the message text and text colour and background colour, with an optional timeout in seconds.
 
@@ -468,9 +401,7 @@ public:
       \endcode
 
    */
-   void setMessage(QColor color, QColor back, QString message, uint timeout = 0) {
-      d_ptr->setMessage(color, back, message, timeout);
-   }
+   void setMessage(QColor color, QColor back, QString message, uint timeout = 0);
 
    /*!
       \brief Sets the message text and text colour and background brush, with an optional timeout in seconds.
@@ -489,34 +420,26 @@ public:
       \endcode
 
    */
-   void setMessage(QColor color, QBrush back, QString message, uint timeout = 0) {
-      d_ptr->setMessage(color, back, message, timeout);
-   }
+   void setMessage(QColor color, QBrush back, QString message, uint timeout = 0);
    /*!
       \brief Sets the message text scrolling.
 
       Sets the text message to scrolling if the text is longer than the available space.
       If the text will fit inside the available space then this is ignored.
    */
-   void setMarquee(bool marquee) {
-      d_ptr->setMarquee(marquee);
-   }
+   void setMarquee(bool marquee);
    /*!
       \brief Sets the marquee speed in characters a second.
 
       The default is 10 characters a second. To slow it down enter a lower
        number of characters a second and to speed it up a higher number.
    */
-   void setMarqueeSpeed(int speed) {
-      d_ptr->setMarqueeSpeed(speed);
-   }
+   void setMarqueeSpeed(int speed);
 
    /*!
       \brief Removes the message from the display.
    */
-   void clearMessage() {
-      d_ptr->clearMessage();
-   }
+   void clearMessage();
 
 signals:
    /*!
@@ -564,35 +487,19 @@ private:
    /*!
        \brief Reimplements: QTabWidget::paintEvent()
    */
-   virtual void paintEvent(QPaintEvent* evt) {
-      QTabWidget::paintEvent(evt);
-      QPainter* painter = new QPainter(this);
-      d_ptr->paint(painter, evt);
-      delete painter;
-   }
+   virtual void paintEvent(QPaintEvent* evt);
    /*!
       \brief Reimplements: QTabWidget::mousePressEvent()
    */
-   virtual void mousePressEvent(QMouseEvent* event) {
-      if (!d_ptr->mousePressEvent(event)) {
-         QTabWidget::mousePressEvent(event);
-      }
-   }
+   virtual void mousePressEvent(QMouseEvent* event);
    /*!
       \brief Reimplements: QTabWidget::mouseReleaseEvent()
    */
-   virtual void mouseReleaseEvent(QMouseEvent* event) {
-      if (!d_ptr->mouseReleaseEvent(event)) {
-         QTabWidget::mouseReleaseEvent(event);
-      }
-   }
+   virtual void mouseReleaseEvent(QMouseEvent* event);
    /*!
       \brief Reimplements: QTabWidget::resizeEvent()
    */
-   virtual void resizeEvent(QResizeEvent* evt) {
-      d_ptr->resize();
-      QTabWidget::resizeEvent(evt);
-   }
+   virtual void resizeEvent(QResizeEvent* evt);
 
 private:
    ExTabWidgetPrivate* d_ptr;
@@ -600,29 +507,21 @@ private:
    /*
       Checks the password for a simple login dialog.
    */
-   void checkPassword(QString password) {
-      d_ptr->checkPassword(password);
-   }
+   void checkPassword(QString password);
    /*
       Checks the username/password for a standard login dialog.
    */
-   void checkPassword(QString id, QString password) {
-      d_ptr->checkPassword(id, password);
-   }
+   void checkPassword(QString id, QString password);
 
    /*
       Receives a correct login from custom login dialog.
    */
-   void loginIsCorrect(QString username = QString()) {
-      d_ptr->loginIsCorrect();
-   }
+   void loginIsCorrect(QString username = QString());
 
    /*
       Receives an incorrect login from custom login dialog.
    */
-   void loginIsIncorrect() {
-      d_ptr->loginIsIncorrect();
-   }
+   void loginIsIncorrect();
 
    /*
       Triggers the clock update.
@@ -630,17 +529,11 @@ private:
       This is necessary as it is not possible
        to operate a QTimer in the private class.
    */
-   void nextSecond() {
-      d_ptr->nextSecond();
-   }
+   void nextSecond();
 
-   void updateMarquee() {
-      d_ptr->updateMarquee();
-   }
+   void updateMarquee();
 
-   void timeout() {
-      d_ptr->timeout();
-   }
+   void timeout();
 
 
 };

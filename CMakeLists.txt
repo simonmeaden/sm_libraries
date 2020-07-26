@@ -70,6 +70,7 @@ set(WIDGET_SOURCE_FILES_P
 )
 set(WIDGET_SOURCE_FILES
    exspinbox.cpp
+   extabwidget.cpp
    hexformatdelegate.cpp
    abstractlabelledwidget.cpp
    abstractlabelledspinbox.cpp
