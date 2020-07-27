@@ -40,18 +40,22 @@ MainWindow::MainWindow(QWidget* parent)
 {
    initGui();
 
-   m_tabs->setCurrentIndex(1);
+   m_tabs->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow() {}
 
 void MainWindow::chooseWidget(const QString& text)
 {
+
    if (text == tr("LineEdit")) {
       if (m_currentWidget != m_lineEdit) {
          m_currentWidget = m_lineEdit;
          m_labelText->setText(m_lineEdit->labelText());
          m_widgetText->setText(m_lineEdit->text());
+         m_spinStack->setEnabled(false);
+         m_exBox->setEnabled(false);
+         m_setSpinBtn->setEnabled(false);
       }
 
    } else if (text == tr("Text Field")) {
@@ -59,6 +63,9 @@ void MainWindow::chooseWidget(const QString& text)
          m_currentWidget = m_textField;
          m_labelText->setText(m_textField->labelText());
          m_widgetText->setText(m_textField->text());
+         m_spinStack->setEnabled(false);
+         m_exBox->setEnabled(false);
+         m_setSpinBtn->setEnabled(false);
       }
 
    } else if (text == tr("Combo Box")) {
@@ -66,40 +73,58 @@ void MainWindow::chooseWidget(const QString& text)
          m_currentWidget = m_comboBox;
          m_labelText->setText(m_comboBox->labelText());
          m_widgetText->setText(m_comboBox->currentText());
+         m_spinStack->setEnabled(false);
+         m_exBox->setEnabled(false);
+         m_setSpinBtn->setEnabled(false);
       }
 
    } else if (text == tr("Spin Box")) {
-     if (m_currentWidget != m_spinBox) {
-       m_currentWidget = m_spinBox;
-       m_labelText->setText(m_spinBox->labelText());
-       m_widgetText->setText(QString::number(m_spinBox->value()));
-     }
+      if (m_currentWidget != m_spinBox) {
+         m_currentWidget = m_spinBox;
+         m_labelText->setText(m_spinBox->labelText());
+         m_widgetText->setText(QString::number(m_spinBox->value()));
+         m_spinStack->setEnabled(true);
+         m_spinStack->setCurrentIndex(m_spinIntStack);
+         m_exBox->setEnabled(false);
+         m_setSpinBtn->setEnabled(true);
+      }
 
    } else if (text == tr("Double Spin Box")) {
-     if (m_currentWidget != m_doubleSpinBox) {
-       m_currentWidget = m_doubleSpinBox;
-       m_labelText->setText(m_doubleSpinBox->labelText());
-       m_widgetText->setText(QString::number(m_doubleSpinBox->value(), 'f', m_doubleSpinBox->decimals()));
-     }
+      if (m_currentWidget != m_doubleSpinBox) {
+         m_currentWidget = m_doubleSpinBox;
+         m_labelText->setText(m_doubleSpinBox->labelText());
+         m_widgetText->setText(QString::number(m_doubleSpinBox->value(), 'f', m_doubleSpinBox->decimals()));
+         m_spinStack->setEnabled(true);
+         m_spinStack->setCurrentIndex(m_spinDblStack);
+         m_exBox->setEnabled(false);
+         m_setSpinBtn->setEnabled(true);
+      }
 
    } else if (text == tr("ExSpinBox")) {
       if (m_currentWidget != m_exSpinBox) {
          m_currentWidget = m_exSpinBox;
          m_labelText->setText(m_exSpinBox->labelText());
          m_widgetText->setText(QString::number(m_exSpinBox->value()));
+         m_spinStack->setEnabled(true);
+         m_spinStack->setCurrentIndex(m_spinIntStack);
+         m_exBox->setEnabled(true);
+         m_setSpinBtn->setEnabled(true);
       }
 
    } else if (text == tr("None")) {
       m_currentWidget = nullptr;
       m_labelText->setText(tr("No Widget Selected!"));
       m_widgetText->setText("");
+      m_spinStack->setEnabled(false);
+      m_exBox->setEnabled(false);
+      m_setSpinBtn->setEnabled(false);
    }
 
    setAlignmentStatus();
    setStylesheetStatus();
    setLabelPositionStatus();
    setLayoutStatus();
-   //   setTextFormatStatus();
+   setSpinBoxStatus();
    enableWidgets(true);
 }
 
@@ -122,10 +147,10 @@ void MainWindow::widgetTextHasChanged(const QString& text)
       qobject_cast<LabelledComboBox*>(m_currentWidget)->setCurrentText(text);
 
    } else if (m_currentWidget == m_spinBox) {
-     qobject_cast<LabelledSpinBox*>(m_currentWidget)->setValue(text.toInt());
+      qobject_cast<LabelledSpinBox*>(m_currentWidget)->setValue(text.toInt());
 
    } else if (m_currentWidget == m_doubleSpinBox) {
-     qobject_cast<LabelledDoubleSpinBox*>(m_currentWidget)->setValue(text.toDouble());
+      qobject_cast<LabelledDoubleSpinBox*>(m_currentWidget)->setValue(text.toDouble());
 
    } else if (m_currentWidget == m_exSpinBox) {
       qobject_cast<LabelledExSpinBox*>(m_currentWidget)->setValue(text.toInt());
@@ -152,6 +177,29 @@ void MainWindow::widgetSizePolicyHasChanged(const QString&)
    QSizePolicy::Policy hPolicy = m_widgetHPoliciesBox->currentData(Qt::UserRole).value<QSizePolicy::Policy>();
    QSizePolicy::Policy vPolicy = m_widgetVPoliciesBox->currentData(Qt::UserRole).value<QSizePolicy::Policy>();
    m_currentWidget->setWidgetSizePolicy(hPolicy, vPolicy);
+}
+
+void MainWindow::spinWidgetChanged()
+{
+   if (!m_currentWidget) {
+      return;
+   }
+
+   if (m_currentWidget == m_spinBox) {
+      m_spinBox->setMinimum(m_minIntSpin->value());
+      m_spinBox->setMaximum(m_maxIntSpin->value());
+      m_spinBox->setSingleStep(m_stepIntSpin->value());
+
+   } else if (m_currentWidget == m_exSpinBox) {
+      m_exSpinBox->setMinimum(m_minIntSpin->value());
+      m_exSpinBox->setMaximum(m_maxIntSpin->value());
+      m_exSpinBox->setSingleStep(m_stepIntSpin->value());
+
+   } else if (m_currentWidget == m_doubleSpinBox) {
+      m_doubleSpinBox->setMinimum(m_minDblSpin->value());
+      m_doubleSpinBox->setMaximum(m_maxDblSpin->value());
+      m_doubleSpinBox->setSingleStep(m_stepDblSpin->value());
+   }
 }
 
 void MainWindow::setAlignmentStatus()
@@ -316,9 +364,10 @@ void MainWindow::enableWidgets(bool enable)
       } else if (m_currentWidget == m_spinBox || m_currentWidget == m_exSpinBox) {
          m_widgetText->setEnabled(enable);
          m_widgetText->setValidator(new QIntValidator(this));
+
       } else if (m_currentWidget == m_doubleSpinBox) {
-        m_widgetText->setEnabled(enable);
-        m_widgetText->setValidator(new QDoubleValidator(this));
+         m_widgetText->setEnabled(enable);
+         m_widgetText->setValidator(new QDoubleValidator(this));
       }
 
       m_labelText->setEnabled(true);
@@ -539,6 +588,65 @@ void MainWindow::setSizePolicyStatus()
    m_labelVPoliciesBox->setCurrentText(sizePolicyToString(policy.verticalPolicy()));
 }
 
+void MainWindow::setSpinBoxStatus()
+{
+   if (!m_currentWidget) {
+      return;
+   }
+
+   if (m_currentWidget == m_spinBox) {
+      int min = m_spinBox->minimum();
+      int max = m_spinBox->maximum();
+      int step = m_spinBox->singleStep();
+
+      if (min < m_minIntSpin->minimum()) {
+         m_minIntSpin->setMinimum(min);
+      }
+
+      if (max > m_maxIntSpin->maximum()) {
+         m_minIntSpin->setMaximum(max);
+      }
+
+      m_minIntSpin->setValue(min);
+      m_maxIntSpin->setValue(max);
+      m_stepIntSpin->setValue(step);
+
+   } else if (m_currentWidget == m_doubleSpinBox) {
+      double min = m_spinBox->minimum();
+      double max = m_spinBox->maximum();
+      double step = m_spinBox->singleStep();
+
+      if (min < m_minIntSpin->minimum()) {
+         m_minIntSpin->setMinimum(min);
+      }
+
+      if (max > m_maxIntSpin->maximum()) {
+         m_minIntSpin->setMaximum(max);
+      }
+
+      m_minDblSpin->setValue(min);
+      m_maxDblSpin->setValue(max);
+      m_stepDblSpin->setValue(step);
+
+   } else if (m_currentWidget == m_exSpinBox) {
+      int min = m_spinBox->minimum();
+      int max = m_spinBox->maximum();
+      int step = m_spinBox->singleStep();
+
+      if (min < m_minIntSpin->minimum()) {
+         m_minIntSpin->setMinimum(min);
+      }
+
+      if (max > m_maxIntSpin->maximum()) {
+         m_minIntSpin->setMaximum(max);
+      }
+
+      m_minIntSpin->setValue(min);
+      m_maxIntSpin->setValue(max);
+      m_stepIntSpin->setValue(step);
+   }
+}
+
 void MainWindow::lineEditChanged(const QString& text)
 {
    if (m_currentWidget == m_lineEdit) {
@@ -562,9 +670,9 @@ void MainWindow::spinBoxChanged(int value)
 
 void MainWindow::doubleSpinBoxChanged(double value)
 {
-  if (m_currentWidget == m_doubleSpinBox) {
-    m_widgetText->setText(QString::number(value, 'f', m_doubleSpinBox->decimals()));
-  }
+   if (m_currentWidget == m_doubleSpinBox) {
+      m_widgetText->setText(QString::number(value, 'f', m_doubleSpinBox->decimals()));
+   }
 }
 
 void MainWindow::exSpinBoxChanged(int value)
@@ -628,8 +736,23 @@ void MainWindow::setCurrentWidgetAlignment()
          m_currentWidget->setLabelAlignment(existing);
       }
 
-      //      m_alignment = existing;
       break;
+   }
+}
+
+void MainWindow::exBoxTypeChanged()
+{
+   if (m_exBox->currentIndex() == 0) {
+      m_exSpinBox->setDisplayType(ExSpinBox::Hexadecimal);
+
+   } else if (m_exBox->currentIndex() == 1) {
+      m_exSpinBox->setDisplayType(ExSpinBox::Decimal);
+
+   } else if (m_exBox->currentIndex() == 2) {
+      m_exSpinBox->setDisplayType(ExSpinBox::Octal);
+
+   } else if (m_exBox->currentIndex() == 3) {
+      m_exSpinBox->setDisplayType(ExSpinBox::Binary);
    }
 }
 
@@ -908,6 +1031,71 @@ QWidget* MainWindow::initStylesheetBox()
    return box;
 }
 
+QWidget* MainWindow::initSpinBoxRangeBox()
+{
+   QFrame* f = new QFrame(this);
+   QGridLayout* l = new QGridLayout;
+   f->setLayout(l);
+
+   m_spinStack = new QStackedWidget(this);
+   l->addWidget(m_spinStack, 0, 0);
+
+   QGroupBox* intBox = new QGroupBox(tr("Int Spin Box Control"), this);
+   QVBoxLayout* intLayout = new QVBoxLayout;
+   intBox->setLayout(intLayout);
+   m_spinIntStack = m_spinStack->addWidget(intBox);
+
+   m_minIntSpin = new LabelledSpinBox(tr("Minimum Spin"), this);
+   m_minIntSpin->setRange(-100, 100);
+   intLayout->addWidget(m_minIntSpin);
+
+   m_maxIntSpin = new LabelledSpinBox(tr("Maximum Spin"), this);
+   m_maxIntSpin->setRange(-100, 100);
+   intLayout->addWidget(m_maxIntSpin);
+
+   m_stepIntSpin = new LabelledSpinBox(tr("Single Step"), this);
+   m_stepIntSpin->setRange(-5, 5);
+   intLayout->addWidget(m_stepIntSpin);
+
+   QStringList extypes;
+   extypes << "Hexadecimal" << "Decimal" << "Octal" << "Binary";
+   m_exBox = new LabelledComboBox(tr("Choose ExSpinBox Display Type"), this);
+   m_exBox->addItems(extypes);
+   m_exBox->setEnabled(false);
+   intLayout->addWidget(m_exBox);
+
+   QGroupBox* dblBox = new QGroupBox(tr("Double Spin Box Control"), this);
+   QVBoxLayout* dblLayout = new QVBoxLayout;
+   dblBox->setLayout(dblLayout);
+   m_spinDblStack = m_spinStack->addWidget(dblBox);
+
+   m_minDblSpin = new LabelledDoubleSpinBox(tr("Maximum Spin"), this);
+   m_minDblSpin->setRange(-100.0, 100.0);
+   dblLayout->addWidget(m_minDblSpin);
+
+   m_maxDblSpin = new LabelledDoubleSpinBox(tr("Minimum Spin"), this);
+   m_maxDblSpin->setRange(-100.0, 100.0);
+   dblLayout->addWidget(m_maxDblSpin);
+
+   m_stepDblSpin = new LabelledDoubleSpinBox(tr("Single Step"), this);
+   m_stepDblSpin->setRange(-5.0, 5.0);
+   m_stepDblSpin->setSingleStep(0.1);
+   dblLayout->addWidget(m_stepDblSpin);
+
+   m_setSpinBtn = new QPushButton(tr("Set Values"), this);
+   m_setSpinBtn->setEnabled(false);
+   connect(m_setSpinBtn, &QPushButton::clicked, this, &MainWindow::spinWidgetChanged);
+   l->addWidget(m_setSpinBtn, 1, 0);
+
+   QFrame* dummy = new QFrame(this);
+   dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   l->addWidget(dummy);
+
+   m_spinStack->setCurrentIndex(m_spinIntStack);
+
+   return f;
+}
+
 QWidget* MainWindow::initPolicyBox()
 {
    QGroupBox* box = new QGroupBox(this);
@@ -993,6 +1181,7 @@ QWidget* MainWindow::initLabelledWidgetFrame()
 
    l->addWidget(initStylesheetBox(), 1, 0);
    l->addWidget(initAlignmentBox(), 1, 1);
+   l->addWidget(initSpinBoxRangeBox(), 1, 2);
 
    chooseWidget(tr("None"));
    enableWidgets(false);

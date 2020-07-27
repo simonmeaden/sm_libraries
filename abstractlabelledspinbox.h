@@ -91,12 +91,6 @@ public:
    //! @reimplements QSpinBox::cleanText().
    QString  cleanText() const;
 
-   //! @reimplements QSpinBox::prefix().
-   QString  prefix() const;
-
-   //! @reimplements QSpinBox::suffix().
-   QString  suffix() const;
-
    //! @reimplements QSpinBox::setAlignment() const.
    void setWidgetAlignment(const Qt::Alignment& widgetAlignment);
 

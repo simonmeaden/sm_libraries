@@ -110,6 +110,16 @@ void LabelledExSpinBox::setSingleStep(int step)
   qobject_cast<ExSpinBox*>(m_widget)->setSingleStep(step);
 }
 
+QString LabelledExSpinBox::prefix() const
+{
+  return qobject_cast<QSpinBox*>(m_widget)->prefix();
+}
+
+QString LabelledExSpinBox::suffix() const
+{
+  return qobject_cast<QSpinBox*>(m_widget)->suffix();
+}
+
 void LabelledExSpinBox::initGui(const QString&)
 {
    connect(qobject_cast<ExSpinBox*>(m_widget),

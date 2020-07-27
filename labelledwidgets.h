@@ -18,6 +18,7 @@
       SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 #include "labelledspinbox.h"
+#include "labelleddoublespinbox.h"
 #include "labelledexspinbox.h"
 #include "labelledcombobox.h"
 #include "labelledtextfield.h"

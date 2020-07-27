@@ -155,6 +155,11 @@ public:
    //! @reimplements QSpinBox::setRange().
    void setRange(int min, int max);
 
+   //! @reimplements QSpinBox::prefix().
+   QString  prefix() const;
+
+   //! @reimplements QSpinBox::suffix().
+   QString  suffix() const;
 
 
 signals:

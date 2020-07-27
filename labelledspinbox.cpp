@@ -80,6 +80,16 @@ void LabelledSpinBox::setSingleStep(int step)
   qobject_cast<QSpinBox*>(m_widget)->setSingleStep(step);
 }
 
+QString LabelledSpinBox::prefix() const
+{
+  return qobject_cast<QSpinBox*>(m_widget)->prefix();
+}
+
+QString LabelledSpinBox::suffix() const
+{
+  return qobject_cast<QSpinBox*>(m_widget)->suffix();
+}
+
 int LabelledSpinBox::displayIntegerBase() const
 {
    return qobject_cast<QSpinBox*>(m_widget)->displayIntegerBase();

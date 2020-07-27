@@ -46,7 +46,7 @@ private:
 
    LabelledComboBox* m_comboBox;
    LabelledSpinBox* m_spinBox;
-   LabelledDoubleSpinBox*m_doubleSpinBox;
+   LabelledDoubleSpinBox* m_doubleSpinBox;
    LabelledExSpinBox* m_exSpinBox;
    LabelledTextField* m_textField;
    LabelledLineEdit* m_lineEdit;
@@ -56,15 +56,20 @@ private:
    AbstractLabelledWidget* m_currentWidget;
    QPlainTextEdit* m_labelStylesheet, *m_widgetStylesheet, *m_overallStylesheet;
    QPushButton* m_setLabelStylesheet, *m_setWidgetStylesheet;
-   LabelledComboBox* m_positionBox;
+   LabelledComboBox* m_positionBox,*m_exBox;
    LabelledComboBox* m_labelHPoliciesBox, *m_labelVPoliciesBox;
    LabelledComboBox* m_widgetHPoliciesBox, *m_widgetVPoliciesBox;
    LabelledSpinBox* m_left, *m_right, *m_top, *m_bottom, *m_spacing;
+   QStackedWidget* m_spinStack;
+   int m_spinIntStack, m_spinDblStack;
+   QPushButton* m_setSpinBtn;
+   LabelledSpinBox* m_minIntSpin, *m_maxIntSpin, *m_stepIntSpin;
+   LabelledDoubleSpinBox* m_minDblSpin, *m_maxDblSpin, *m_stepDblSpin;
 
-   ExTabWidget *m_exTabWidget;
-   QCheckBox *m_enableClockBox,*m_showSecondsBox;
-   QCheckBox *m_enableMessageBox, *m_enableMarqueeBox;
-   QDoubleSpinBox *m_marqueeSpeedBox;
+   ExTabWidget* m_exTabWidget;
+   QCheckBox* m_enableClockBox, *m_showSecondsBox;
+   QCheckBox* m_enableMessageBox, *m_enableMarqueeBox;
+   QDoubleSpinBox* m_marqueeSpeedBox;
 
    void setLabelStylesheet();
    void setWidgetStylesheet();
@@ -83,6 +88,7 @@ private:
    void doubleSpinBoxChanged(double value);
    void exSpinBoxChanged(int value);
    void setCurrentWidgetAlignment();
+   void exBoxTypeChanged();
 
    void chooseWidget(const QString& text);
    void labelTextHasChanged(const QString& text);
@@ -91,13 +97,14 @@ private:
    void widgetSizePolicyHasChanged(const QString&);
    void labelTextFormatHasChanged(const QString&);
    void widgetTextFormatHasChanged(const QString&);
+   void spinWidgetChanged();
 
    void setAlignmentStatus();
    void setStylesheetStatus();
    void setLabelPositionStatus();
    void setLayoutStatus();
    void setSizePolicyStatus();
-   void setTextFormatStatus();
+   void setSpinBoxStatus();
 
    QString sizePolicyToString(QSizePolicy::Policy policy);
    void setFormattedText(Qt::TextFormat format);
@@ -115,9 +122,10 @@ private:
    QWidget* initVAlignBox(const QString& type, QGroupBox* box, QButtonGroup* grp);
    QWidget* initHAlignBox(const QString& direction, QGroupBox* box, QButtonGroup* grp);
    QWidget* initStylesheetBox();
+   QWidget* initSpinBoxRangeBox();
    QWidget* initPolicyBox();
-   QWidget *initLabelledWidgetFrame();
-   QWidget *initExTabWidget();
+   QWidget* initLabelledWidgetFrame();
+   QWidget* initExTabWidget();
 };
 
 #endif // MAINWINDOW_H

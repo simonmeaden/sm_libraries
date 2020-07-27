@@ -29,38 +29,38 @@ LabelledDoubleSpinBox::LabelledDoubleSpinBox(const QString &labelText,
 
 double LabelledDoubleSpinBox::value() const
 {
-  return qobject_cast<QSpinBox*>(m_widget)->value();
+  return qobject_cast<QDoubleSpinBox*>(m_widget)->value();
 }
 
 void LabelledDoubleSpinBox::setValue(double val)
 {
-  qobject_cast<QSpinBox*>(m_widget)->setValue(val);
+  qobject_cast<QDoubleSpinBox*>(m_widget)->setValue(val);
 }
 
 double LabelledDoubleSpinBox::maximum() const
 {
-  return qobject_cast<QSpinBox*>(m_widget)->maximum();
+  return qobject_cast<QDoubleSpinBox*>(m_widget)->maximum();
 }
 
 void LabelledDoubleSpinBox::setMaximum(double max)
 
 {
-  qobject_cast<QSpinBox*>(m_widget)->setMaximum(max);
+  qobject_cast<QDoubleSpinBox*>(m_widget)->setMaximum(max);
 }
 
 double LabelledDoubleSpinBox::minimum() const
 {
-  return qobject_cast<QSpinBox*>(m_widget)->minimum();
+  return qobject_cast<QDoubleSpinBox*>(m_widget)->minimum();
 }
 
 void LabelledDoubleSpinBox::setMinimum(double min)
 {
-  qobject_cast<QSpinBox*>(m_widget)->setMinimum(min);
+  qobject_cast<QDoubleSpinBox*>(m_widget)->setMinimum(min);
 }
 
 void LabelledDoubleSpinBox::setRange(double min, double max)
 {
-  qobject_cast<QSpinBox*>(m_widget)->setRange(min, max);
+  qobject_cast<QDoubleSpinBox*>(m_widget)->setRange(min, max);
 }
 
 int LabelledDoubleSpinBox::decimals()
@@ -73,7 +73,29 @@ void LabelledDoubleSpinBox::setDecimals(int precision)
   qobject_cast<QDoubleSpinBox*>(m_widget)->setDecimals(precision);
 }
 
-void LabelledDoubleSpinBox::initGui(const QString &text)
+double LabelledDoubleSpinBox::singleStep() const
+{
+  return qobject_cast<QDoubleSpinBox*>(m_widget)->singleStep();
+}
+
+void LabelledDoubleSpinBox::setSingleStep(double step)
+{
+  qobject_cast<QDoubleSpinBox*>(m_widget)->setSingleStep(step);
+}
+
+QString LabelledDoubleSpinBox::prefix() const
+{
+  return qobject_cast<QSpinBox*>(m_widget)->prefix();
+}
+
+QString LabelledDoubleSpinBox::suffix() const
+{
+  return qobject_cast<QSpinBox*>(m_widget)->suffix();
+}
+
+
+
+void LabelledDoubleSpinBox::initGui(const QString &/*text*/)
 {
   connect(qobject_cast<QDoubleSpinBox*>(m_widget),
           qOverload<double>(&QDoubleSpinBox::valueChanged),

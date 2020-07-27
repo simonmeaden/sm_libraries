@@ -137,6 +137,12 @@ public:
    //! @reimplements QSpinBox::setDisplayIntegerBase().
    void setDisplayIntegerBase(int base);
 
+   //! @reimplements QSpinBox::prefix().
+   QString  prefix() const;
+
+   //! @reimplements QSpinBox::suffix().
+   QString  suffix() const;
+
 
 signals:
    /*!

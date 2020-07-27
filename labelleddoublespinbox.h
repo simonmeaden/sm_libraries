@@ -109,6 +109,18 @@ public:
    //! @reimplements QDoubleSpinBox::setDecimals().
    void setDecimals(int precision);
 
+   //! @reimplements QDoubleSpinBox::singleStep() const.
+   double singleStep() const;
+
+   //! @reimplements QDoubleSpinBox::singleStep() const.
+   void setSingleStep(double step);
+
+   //! @reimplements QDoubleSpinBox::prefix().
+   QString  prefix() const;
+
+   //! @reimplements QDoubleSpinBox::suffix().
+   QString  suffix() const;
+
 signals:
    /*!
       \fn AbstractLabelledSpinBox::valueChanged(double value)

@@ -61,22 +61,12 @@ QString AbstractLabelledSpinBox::cleanText() const
    return qobject_cast<QSpinBox*>(m_widget)->cleanText();
 }
 
-QString AbstractLabelledSpinBox::prefix() const
-{
-   return qobject_cast<QSpinBox*>(m_widget)->prefix();
-}
-
-QString AbstractLabelledSpinBox::suffix() const
-{
-   return qobject_cast<QSpinBox*>(m_widget)->suffix();
-}
-
 void AbstractLabelledSpinBox::setWidgetAlignment(const Qt::Alignment& widgetAlignment)
 {
-   qobject_cast<QSpinBox*>(m_widget)->setAlignment(widgetAlignment);
+   qobject_cast<QAbstractSpinBox*>(m_widget)->setAlignment(widgetAlignment);
 }
 
 Qt::Alignment AbstractLabelledSpinBox::widgetAlignment() const
 {
-   return qobject_cast<QSpinBox*>(m_widget)->alignment();
+   return qobject_cast<QAbstractSpinBox*>(m_widget)->alignment();
 }
