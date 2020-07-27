@@ -26,47 +26,6 @@ AbstractLabelledSpinBox::AbstractLabelledSpinBox(const QString& text,
    : AbstractLabelledWidget(text, parent, factory)
 {}
 
-int AbstractLabelledSpinBox::value() const
-{
-   return qobject_cast<QSpinBox*>(m_widget)->value();
-}
-
-void AbstractLabelledSpinBox::setValue(int val)
-{
-   qobject_cast<QSpinBox*>(m_widget)->setValue(val);
-}
-
-int AbstractLabelledSpinBox::maximum() const
-{
-   return qobject_cast<QSpinBox*>(m_widget)->maximum();
-}
-
-void AbstractLabelledSpinBox::setMaximum(int max)
-
-{
-   qobject_cast<QSpinBox*>(m_widget)->setMaximum(max);
-}
-
-int AbstractLabelledSpinBox::minimum() const
-{
-   return qobject_cast<QSpinBox*>(m_widget)->minimum();
-}
-
-void AbstractLabelledSpinBox::setMinimum(int min)
-{
-   qobject_cast<QSpinBox*>(m_widget)->setMinimum(min);
-}
-
-int AbstractLabelledSpinBox::displayIntegerBase() const
-{
-   return qobject_cast<QSpinBox*>(m_widget)->displayIntegerBase();
-}
-
-void AbstractLabelledSpinBox::setDisplayIntegerBase(int base)
-{
-   qobject_cast<QSpinBox*>(m_widget)->setDisplayIntegerBase(base);
-}
-
 QString AbstractLabelledSpinBox::prefix()
 {
    return qobject_cast<QSpinBox*>(m_widget)->prefix();
@@ -85,21 +44,6 @@ QString AbstractLabelledSpinBox::suffix()
 void AbstractLabelledSpinBox::setSuffix(const QString& text)
 {
    qobject_cast<QSpinBox*>(m_widget)->setSuffix(text);
-}
-
-void AbstractLabelledSpinBox::setRange(int min, int max)
-{
-   qobject_cast<QSpinBox*>(m_widget)->setRange(min, max);
-}
-
-int AbstractLabelledSpinBox::singleStep() const
-{
-   return qobject_cast<QSpinBox*>(m_widget)->singleStep();
-}
-
-void AbstractLabelledSpinBox::setSingleStep(int step)
-{
-   qobject_cast<QSpinBox*>(m_widget)->setSingleStep(step);
 }
 
 QAbstractSpinBox::StepType AbstractLabelledSpinBox::stepType() const

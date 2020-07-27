@@ -36,10 +36,63 @@
 */
 class SM_WIDGETS_SHARED_EXPORT LabelledSpinBox : public AbstractLabelledSpinBox
 {
+   /*!
+       \property LabelledSpinBox::value
+
+      \brief This property holds the value of the spin box.
+
+      @reimplements QSpinBox::value
+      @accessor %value(), %setValue()
+         @notifier valueChanged(int)
+   */
+   Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged USER true)
+
+   /*!
+      \property LabelledSpinBox::maximum
+
+      \brief This property holds the maximum value of the spin box.
+
+      @reimplements QSpinBox::maximum
+      @accessor %maximum(void), %setMaximum()
+   */
+   Q_PROPERTY(int maximum READ maximum WRITE setMaximum)
+
+   /*!
+      \property LabelledSpinBox::minimum
+
+      \brief This property holds the minimum value of the spin box.
+
+      @reimplements QSpinBox::minimum
+      @accessor %minimum(), %setMinimum()
+   */
+   Q_PROPERTY(int minimum READ minimum WRITE setMinimum)
+
+   /*!
+      \property LabelledSpinBox::displayIntegerBase
+
+      \brief This property holds the base used to display the value of the spin
+       box
+
+      @reimplements QSpinBox::displayIntegerBase
+      @accessor %displayIntegerBase(), %setDisplayIntegerBase()
+   */
+   Q_PROPERTY(
+      int displayIntegerBase READ displayIntegerBase WRITE setDisplayIntegerBase)
+
+   /*!
+      \property AbstractLabelledSpinBox::singleStep
+
+      \brief This property holds the step value
+
+      @reimplements QSpinBox::singleStep
+      @accessor %singleStep(), %setSingleStep()
+   */
+   Q_PROPERTY(int singleStep READ singleStep WRITE setSingleStep)
+
    Q_OBJECT
 
 protected:
-  struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
+   struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
       QWidget* newWidget(QWidget* parent) const {
          return new QSpinBox(parent);
@@ -49,7 +102,50 @@ protected:
 public:
    explicit LabelledSpinBox(const QString& labelText = QString(),
                             QWidget* parent = nullptr,
-                           WidgetFactory const& factory = WidgetFactory());
+                            WidgetFactory const& factory = WidgetFactory());
+
+   //! @reimplements QSpinBox::value() const.
+   int value() const;
+
+   //! @reimplements QSpinBox::setValue().
+   void setValue(int v);
+
+   //! @reimplements QSpinBox::maximum() const.
+   int maximum() const;
+
+   //! @reimplements QSpinBox::setMaximum().
+   void setMaximum(int max);
+
+   //! @reimplements QSpinBox::minimum() const.
+   int minimum() const;
+
+   //! @reimplements QSpinBox::setMinimum().
+   void setMinimum(int min);
+
+   //! @reimplements QSpinBox::setRange().
+   void setRange(int min, int max);
+
+   //! @reimplements QSpinBox::singleStep() const.
+   int singleStep() const;
+
+   //! @reimplements QSpinBox::setSingleStep().
+   void setSingleStep(int step);
+
+   //! @reimplements QSpinBox::displayIntegerBase() const.
+   int displayIntegerBase() const;
+
+   //! @reimplements QSpinBox::setDisplayIntegerBase().
+   void setDisplayIntegerBase(int base);
+
+
+signals:
+   /*!
+      \fn LabelledSpinBox::valueChanged(int value)
+
+      @from QSpinBox::value.
+      @notprop value.
+   */
+   void valueChanged(int);
 
 private:
    void initGui(const QString& text = QString());

@@ -46,6 +46,7 @@ private:
 
    LabelledComboBox* m_comboBox;
    LabelledSpinBox* m_spinBox;
+   LabelledDoubleSpinBox*m_doubleSpinBox;
    LabelledExSpinBox* m_exSpinBox;
    LabelledTextField* m_textField;
    LabelledLineEdit* m_lineEdit;
@@ -62,6 +63,8 @@ private:
 
    ExTabWidget *m_exTabWidget;
    QCheckBox *m_enableClockBox,*m_showSecondsBox;
+   QCheckBox *m_enableMessageBox, *m_enableMarqueeBox;
+   QDoubleSpinBox *m_marqueeSpeedBox;
 
    void setLabelStylesheet();
    void setWidgetStylesheet();
@@ -77,6 +80,7 @@ private:
    void lineEditChanged(const QString& text);
    void comboBoxChanged(const QString& text);
    void spinBoxChanged(int value);
+   void doubleSpinBoxChanged(double value);
    void exSpinBoxChanged(int value);
    void setCurrentWidgetAlignment();
 
@@ -100,6 +104,9 @@ private:
 
    void showClock(bool enable);
    void showSeconds(bool enable);
+   void showMessages(bool enable);
+   void setMarqueeMoving(bool enable);
+   void setMarqueeSpeed(qreal charPerSec);
 
    void initGui();
    QWidget* initLabelledWidgets();

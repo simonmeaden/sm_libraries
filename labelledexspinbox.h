@@ -25,8 +25,8 @@
 #include "exspinbox.h"
 
 /*!
-   \file labelledcombobox.h labelledcombobox.cpp
-   \class LabelledExSpinBox labelledcombobox.h
+   \file labelledexspinbox.h labelledexspinbox.cpp
+   \class LabelledExSpinBox labelledexspinbox.h
    \brief The LabelledExSpinBox is a wrapper for QLabel and ExSpinBox that
           provides a labelled extended spin box.
    \since 5.7.0
@@ -77,17 +77,28 @@ class SM_WIDGETS_SHARED_EXPORT LabelledExSpinBox : public AbstractLabelledSpinBo
    */
    Q_PROPERTY(bool showLeadingZeroes READ showLeadingZeroes WRITE setShowLeadingZeroes)
 
-   Q_OBJECT
+   /*!
+      \property AbstractLabelledSpinBox::stepType
 
- protected:
+   \brief This property holds the step type.
+
+     @reimplements QSpinBox::stepType
+     @accessor %stepType(), %setStepType(QSpinBox::StepType)
+       */
+       Q_PROPERTY(QSpinBox::StepType stepType READ stepType WRITE setStepType)
+
+
+       Q_OBJECT
+
+protected:
    struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
-     virtual QWidget* newWidget(QWidget *parent) const {
-       return new ExSpinBox(parent);
-     }
+      virtual QWidget* newWidget(QWidget* parent) const {
+         return new ExSpinBox(parent);
+      }
    };
 
- public:
+public:
    explicit LabelledExSpinBox(const QString& labelText = QString(),
                               QWidget* parent = nullptr,
                               WidgetFactory const& factory = WidgetFactory());
@@ -101,6 +112,12 @@ class SM_WIDGETS_SHARED_EXPORT LabelledExSpinBox : public AbstractLabelledSpinBo
       \brief Returns the type of the display, by default ExSpinBox Hexadecimal.
    */
    ExSpinBox::DisplayType displayType() const;
+
+   //! @reimplements QSpinBox::singleStep() const.
+   int singleStep() const;
+
+   //! @reimplements QSpinBox::setSingleStep().
+   void setSingleStep(int step);
 
    /*!
       \brief Sets the type of the display, by default ExSpinBox Hexadecimal.
@@ -117,6 +134,28 @@ class SM_WIDGETS_SHARED_EXPORT LabelledExSpinBox : public AbstractLabelledSpinBo
    */
    void setShowLeadingZeroes(bool showLeadingZeroes);
 
+   //! @reimplements QSpinBox::value() const.
+   int value() const;
+
+   //! @reimplements QSpinBox::setValue().
+   void setValue(int v);
+
+   //! @reimplements QSpinBox::maximum() const.
+   int maximum() const;
+
+   //! @reimplements QSpinBox::setMaximum().
+   void setMaximum(int max);
+
+   //! @reimplements QSpinBox::minimum() const.
+   int minimum() const;
+
+   //! @reimplements QSpinBox::setMinimum().
+   void setMinimum(int min);
+
+   //! @reimplements QSpinBox::setRange().
+   void setRange(int min, int max);
+
+
 
 signals:
    /*!
@@ -126,6 +165,13 @@ signals:
    */
    void displayTypeChanged(ExSpinBox::DisplayType);
 
+   /*!
+      \fn LabelledExSpinBox::valueChanged(int value)
+
+      @from QSpinBox::value.
+      @notprop value.
+   */
+   void valueChanged(int);
 
 private:
    void initGui(const QString& text = QString());

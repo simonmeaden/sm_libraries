@@ -136,8 +136,8 @@ void ExTabWidget::setMarquee(bool marquee) {
   d_ptr->setMarquee(marquee);
 }
 
-void ExTabWidget::setMarqueeSpeed(int speed) {
-  d_ptr->setMarqueeSpeed(speed);
+void ExTabWidget::setMarqueeSpeed(qreal charPerSecond) {
+  d_ptr->setMarqueeSpeed(charPerSecond);
 }
 
 void ExTabWidget::clearMessage() {

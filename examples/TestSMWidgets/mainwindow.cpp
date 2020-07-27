@@ -69,11 +69,18 @@ void MainWindow::chooseWidget(const QString& text)
       }
 
    } else if (text == tr("Spin Box")) {
-      if (m_currentWidget != m_spinBox) {
-         m_currentWidget = m_spinBox;
-         m_labelText->setText(m_spinBox->labelText());
-         m_widgetText->setText(QString::number(m_spinBox->value()));
-      }
+     if (m_currentWidget != m_spinBox) {
+       m_currentWidget = m_spinBox;
+       m_labelText->setText(m_spinBox->labelText());
+       m_widgetText->setText(QString::number(m_spinBox->value()));
+     }
+
+   } else if (text == tr("Double Spin Box")) {
+     if (m_currentWidget != m_doubleSpinBox) {
+       m_currentWidget = m_doubleSpinBox;
+       m_labelText->setText(m_doubleSpinBox->labelText());
+       m_widgetText->setText(QString::number(m_doubleSpinBox->value(), 'f', m_doubleSpinBox->decimals()));
+     }
 
    } else if (text == tr("ExSpinBox")) {
       if (m_currentWidget != m_exSpinBox) {
@@ -115,7 +122,10 @@ void MainWindow::widgetTextHasChanged(const QString& text)
       qobject_cast<LabelledComboBox*>(m_currentWidget)->setCurrentText(text);
 
    } else if (m_currentWidget == m_spinBox) {
-      qobject_cast<LabelledSpinBox*>(m_currentWidget)->setValue(text.toInt());
+     qobject_cast<LabelledSpinBox*>(m_currentWidget)->setValue(text.toInt());
+
+   } else if (m_currentWidget == m_doubleSpinBox) {
+     qobject_cast<LabelledDoubleSpinBox*>(m_currentWidget)->setValue(text.toDouble());
 
    } else if (m_currentWidget == m_exSpinBox) {
       qobject_cast<LabelledExSpinBox*>(m_currentWidget)->setValue(text.toInt());
@@ -306,6 +316,9 @@ void MainWindow::enableWidgets(bool enable)
       } else if (m_currentWidget == m_spinBox || m_currentWidget == m_exSpinBox) {
          m_widgetText->setEnabled(enable);
          m_widgetText->setValidator(new QIntValidator(this));
+      } else if (m_currentWidget == m_doubleSpinBox) {
+        m_widgetText->setEnabled(enable);
+        m_widgetText->setValidator(new QDoubleValidator(this));
       }
 
       m_labelText->setEnabled(true);
@@ -463,13 +476,56 @@ QString MainWindow::sizePolicyToString(QSizePolicy::Policy policy)
 
 void MainWindow::showClock(bool enable)
 {
-  m_exTabWidget->showClock(enable);
-  m_showSecondsBox->setEnabled(enable);
+   m_exTabWidget->showClock(enable);
+   m_showSecondsBox->setEnabled(enable);
+
+   if (enable) {
+      m_enableMarqueeBox->setText(tr("Hide Clock"));
+
+   } else {
+      m_enableMarqueeBox->setText(tr("Show Clock"));
+   }
 }
 
 void MainWindow::showSeconds(bool enable)
 {
-  m_exTabWidget->showSeconds(enable);
+   m_exTabWidget->showSeconds(enable);
+
+   if (enable) {
+      m_enableMarqueeBox->setText(tr("Hide Seconds"));
+
+   } else {
+      m_enableMarqueeBox->setText(tr("Show Seconds"));
+   }
+}
+
+void MainWindow::showMessages(bool enable)
+{
+   m_exTabWidget->showMessages(enable);
+
+   if (enable) {
+      m_enableMarqueeBox->setText(tr("Hide Messages"));
+
+   } else {
+      m_enableMarqueeBox->setText(tr("Show Messages"));
+   }
+}
+
+void MainWindow::setMarqueeMoving(bool enable)
+{
+   m_exTabWidget->setMarquee(enable);
+
+   if (enable) {
+      m_enableMarqueeBox->setText(tr("Stop marquee"));
+
+   } else {
+      m_enableMarqueeBox->setText(tr("Start marquee"));
+   }
+}
+
+void MainWindow::setMarqueeSpeed(qreal charPerSec)
+{
+   m_exTabWidget->setMarqueeSpeed(charPerSec);
 }
 
 void MainWindow::setSizePolicyStatus()
@@ -502,6 +558,13 @@ void MainWindow::spinBoxChanged(int value)
    if (m_currentWidget == m_spinBox) {
       m_widgetText->setText(QString::number(value));
    }
+}
+
+void MainWindow::doubleSpinBoxChanged(double value)
+{
+  if (m_currentWidget == m_doubleSpinBox) {
+    m_widgetText->setText(QString::number(value, 'f', m_doubleSpinBox->decimals()));
+  }
 }
 
 void MainWindow::exSpinBoxChanged(int value)
@@ -606,6 +669,13 @@ QWidget* MainWindow::initLabelledWidgets()
            &MainWindow::spinBoxChanged);
    l->addWidget(m_spinBox);
 
+   m_doubleSpinBox = new LabelledDoubleSpinBox(tr("QDoubleSpinBox :"), this);
+   connect(m_doubleSpinBox,
+           &LabelledDoubleSpinBox::valueChanged,
+           this,
+           &MainWindow::doubleSpinBoxChanged);
+   l->addWidget(m_doubleSpinBox);
+
    m_exSpinBox = new LabelledExSpinBox(tr("ExSpinBox :"), this);
    connect(m_exSpinBox,
            &LabelledExSpinBox::valueChanged,
@@ -624,7 +694,7 @@ QWidget* MainWindow::initChooseWidgetBox()
 
    QStringList choices;
    choices << tr("None") << tr("LineEdit") << tr("Text Field") << tr("Combo Box")
-           << tr("Spin Box") << tr("ExSpinBox");
+           << tr("Spin Box") << tr("Double Spin Box") << tr("ExSpinBox");
    m_widgetChoiceBox =
       new LabelledComboBox(tr("Choose Widget to modify :"), this);
    m_widgetChoiceBox->addItems(choices);
@@ -935,11 +1005,11 @@ QWidget* MainWindow::initExTabWidget()
 {
    m_exTabWidget = new ExTabWidget(this);
    QFrame* f1 = new QFrame(this);
-   QGridLayout *l1 = new QGridLayout;
+   QGridLayout* l1 = new QGridLayout;
    f1->setLayout(l1);
 
-   QGroupBox *enableBox = new QGroupBox(tr("Enable Components"), this);
-   QVBoxLayout *enableLayout = new QVBoxLayout;
+   QGroupBox* enableBox = new QGroupBox(tr("Enable Components"), this);
+   QVBoxLayout* enableLayout = new QVBoxLayout;
    enableBox->setLayout(enableLayout);
 
    m_enableClockBox = new QCheckBox(tr("Enable Clock"), this);
@@ -951,9 +1021,18 @@ QWidget* MainWindow::initExTabWidget()
    connect(m_showSecondsBox, &QCheckBox::clicked, this, &MainWindow::showSeconds);
    enableLayout->addWidget(m_showSecondsBox);
 
+   m_enableMessageBox = new QCheckBox(tr("Show Messages"), this);
+   connect(m_enableMessageBox, &QCheckBox::clicked, this, &MainWindow::showMessages);
+   enableLayout->addWidget(m_enableMessageBox);
+
+   m_enableMarqueeBox = new QCheckBox(tr("Start marquee"), this);
+   connect(m_enableMarqueeBox, &QCheckBox::clicked, this, &MainWindow::setMarqueeMoving);
+   enableLayout->addWidget(m_enableMarqueeBox);
+
+
    l1->addWidget(enableBox, 0, 0);
 
-   QFrame* dummy=new QFrame(this);
+   QFrame* dummy = new QFrame(this);
    dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
    l1->addWidget(dummy, 7, 0);
 

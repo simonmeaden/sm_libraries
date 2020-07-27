@@ -64,6 +64,51 @@ void LabelledExSpinBox::setShowLeadingZeroes(bool showLeadingZeroes)
       showLeadingZeroes);
 }
 
+int LabelledExSpinBox::value() const
+{
+  return qobject_cast<ExSpinBox*>(m_widget)->value();
+}
+
+void LabelledExSpinBox::setValue(int val)
+{
+  qobject_cast<ExSpinBox*>(m_widget)->setValue(val);
+}
+
+int LabelledExSpinBox::maximum() const
+{
+  return qobject_cast<ExSpinBox*>(m_widget)->maximum();
+}
+
+void LabelledExSpinBox::setMaximum(int max)
+
+{
+  qobject_cast<ExSpinBox*>(m_widget)->setMaximum(max);
+}
+
+int LabelledExSpinBox::minimum() const
+{
+  return qobject_cast<ExSpinBox*>(m_widget)->minimum();
+}
+
+void LabelledExSpinBox::setMinimum(int min)
+{
+  qobject_cast<ExSpinBox*>(m_widget)->setMinimum(min);
+}
+
+void LabelledExSpinBox::setRange(int min, int max)
+{
+  qobject_cast<ExSpinBox*>(m_widget)->setRange(min, max);
+}
+
+int LabelledExSpinBox::singleStep() const
+{
+  return qobject_cast<ExSpinBox*>(m_widget)->singleStep();
+}
+
+void LabelledExSpinBox::setSingleStep(int step)
+{
+  qobject_cast<ExSpinBox*>(m_widget)->setSingleStep(step);
+}
 
 void LabelledExSpinBox::initGui(const QString&)
 {

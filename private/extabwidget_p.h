@@ -129,7 +129,7 @@ public:
   bool isLoggedIn();
   void addPassword(QString password);
   void addPassword(QString, QString);
-  void setMarqueeSpeed(int);
+  void setMarqueeSpeed(qreal charPerSecond);
   void timeout();
   void clearFrames();
   bool hasCustomLoginDialog();

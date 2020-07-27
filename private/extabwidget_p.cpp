@@ -157,9 +157,9 @@ void ExTabWidgetPrivate::setMarquee(bool marquee)
    }
 }
 
-void ExTabWidgetPrivate::setMarqueeSpeed(int speed)
+void ExTabWidgetPrivate::setMarqueeSpeed(qreal charPerSecond)
 {
-   m_marqueeSpeed = 1000 / speed;
+  m_marqueeSpeed = int(1000.0 / charPerSecond);
    m_marqueeTimer->setInterval(m_marqueeSpeed);
    q_ptr->update();
 }
@@ -185,10 +185,8 @@ void ExTabWidgetPrivate::startMarqueeTimerIfRequired()
 
    } else {
       m_marqueeTimer = new QTimer(q_ptr);
-      q_ptr->connect(m_marqueeTimer,
-                     SIGNAL(timeout()),
-                     q_ptr,
-                     SLOT(updateMarquee()),
+      q_ptr->connect(m_marqueeTimer, &QTimer::timeout,
+                     q_ptr, &ExTabWidget::updateMarquee,
                      Qt::UniqueConnection);
       m_marqueeTimer->start(MARQUEE_TIME);
    }

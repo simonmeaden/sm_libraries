@@ -396,14 +396,6 @@ void ExSpinBox::setCharCase(DisplayCase charcase)
   setValue(value());
 }
 
-/*!
-   \brief This overrides QSpinBox::setMinimum.setPrefix(const QString& value).
-
-  This value will prefix the default prefix for the DisplayType. For instance
-  if you should want to add the string "Value : " as a prefix to a hexadecimal
-  display with a actual value of decimal 255 then the displayed result would be
-  "Value : 0xFF", similarly for binary the display would be "Value : 0b11111111".
-*/
 void ExSpinBox::setPrefix(const QString& prefix)
 {
   m_prefix = prefix;

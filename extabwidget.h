@@ -83,7 +83,8 @@
    ExTabWidget::setMessageColor(QColor color) to permanently change the text colour.
 
    If messages are too long for the available space you can use the marquee option which causes the message to rotate along
-   message box. To enable this use the ExTabWidget::enableMarquee(bool) with a value of true.
+   message box. To enable this use the ExTabWidget::enableMarquee(bool) with a value of true, adjusting the speed if necessary
+   with the setMarqueeSpeed(qreal) method.
 
    Each can be drawn with or without a frame, using the ExTabWidget::showFrame(bool) method. By default a frame
    is shown.
@@ -176,7 +177,7 @@ public:
    /*!
       \brief Constructs an ExTabWidget with parent parent with an optional custom login dialog.
    */
-   explicit ExTabWidget(QWidget* parent = nullptr, LoginType type=None, AbstractLoginDialog* customDlg = nullptr);
+   explicit ExTabWidget(QWidget* parent = nullptr, LoginType type = None, AbstractLoginDialog* customDlg = nullptr);
 
    /*!
       \brief Destroys the tabbed widget.
@@ -434,7 +435,7 @@ public:
       The default is 10 characters a second. To slow it down enter a lower
        number of characters a second and to speed it up a higher number.
    */
-   void setMarqueeSpeed(int speed);
+   void setMarqueeSpeed(qreal charPerSecond);
 
    /*!
       \brief Removes the message from the display.

@@ -52,6 +52,7 @@ set(WIDGET_HEADER_FILES
    abstractlabelledspinbox.h
    labelledspinbox.h
    labelledexspinbox.h
+   labelleddoublespinbox.h
    labelledcombobox.h
    labelledlineedit.h
    labelledtextfield.h
@@ -76,6 +77,7 @@ set(WIDGET_SOURCE_FILES
    abstractlabelledspinbox.cpp
    labelledspinbox.cpp
    labelledexspinbox.cpp
+   labelleddoublespinbox.cpp
    labelledcombobox.cpp
    labelledlineedit.cpp
    labelledtextfield.cpp
