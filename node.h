@@ -44,6 +44,8 @@
 #include <string>
 #include <yaml-cpp/yaml.h>
 
+/// \cond DO_NOT_DOCUMENT
+
 namespace YAML {
 
 /* = QVariant
@@ -757,5 +759,7 @@ void operator<<(Node node, const QImage& q){
 
 
 } // end of namespace YAML
+
+/// \endcond
 
 #endif // NODE_H

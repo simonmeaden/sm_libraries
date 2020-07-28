@@ -80,7 +80,7 @@ class SM_WIDGETS_SHARED_EXPORT LabelledSpinBox : public AbstractLabelledSpinBox
       int displayIntegerBase READ displayIntegerBase WRITE setDisplayIntegerBase)
 
    /*!
-      \property AbstractLabelledSpinBox::singleStep
+      \property LabelledSpinBox::singleStep
 
       \brief This property holds the step value
 
@@ -89,15 +89,27 @@ class SM_WIDGETS_SHARED_EXPORT LabelledSpinBox : public AbstractLabelledSpinBox
    */
    Q_PROPERTY(int singleStep READ singleStep WRITE setSingleStep)
 
+   /*!
+      \property LabelledSpinBox::prefix
+
+      \brief This property holds the spin box's prefix
+
+      @reimplements QSpinBox::prefix
+      @accessor %prefix(), %setPrefix()
+   */
+   Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
+
    Q_OBJECT
 
 protected:
+   /// \cond DO_NOT_DOCUMENT
    struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
       QWidget* newWidget(QWidget* parent) const {
          return new QSpinBox(parent);
       }
    };
+   /// \endcond
 
 public:
    explicit LabelledSpinBox(const QString& labelText = QString(),
@@ -140,9 +152,8 @@ public:
    //! @reimplements QSpinBox::prefix().
    QString  prefix() const;
 
-   //! @reimplements QSpinBox::suffix().
-   QString  suffix() const;
-
+   //! @reimplements QSpinBox::setPrefix().
+   void setPrefix(const QString& labelText);
 
 signals:
    /*!

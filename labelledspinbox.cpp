@@ -85,9 +85,9 @@ QString LabelledSpinBox::prefix() const
   return qobject_cast<QSpinBox*>(m_widget)->prefix();
 }
 
-QString LabelledSpinBox::suffix() const
+void LabelledSpinBox::setPrefix(const QString& text)
 {
-  return qobject_cast<QSpinBox*>(m_widget)->suffix();
+   qobject_cast<QSpinBox*>(m_widget)->setPrefix(text);
 }
 
 int LabelledSpinBox::displayIntegerBase() const

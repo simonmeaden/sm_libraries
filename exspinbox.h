@@ -85,7 +85,6 @@
 
 class SM_WIDGETS_SHARED_EXPORT ExSpinBox : public QSpinBox
 {
-   Q_OBJECT
 
    /*!
       \property ExSpinBox::displayType()
@@ -132,6 +131,44 @@ class SM_WIDGETS_SHARED_EXPORT ExSpinBox : public QSpinBox
    */
    Q_PROPERTY(DisplayCase charCase READ charCase WRITE setCharCase)
 
+   /*!
+      \property ExSpinBox::prefix
+
+      \brief This property holds the spin box's prefix
+
+      @reimplements QSpinBox::prefix
+      @accessor %prefix(), %setPrefix()
+   */
+   Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
+
+   /*!
+      \property ExSpinBox::negBeforePrefix()
+      \brief This property holds the display negative sign before prefix flag.
+
+      Default is true. This only applies to a user supplied prefix, not the internal
+      "0x" (Hexadecimal), "0" (Octal), "0b" (Binary) prefixes which are always supplied.
+
+      If false, the default, and assuming you set a prefix of "£" for a hexadecimal
+      spin box then the result would be "£-0xFF" for an int value of 255. If set to
+      true then "-£0xFF" would result which would make more sense in this case.
+      Of course this is a very wierd example and I cannot see any reason to display
+      hexadecimal currency but hey ho!.
+
+      @accessor %negBeforePrefix(), %setNegBeforePrefix()
+   */
+   Q_PROPERTY(bool negBeforePrefix READ negBeforePrefix WRITE setNegBeforePrefix)
+
+   /*!
+      \property ExSpinBox::prefix
+
+      \brief This property holds the spin box's prefix
+
+      @reimplements QSpinBox::prefix
+      @accessor %prefix(), %setPrefix()
+   */
+   Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
+
+   Q_OBJECT
 public:
    /*!
       \brief Defines the possible values for the display type.
@@ -152,7 +189,10 @@ public:
       Lowercase,     //!< Hexadecimal characters a-f display in lowercase.
    };
 
+   //! Default constructor for ExSpinBox, with optional parent set.
    explicit ExSpinBox(QWidget* parent = 0);
+   //! Constructor for ExSpinBox, specifying the display type, and optional parent.
+   //! \param displayType the ExSpinBox::DisplayType.
    explicit ExSpinBox(DisplayType displayType, QWidget* parent = 0);
 
    /*!
@@ -195,8 +235,17 @@ public:
    //! This is only relevant when the spin box is having  the type ExSpinBox::Hexadecimal.
    void setCharCase(DisplayCase charcase);
 
+   //! @reimplements QSpinBox::prefix().
+   QString prefix();
+
    //! @reimplements QSpinBox::setPrefix().
    void setPrefix(const QString& prefix);
+
+   //! Returns the value of the negative before prefix property.
+   bool negBeforePrefix() const;
+
+   //! Sets the value of the negative before prefix property.
+   void setNegBeforePrefix(bool negBeforePrefix);
 
 signals:
    /*!
@@ -222,6 +271,7 @@ private:
    bool m_showLeadingZeroes;
    DisplayType m_type;
    DisplayCase m_case;
+   bool m_negBeforePrefix;
 
    QValidator::State validate(QString& value, int& pos) const override;
    int valueFromText(const QString& textString) const override;

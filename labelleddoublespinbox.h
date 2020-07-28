@@ -37,7 +37,7 @@
 class LabelledDoubleSpinBox : public AbstractLabelledSpinBox
 {
    /*!
-       \property AbstractLabelledSpinBox::value
+       \property LabelledDoubleSpinBox::value
 
       \brief This property holds the value of the spin box.
 
@@ -48,7 +48,7 @@ class LabelledDoubleSpinBox : public AbstractLabelledSpinBox
    Q_PROPERTY(double value READ value WRITE setValue NOTIFY valueChanged USER true)
 
    /*!
-      \property AbstractLabelledSpinBox::maximum
+      \property LabelledDoubleSpinBox::maximum
 
       \brief This property holds the maximum value of the spin box.
 
@@ -58,7 +58,7 @@ class LabelledDoubleSpinBox : public AbstractLabelledSpinBox
    Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
 
    /*!
-      \property AbstractLabelledSpinBox::minimum
+      \property LabelledDoubleSpinBox::minimum
 
       \brief This property holds the minimum value of the spin box.
 
@@ -67,17 +67,30 @@ class LabelledDoubleSpinBox : public AbstractLabelledSpinBox
    */
    Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
 
+   /*!
+      \property LabelledDoubleSpinBox::prefix
+
+      \brief This property holds the spin box's prefix
+
+      @reimplements QSpinBox::prefix
+      @accessor %prefix(), %setPrefix()
+   */
+   Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
+
    Q_OBJECT
 
 protected:
+   /// \cond DO_NOT_DOCUMENT
    struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
       QWidget* newWidget(QWidget* parent) const {
          return new QDoubleSpinBox(parent);
       }
    };
+   /// \endcond
 
 public:
+   //! Constructs an LabelledDoubleSpinBox with the given labelText and default parent.
    LabelledDoubleSpinBox(const QString& labelText = QString(),
                          QWidget* parent = nullptr,
                          WidgetFactory const& factory = WidgetFactory());
@@ -118,12 +131,12 @@ public:
    //! @reimplements QDoubleSpinBox::prefix().
    QString  prefix() const;
 
-   //! @reimplements QDoubleSpinBox::suffix().
-   QString  suffix() const;
+   //! @reimplements QSpinBox::setPrefix().
+   void setPrefix(const QString& labelText);
 
 signals:
    /*!
-      \fn AbstractLabelledSpinBox::valueChanged(double value)
+      \fn LabelledDoubleSpinBox::valueChanged(double value)
 
       @from QSpinBox::value.
       @notprop value.

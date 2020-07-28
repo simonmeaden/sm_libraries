@@ -26,15 +26,15 @@ AbstractLabelledSpinBox::AbstractLabelledSpinBox(const QString& text,
    : AbstractLabelledWidget(text, parent, factory)
 {}
 
-QString AbstractLabelledSpinBox::prefix()
-{
-   return qobject_cast<QSpinBox*>(m_widget)->prefix();
-}
+//QString AbstractLabelledSpinBox::prefix()
+//{
+//   return qobject_cast<QSpinBox*>(m_widget)->prefix();
+//}
 
-void AbstractLabelledSpinBox::setPrefix(const QString& text)
-{
-   qobject_cast<QSpinBox*>(m_widget)->setPrefix(text);
-}
+//void AbstractLabelledSpinBox::setPrefix(const QString& text)
+//{
+//   qobject_cast<QSpinBox*>(m_widget)->setPrefix(text);
+//}
 
 QString AbstractLabelledSpinBox::suffix()
 {

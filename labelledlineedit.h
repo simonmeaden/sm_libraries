@@ -68,7 +68,7 @@ class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit :
    Q_PROPERTY(bool acceptableInput READ hasAcceptableInput)
 
    /*!
-      \property LabelledLineEdit::alignment
+      \property LabelledLineEdit::widgetAlignment
       \brief This property holds the alignment of the line edit.
 
       @reimplements QLineEdit::widgetAlignment
@@ -226,12 +226,14 @@ class SM_WIDGETS_SHARED_EXPORT LabelledLineEdit :
    Q_OBJECT
 
 protected:
+  /// \cond DO_NOT_DOCUMENT
    struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
       virtual QWidget* newWidget(QWidget* parent) const {
          return new QLineEdit(parent);
       }
    };
+   /// \endcond
 
 public:
    //   explicit LabelledLineEdit(QWidget* parent = nullptr);

@@ -86,6 +86,7 @@ class CircularBuffer
 {
 
 public:
+  /// \cond DO_NOT_DOCUMENT
   typedef circular_buffer<T> self_type;
   //  typedef circular_buffer<T> allocator_type;
 
@@ -106,6 +107,7 @@ public:
   typename circular_buffer<T>::const_reverse_iterator const_reverse_iterator;
   //  typedef const_iterator ConstIterator;
   //  typedef iterator Iterator;
+  /// \endcond
 
   /*!
     \brief Constructor of the CircularBuffer

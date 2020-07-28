@@ -160,17 +160,20 @@ class SM_WIDGETS_SHARED_EXPORT LabelledComboBox : public AbstractLabelledWidget
    Q_OBJECT
 
 protected:
-  struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
+   /// \cond DO_NOT_DOCUMENT
+   struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
       virtual QWidget* newWidget(QWidget* parent) const {
          return new QComboBox(parent);
       }
    };
+   /// \endcond
 
 public:
+   //! Constructs an LabelledComboBox with the given labelText and default parent.
    explicit LabelledComboBox(const QString& labelText,
-                            QWidget* parent = nullptr,
-                            WidgetFactory const& factory = WidgetFactory());
+                             QWidget* parent = nullptr,
+                             WidgetFactory const& factory = WidgetFactory());
 
    //! @reimplements QComboBox::addItem(const QString& const QVariant&).
    void addItem(const QString& labelText, const QVariant& userdata = QVariant());

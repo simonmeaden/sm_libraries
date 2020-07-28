@@ -78,27 +78,56 @@ class SM_WIDGETS_SHARED_EXPORT LabelledExSpinBox : public AbstractLabelledSpinBo
    Q_PROPERTY(bool showLeadingZeroes READ showLeadingZeroes WRITE setShowLeadingZeroes)
 
    /*!
-      \property AbstractLabelledSpinBox::stepType
+      \property LabelledExSpinBox::stepType
 
-   \brief This property holds the step type.
+      \brief This property holds the step type.
 
-     @reimplements QSpinBox::stepType
-     @accessor %stepType(), %setStepType(QSpinBox::StepType)
-       */
-       Q_PROPERTY(QSpinBox::StepType stepType READ stepType WRITE setStepType)
+      @reimplements QSpinBox::stepType
+      @accessor %stepType(), %setStepType(QSpinBox::StepType)
+   */
+   Q_PROPERTY(QSpinBox::StepType stepType READ stepType WRITE setStepType)
 
+   /*!
+      \property LabelledExSpinBox::prefix
 
-       Q_OBJECT
+      \brief This property holds the spin box's prefix
+
+      @reimplements QSpinBox::prefix
+      @accessor %prefix(), %setPrefix()
+   */
+   Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
+
+   /*!
+      \property LabelledExSpinBox::negBeforePrefix()
+      \brief This property holds the display negative sign before prefix flag.
+
+      Default is false. This only applies to a user supplied prefix, not the internal
+      "0x" (Hexadecimal), "0" (Octal), "0b" (Binary) prefixes which are always supplied.
+
+      If false, the default, and assuming you set a prefix of "£" for a hexadecimal
+      spin box then the result would be "£-0xFF" for an int value of 255. If set to
+      true then "-£0xFF" would result. Of course this is a very odd example and I
+      cannot see any reason to display hexadecimal currency.
+
+      @accessor %negBeforePrefix(), %setNegBeforePrefix()
+   */
+   Q_PROPERTY(bool negBeforePrefix READ negBeforePrefix WRITE setNegBeforePrefix)
+
+   Q_OBJECT
 
 protected:
+   /// \cond DO_NOT_DOCUMENT
    struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
+      //! Returns a new widget.
       virtual QWidget* newWidget(QWidget* parent) const {
          return new ExSpinBox(parent);
       }
    };
+   /// \endcond
 
 public:
+   //! Constructs an LabelledExSpinBox with the given labelText and default parent.
    explicit LabelledExSpinBox(const QString& labelText = QString(),
                               QWidget* parent = nullptr,
                               WidgetFactory const& factory = WidgetFactory());
@@ -158,9 +187,15 @@ public:
    //! @reimplements QSpinBox::prefix().
    QString  prefix() const;
 
-   //! @reimplements QSpinBox::suffix().
-   QString  suffix() const;
+   //! @reimplements QSpinBox::setPrefix().
+   void setPrefix(const QString& labelText);
 
+   //! Returns the value of the negative before prefix flag.
+   bool negBeforePrefix() const;
+   //! Sets the value of the negative before prefix flag.
+   //!
+   //!
+   void setNegBeforePrefix(bool negBeforePrefix);
 
 signals:
    /*!

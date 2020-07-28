@@ -27,15 +27,22 @@
 #include "sm_libraries/labelledwidgets.h"
 #include "sm_libraries/extabwidget.h"
 
+/*!
+   \file mainwindow.h mainwindow.cpp
+   \class MainWindow mainwindow.h
+   \brief Main test application for sm_libraries..
+   \since 5.7.0
+   \license The MIT License
+   \copyright © 2019 - 2020 Simon Meaden. All rights reserved.
+*/
 class MainWindow : public QMainWindow
 {
    Q_OBJECT
 
 public:
+  //! Constructs MainWindow test application.
    explicit MainWindow(QWidget* parent = nullptr);
    ~MainWindow();
-
-   void enableWidgets(bool enable);
 
 private:
    QTabWidget* m_tabs;
@@ -56,7 +63,7 @@ private:
    AbstractLabelledWidget* m_currentWidget;
    QPlainTextEdit* m_labelStylesheet, *m_widgetStylesheet, *m_overallStylesheet;
    QPushButton* m_setLabelStylesheet, *m_setWidgetStylesheet;
-   LabelledComboBox* m_positionBox,*m_exBox;
+   LabelledComboBox* m_positionBox, *m_exBox;
    LabelledComboBox* m_labelHPoliciesBox, *m_labelVPoliciesBox;
    LabelledComboBox* m_widgetHPoliciesBox, *m_widgetVPoliciesBox;
    LabelledSpinBox* m_left, *m_right, *m_top, *m_bottom, *m_spacing;
@@ -65,6 +72,8 @@ private:
    QPushButton* m_setSpinBtn;
    LabelledSpinBox* m_minIntSpin, *m_maxIntSpin, *m_stepIntSpin;
    LabelledDoubleSpinBox* m_minDblSpin, *m_maxDblSpin, *m_stepDblSpin;
+   LabelledLineEdit* m_exPrefixEdit;
+   QCheckBox* m_exNegBeforePrefixBox;
 
    ExTabWidget* m_exTabWidget;
    QCheckBox* m_enableClockBox, *m_showSecondsBox;
@@ -82,13 +91,15 @@ private:
    void setBottom();
    void setSpacing();
 
+   void enableWidgets(bool enable);
+
    void lineEditChanged(const QString& text);
    void comboBoxChanged(const QString& text);
    void spinBoxChanged(int value);
    void doubleSpinBoxChanged(double value);
    void exSpinBoxChanged(int value);
    void setCurrentWidgetAlignment();
-   void exBoxTypeChanged();
+   void exBoxTypeChanged(int index);
 
    void chooseWidget(const QString& text);
    void labelTextHasChanged(const QString& text);

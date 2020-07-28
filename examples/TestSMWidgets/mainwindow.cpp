@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget* parent)
 {
    initGui();
 
-   m_tabs->setCurrentIndex(0);
+   m_tabs->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow() {}
@@ -55,6 +55,8 @@ void MainWindow::chooseWidget(const QString& text)
          m_widgetText->setText(m_lineEdit->text());
          m_spinStack->setEnabled(false);
          m_exBox->setEnabled(false);
+         m_exNegBeforePrefixBox->setEnabled(false);
+         m_exPrefixEdit->setEnabled(false);
          m_setSpinBtn->setEnabled(false);
       }
 
@@ -65,6 +67,8 @@ void MainWindow::chooseWidget(const QString& text)
          m_widgetText->setText(m_textField->text());
          m_spinStack->setEnabled(false);
          m_exBox->setEnabled(false);
+         m_exNegBeforePrefixBox->setEnabled(false);
+         m_exPrefixEdit->setEnabled(false);
          m_setSpinBtn->setEnabled(false);
       }
 
@@ -75,6 +79,8 @@ void MainWindow::chooseWidget(const QString& text)
          m_widgetText->setText(m_comboBox->currentText());
          m_spinStack->setEnabled(false);
          m_exBox->setEnabled(false);
+         m_exNegBeforePrefixBox->setEnabled(false);
+         m_exPrefixEdit->setEnabled(false);
          m_setSpinBtn->setEnabled(false);
       }
 
@@ -86,6 +92,8 @@ void MainWindow::chooseWidget(const QString& text)
          m_spinStack->setEnabled(true);
          m_spinStack->setCurrentIndex(m_spinIntStack);
          m_exBox->setEnabled(false);
+         m_exNegBeforePrefixBox->setEnabled(false);
+         m_exPrefixEdit->setEnabled(false);
          m_setSpinBtn->setEnabled(true);
       }
 
@@ -97,6 +105,8 @@ void MainWindow::chooseWidget(const QString& text)
          m_spinStack->setEnabled(true);
          m_spinStack->setCurrentIndex(m_spinDblStack);
          m_exBox->setEnabled(false);
+         m_exNegBeforePrefixBox->setEnabled(false);
+         m_exPrefixEdit->setEnabled(false);
          m_setSpinBtn->setEnabled(true);
       }
 
@@ -108,6 +118,8 @@ void MainWindow::chooseWidget(const QString& text)
          m_spinStack->setEnabled(true);
          m_spinStack->setCurrentIndex(m_spinIntStack);
          m_exBox->setEnabled(true);
+         m_exNegBeforePrefixBox->setEnabled(true);
+         m_exPrefixEdit->setEnabled(true);
          m_setSpinBtn->setEnabled(true);
       }
 
@@ -117,6 +129,8 @@ void MainWindow::chooseWidget(const QString& text)
       m_widgetText->setText("");
       m_spinStack->setEnabled(false);
       m_exBox->setEnabled(false);
+      m_exNegBeforePrefixBox->setEnabled(false);
+      m_exPrefixEdit->setEnabled(false);
       m_setSpinBtn->setEnabled(false);
    }
 
@@ -194,6 +208,8 @@ void MainWindow::spinWidgetChanged()
       m_exSpinBox->setMinimum(m_minIntSpin->value());
       m_exSpinBox->setMaximum(m_maxIntSpin->value());
       m_exSpinBox->setSingleStep(m_stepIntSpin->value());
+      m_exSpinBox->setNegBeforePrefix(m_exNegBeforePrefixBox->isChecked());
+      m_exSpinBox->setPrefix(m_exPrefixEdit->text());
 
    } else if (m_currentWidget == m_doubleSpinBox) {
       m_doubleSpinBox->setMinimum(m_minDblSpin->value());
@@ -599,51 +615,70 @@ void MainWindow::setSpinBoxStatus()
       int max = m_spinBox->maximum();
       int step = m_spinBox->singleStep();
 
-      if (min < m_minIntSpin->minimum()) {
-         m_minIntSpin->setMinimum(min);
+      if (min != m_minIntSpin->value()) {
+         m_minIntSpin->setValue(min);
       }
 
-      if (max > m_maxIntSpin->maximum()) {
-         m_minIntSpin->setMaximum(max);
+      if (max != m_maxIntSpin->value()) {
+         m_maxIntSpin->setValue(max);
       }
 
-      m_minIntSpin->setValue(min);
-      m_maxIntSpin->setValue(max);
-      m_stepIntSpin->setValue(step);
+      if (step != m_stepIntSpin->value()) {
+         m_stepIntSpin->setValue(step);
+      }
 
    } else if (m_currentWidget == m_doubleSpinBox) {
-      double min = m_spinBox->minimum();
-      double max = m_spinBox->maximum();
-      double step = m_spinBox->singleStep();
+      double min = m_doubleSpinBox->minimum();
+      double max = m_doubleSpinBox->maximum();
+      double step = m_doubleSpinBox->singleStep();
 
-      if (min < m_minIntSpin->minimum()) {
-         m_minIntSpin->setMinimum(min);
+      if (min != m_minDblSpin->value()) {
+         m_minDblSpin->setValue(min);
       }
 
-      if (max > m_maxIntSpin->maximum()) {
-         m_minIntSpin->setMaximum(max);
+      if (max != m_maxDblSpin->value()) {
+         m_maxDblSpin->setValue(max);
       }
 
-      m_minDblSpin->setValue(min);
-      m_maxDblSpin->setValue(max);
-      m_stepDblSpin->setValue(step);
+      if (step != m_stepDblSpin->value()) {
+         m_stepDblSpin->setValue(step);
+      }
 
    } else if (m_currentWidget == m_exSpinBox) {
-      int min = m_spinBox->minimum();
-      int max = m_spinBox->maximum();
-      int step = m_spinBox->singleStep();
+      int min = m_exSpinBox->minimum();
+      int max = m_exSpinBox->maximum();
+      int step = m_exSpinBox->singleStep();
 
-      if (min < m_minIntSpin->minimum()) {
-         m_minIntSpin->setMinimum(min);
+      if (min != m_minIntSpin->value()) {
+         m_minIntSpin->setValue(min);
       }
 
-      if (max > m_maxIntSpin->maximum()) {
-         m_minIntSpin->setMaximum(max);
+      if (max != m_maxIntSpin->value()) {
+         m_maxIntSpin->setValue(max);
       }
 
-      m_minIntSpin->setValue(min);
-      m_maxIntSpin->setValue(max);
-      m_stepIntSpin->setValue(step);
+      if (step != m_stepIntSpin->value()) {
+         m_stepIntSpin->setValue(step);
+      }
+
+      switch (m_exSpinBox->displayType()) {
+        case ExSpinBox::Hexadecimal:
+          m_exBox->setCurrentIndex(0);
+          break;
+        case ExSpinBox::Decimal:
+          m_exBox->setCurrentIndex(1);
+          break;
+        case ExSpinBox::Octal:
+          m_exBox->setCurrentIndex(2);
+          break;
+        case ExSpinBox::Binary:
+          m_exBox->setCurrentIndex(3);
+          break;
+      }
+
+      m_exNegBeforePrefixBox->setChecked(m_exSpinBox->negBeforePrefix());
+
+      m_exPrefixEdit->setText(m_exSpinBox->prefix());
    }
 }
 
@@ -740,7 +775,7 @@ void MainWindow::setCurrentWidgetAlignment()
    }
 }
 
-void MainWindow::exBoxTypeChanged()
+void MainWindow::exBoxTypeChanged(int /*index*/)
 {
    if (m_exBox->currentIndex() == 0) {
       m_exSpinBox->setDisplayType(ExSpinBox::Hexadecimal);
@@ -756,6 +791,15 @@ void MainWindow::exBoxTypeChanged()
    }
 }
 
+//void MainWindow::exNegBeforePrefixChanged(bool checked)
+//{
+//   if (!m_currentWidget) {
+//      return;
+//   }
+
+//   m_exSpinBox->setNegBeforePrefix(checked);
+//}
+
 QWidget* MainWindow::initLabelledWidgets()
 {
    QGroupBox* box = new QGroupBox(tr("Labelled Widgets :"), this);
@@ -763,6 +807,7 @@ QWidget* MainWindow::initLabelledWidgets()
    box->setLayout(l);
 
    m_lineEdit = new LabelledLineEdit(tr("QLineEdit :"), this);
+   // I chose textEdited because it ignores programatically changed text
    //   connect(m_lineEdit, &LabelledLineEdit::textChanged,
    //           this, &MainWindow::lineEditChanged);
    connect(m_lineEdit,
@@ -1062,7 +1107,16 @@ QWidget* MainWindow::initSpinBoxRangeBox()
    m_exBox = new LabelledComboBox(tr("Choose ExSpinBox Display Type"), this);
    m_exBox->addItems(extypes);
    m_exBox->setEnabled(false);
+   connect(m_exBox, &LabelledComboBox::currentIndexChanged, this, &MainWindow::exBoxTypeChanged);
    intLayout->addWidget(m_exBox);
+
+   m_exNegBeforePrefixBox = new QCheckBox(tr("ExSpinBox Negative Before Prefix"), this);
+   m_exNegBeforePrefixBox->setEnabled(false);
+   intLayout->addWidget(m_exNegBeforePrefixBox);
+
+   m_exPrefixEdit = new LabelledLineEdit(tr("ExSpinBox prefix"), this);
+   m_exPrefixEdit->setEnabled(false);
+   intLayout->addWidget(m_exPrefixEdit);
 
    QGroupBox* dblBox = new QGroupBox(tr("Double Spin Box Control"), this);
    QVBoxLayout* dblLayout = new QVBoxLayout;
@@ -1217,7 +1271,6 @@ QWidget* MainWindow::initExTabWidget()
    m_enableMarqueeBox = new QCheckBox(tr("Start marquee"), this);
    connect(m_enableMarqueeBox, &QCheckBox::clicked, this, &MainWindow::setMarqueeMoving);
    enableLayout->addWidget(m_enableMarqueeBox);
-
 
    l1->addWidget(enableBox, 0, 0);
 

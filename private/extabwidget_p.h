@@ -16,7 +16,7 @@
 #include <QPushButton>
 #include <QTabBar>
 
-/*! \cond PRIVATE */ // Hides classes etc from doxygen until endcond at end of file
+/// \cond DO_NOT_DOCUMENT
 
 #include "abstractlogindialog.h"
 
@@ -160,6 +160,6 @@ public:
   QColor messageTextColor();
 };
 
-/*! \endcond */
+/// \endcond
 
 #endif // EXTENDEDTABWIDGETPRIVATE_H

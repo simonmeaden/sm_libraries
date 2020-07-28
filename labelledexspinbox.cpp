@@ -112,12 +112,22 @@ void LabelledExSpinBox::setSingleStep(int step)
 
 QString LabelledExSpinBox::prefix() const
 {
-  return qobject_cast<QSpinBox*>(m_widget)->prefix();
+  return qobject_cast<ExSpinBox*>(m_widget)->prefix();
 }
 
-QString LabelledExSpinBox::suffix() const
+void LabelledExSpinBox::setPrefix(const QString& text)
 {
-  return qobject_cast<QSpinBox*>(m_widget)->suffix();
+  qobject_cast<ExSpinBox*>(m_widget)->setPrefix(text);
+}
+
+bool LabelledExSpinBox::negBeforePrefix() const
+{
+  return qobject_cast<ExSpinBox*>(m_widget)->negBeforePrefix();
+}
+
+void LabelledExSpinBox::setNegBeforePrefix(bool negBeforePrefix)
+{
+  qobject_cast<ExSpinBox*>(m_widget)->setNegBeforePrefix(negBeforePrefix);
 }
 
 void LabelledExSpinBox::initGui(const QString&)

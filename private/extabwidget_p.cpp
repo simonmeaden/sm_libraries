@@ -1,6 +1,7 @@
 #include "extabwidget_p.h"
 #include "extabwidget.h"
 
+/// \cond DO_NOT_DOCUMENT
 const QString ExTabWidgetPrivate::LOGIN = "Log In";
 const QString ExTabWidgetPrivate::LOGOUT = "Log Out";
 const QString ExTabWidgetPrivate::WITHSECONDS = "00:00:00";
@@ -75,7 +76,7 @@ void ExTabWidgetPrivate::clearFrames()
 
 bool ExTabWidgetPrivate::hasCustomLoginDialog()
 {
-  return (m_customLoginDlg);
+   return (m_customLoginDlg);
 }
 
 void ExTabWidgetPrivate::showFrame(bool frame)
@@ -159,7 +160,7 @@ void ExTabWidgetPrivate::setMarquee(bool marquee)
 
 void ExTabWidgetPrivate::setMarqueeSpeed(qreal charPerSecond)
 {
-  m_marqueeSpeed = int(1000.0 / charPerSecond);
+   m_marqueeSpeed = int(1000.0 / charPerSecond);
    m_marqueeTimer->setInterval(m_marqueeSpeed);
    q_ptr->update();
 }
@@ -253,6 +254,9 @@ void ExTabWidgetPrivate::setLoginType()
                     &ExTabWidget::loginIsIncorrect);
       }
 
+      break;
+
+   case ExTabWidget::None:
       break;
    }
 
@@ -736,7 +740,7 @@ void ExTabWidgetPrivate::loginIsIncorrect()
 
 void ExTabWidgetPrivate::setIgnoreCase(bool ignoreCase)
 {
-  m_ignoreCase = ignoreCase;
+   m_ignoreCase = ignoreCase;
 }
 
 void ExTabWidgetPrivate::setLargeTextForLoginDialog(bool)
@@ -901,8 +905,8 @@ LoginDialog::~LoginDialog() {}
 
 void LoginDialog::clearText()
 {
-  m_userEdit->clear();
-  m_passEdit->clear();
+   m_userEdit->clear();
+   m_passEdit->clear();
 }
 
 void LoginDialog::acceptLogin()
@@ -973,7 +977,7 @@ SimpleLoginDialog::~SimpleLoginDialog() {}
 
 void SimpleLoginDialog::clearText()
 {
-  m_passEdit->clear();
+   m_passEdit->clear();
 }
 
 void SimpleLoginDialog::initGui(bool largeText)
@@ -1030,3 +1034,5 @@ void SimpleLoginDialog::acceptLogin()
 {
    emit loginData(m_passEdit->text());
 }
+
+/// \endcond

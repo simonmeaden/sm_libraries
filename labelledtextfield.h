@@ -83,7 +83,7 @@ class SM_WIDGETS_SHARED_EXPORT LabelledTextField
    Q_PROPERTY(bool scaledContents READ hasScaledContents WRITE setScaledContents)
 
    /*!
-      \property LabelledTextField::alignment
+      \property LabelledTextField::widgetAlignment
       \brief This property holds the alignment of the field's contents
 
       @reimplements QLabel::alignment
@@ -163,12 +163,14 @@ class SM_WIDGETS_SHARED_EXPORT LabelledTextField
    Q_OBJECT
 
 protected:
+   /// \cond DO_NOT_DOCUMENT
    struct WidgetFactory : AbstractLabelledWidget::WidgetFactory
    {
       virtual QWidget* newWidget(QWidget* parent) const {
          return new QLabel(parent);
       }
    };
+   /// \endcond
 
 public:
    //! Constructs a text field with the given parent, and empty label and text properties.

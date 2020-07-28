@@ -23,9 +23,14 @@ if (NOT LIBRARIES_BUILD AND CMAKE_BUILD_TYPE STREQUAL Release)
    set(DOXYGEN_PREDEFINED DOXYGEN_WORKING)
    set(DOXYGEN_ALIASES
       ${DOXYGEN_ALIASES}
-      "accessors=\\par Access functions:^^"
+      "accessor=\\par Access functions:^^"
       "prop=\\par Property:^^"
       "notifier=\\par Notifier signal:^^"
+      "license=\\par License : ^^"
+      #     "license{1}=\\par License : ^^"
+      "reimplements=\\par Reimplements : ^^"
+      "from=\\par From : "
+      "notprop=\\par Notifier for "
    )
 
    include(FindDoxygen)

@@ -92,12 +92,14 @@ class AbstractLabelledWidget : public QWidget
    };
 
 protected:
+   /// \cond DO_NOT_DOCUMENT
    struct WidgetFactory
    {
       virtual QWidget* newWidget(QWidget*) const {
          return nullptr;
       }
    };
+   /// \endcond
 
 public:
    /*!
@@ -194,12 +196,16 @@ public:
    void setLabel(QLabel* label);
 
 protected:
+   /// \cond DO_NOT_DOCUMENT
    WidgetFactory* m_factory;
+   /// \endcond
 
    QLabel* m_label;          //!< pointer to the Label.
    QWidget* m_widget;        //!< pointer to the widget.
    QGridLayout* m_layout;    //!< widget layout
    LabelPosition m_position; //!< the label position
+
+   //! Positions the label appropriately for LabelPosition.
    void positionLabel();
 
 private:
@@ -208,8 +214,7 @@ private:
 };
 
 /*!
-   \file abstractlabelledwidget.h abstractlabelledwidget.cpp
-   \class AbstractAlignableLabelledWidget abstractlabelledwidget.h
+   \interface AlignableWidgetInterface abstractlabelledwidget.h
    \brief The alignable LabelledWidget interface class.
    \since 5.7.0
    \license The MIT License
@@ -231,8 +236,7 @@ public:
 };
 
 /*!
-   \file abstractlabelledwidget.h abstractlabelledwidget.cpp
-   \class AbstractAlignableLabelledWidget abstractlabelledwidget.h
+   \interface TextFormatInterface abstractlabelledwidget.h
    \brief The LabelledWidget formatable text class.
    \since 5.7.0
    \license The MIT License
@@ -243,15 +247,6 @@ public:
 */
 class TextFormatInterface
 {
-   /*!
-       \property LabelledTextField::textFormat
-       \brief This property holds the field's text format
-
-      @reimplements QLabel::textFormat
-
-      @accessor %textFormat(), %setTextFormat(Qt::TextFormat)
-   */
-   Q_PROPERTY(Qt::TextFormat textFormat READ textFormat WRITE setTextFormat)
 
 public:
 

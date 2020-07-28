@@ -42,6 +42,8 @@
 #include "node.h"
 #include "yaml-cpp/yaml.h"
 
+/// \cond DO_NOT_DOCUMENT
+
 namespace YAML {
 
 template<class T>
@@ -174,5 +176,7 @@ inline void operator>>(const Node& node, QSet<T>& q)
 }
 
 } // end of namespace YAML
+
+/// \endcond
 
 #endif // COLLECTION_H

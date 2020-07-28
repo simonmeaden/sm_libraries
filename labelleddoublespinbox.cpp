@@ -85,15 +85,13 @@ void LabelledDoubleSpinBox::setSingleStep(double step)
 
 QString LabelledDoubleSpinBox::prefix() const
 {
-  return qobject_cast<QSpinBox*>(m_widget)->prefix();
+  return qobject_cast<QDoubleSpinBox*>(m_widget)->prefix();
 }
 
-QString LabelledDoubleSpinBox::suffix() const
+void LabelledDoubleSpinBox::setPrefix(const QString& text)
 {
-  return qobject_cast<QSpinBox*>(m_widget)->suffix();
+   qobject_cast<QDoubleSpinBox*>(m_widget)->setPrefix(text);
 }
-
-
 
 void LabelledDoubleSpinBox::initGui(const QString &/*text*/)
 {

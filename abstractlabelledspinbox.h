@@ -52,16 +52,6 @@ class AbstractLabelledSpinBox
    */
    Q_PROPERTY(QString suffix READ suffix WRITE setSuffix)
 
-   /*!
-      \property AbstractLabelledSpinBox::prefix
-
-      \brief This property holds the spin box's prefix
-
-      @reimplements QSpinBox::prefix
-      @accessor %prefix(), %setPrefix()
-   */
-   Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
-
    Q_OBJECT
 
 public:
@@ -69,12 +59,6 @@ public:
    explicit AbstractLabelledSpinBox(const QString& labelText = QString(),
                                     QWidget* parent = nullptr,
                                     WidgetFactory const& factory = WidgetFactory());
-
-   //! @reimplements QSpinBox::prefix() const.
-   QString prefix();
-
-   //! @reimplements QSpinBox::setPrefix().
-   void setPrefix(const QString& labelText);
 
    //! @reimplements QSpinBox::suffix() const.
    QString suffix();
