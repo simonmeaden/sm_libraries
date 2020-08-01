@@ -545,10 +545,10 @@ void MainWindow::showClock(bool enable)
    m_showSecondsBox->setEnabled(enable);
 
    if (enable) {
-      m_enableMarqueeBox->setText(tr("Hide Clock"));
+      m_showClockBox->setText(tr("Hide Clock"));
 
    } else {
-      m_enableMarqueeBox->setText(tr("Show Clock"));
+      m_showClockBox->setText(tr("Show Clock"));
    }
 }
 
@@ -557,10 +557,10 @@ void MainWindow::showSeconds(bool enable)
    m_exTabWidget->showSeconds(enable);
 
    if (enable) {
-      m_enableMarqueeBox->setText(tr("Hide Seconds"));
+      m_showSecondsBox->setText(tr("Hide Seconds"));
 
    } else {
-      m_enableMarqueeBox->setText(tr("Show Seconds"));
+      m_showSecondsBox->setText(tr("Show Seconds"));
    }
 }
 
@@ -569,10 +569,10 @@ void MainWindow::showMessages(bool enable)
    m_exTabWidget->showMessages(enable);
 
    if (enable) {
-      m_enableMarqueeBox->setText(tr("Hide Messages"));
+      m_showMessageBox->setText(tr("Hide Messages"));
 
    } else {
-      m_enableMarqueeBox->setText(tr("Show Messages"));
+      m_showMessageBox->setText(tr("Show Messages"));
    }
 }
 
@@ -662,18 +662,21 @@ void MainWindow::setSpinBoxStatus()
       }
 
       switch (m_exSpinBox->displayType()) {
-        case ExSpinBox::Hexadecimal:
-          m_exBox->setCurrentIndex(0);
-          break;
-        case ExSpinBox::Decimal:
-          m_exBox->setCurrentIndex(1);
-          break;
-        case ExSpinBox::Octal:
-          m_exBox->setCurrentIndex(2);
-          break;
-        case ExSpinBox::Binary:
-          m_exBox->setCurrentIndex(3);
-          break;
+      case ExSpinBox::Hexadecimal:
+         m_exBox->setCurrentIndex(0);
+         break;
+
+      case ExSpinBox::Decimal:
+         m_exBox->setCurrentIndex(1);
+         break;
+
+      case ExSpinBox::Octal:
+         m_exBox->setCurrentIndex(2);
+         break;
+
+      case ExSpinBox::Binary:
+         m_exBox->setCurrentIndex(3);
+         break;
       }
 
       m_exNegBeforePrefixBox->setChecked(m_exSpinBox->negBeforePrefix());
@@ -791,14 +794,15 @@ void MainWindow::exBoxTypeChanged(int /*index*/)
    }
 }
 
-//void MainWindow::exNegBeforePrefixChanged(bool checked)
-//{
-//   if (!m_currentWidget) {
-//      return;
-//   }
+void MainWindow::setMessage()
+{
+   m_exTabWidget->setMessage(m_messageEdit->text());
+}
 
-//   m_exSpinBox->setNegBeforePrefix(checked);
-//}
+void MainWindow::setTempMessage()
+{
+   //  m_exTabWidget->setMessage();
+}
 
 QWidget* MainWindow::initLabelledWidgets()
 {
@@ -1136,9 +1140,9 @@ QWidget* MainWindow::initSpinBoxRangeBox()
    m_stepDblSpin->setSingleStep(0.1);
    dblLayout->addWidget(m_stepDblSpin);
 
-   m_setSpinBtn = new QPushButton(tr("Set Values"), this);
+   m_setSpinBtn = new QPushButton(tr("Set Message"), this);
    m_setSpinBtn->setEnabled(false);
-   connect(m_setSpinBtn, &QPushButton::clicked, this, &MainWindow::spinWidgetChanged);
+   connect(m_setSpinBtn, &QPushButton::clicked, this, &MainWindow::setMessage);
    l->addWidget(m_setSpinBtn, 1, 0);
 
    QFrame* dummy = new QFrame(this);
@@ -1255,22 +1259,64 @@ QWidget* MainWindow::initExTabWidget()
    QVBoxLayout* enableLayout = new QVBoxLayout;
    enableBox->setLayout(enableLayout);
 
-   m_enableClockBox = new QCheckBox(tr("Enable Clock"), this);
-   connect(m_enableClockBox, &QCheckBox::clicked, this, &MainWindow::showClock);
-   enableLayout->addWidget(m_enableClockBox);
+   m_showClockBox = new QCheckBox(tr("Enable Clock"), this);
+   connect(m_showClockBox, &QCheckBox::clicked, this, &MainWindow::showClock);
+   enableLayout->addWidget(m_showClockBox);
 
    m_showSecondsBox = new QCheckBox(tr("Show Seconds"), this);
    m_showSecondsBox->setEnabled(false);
    connect(m_showSecondsBox, &QCheckBox::clicked, this, &MainWindow::showSeconds);
    enableLayout->addWidget(m_showSecondsBox);
 
-   m_enableMessageBox = new QCheckBox(tr("Show Messages"), this);
-   connect(m_enableMessageBox, &QCheckBox::clicked, this, &MainWindow::showMessages);
-   enableLayout->addWidget(m_enableMessageBox);
+   m_showMessageBox = new QCheckBox(tr("Show Messages"), this);
+   connect(m_showMessageBox, &QCheckBox::clicked, this, &MainWindow::showMessages);
+   enableLayout->addWidget(m_showMessageBox);
 
    m_enableMarqueeBox = new QCheckBox(tr("Start marquee"), this);
    connect(m_enableMarqueeBox, &QCheckBox::clicked, this, &MainWindow::setMarqueeMoving);
    enableLayout->addWidget(m_enableMarqueeBox);
+
+   m_messageEdit = new LabelledLineEdit(tr("Enter message :"), this);
+   m_messageEdit->setText(
+      tr("This is a very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very long message"));
+   enableLayout->addWidget(m_messageEdit);
+
+   m_messageBtn = new QPushButton(tr("Set Message"), this);
+   connect(m_messageBtn, &QPushButton::clicked, this,
+           &MainWindow::setMessage);
+   enableLayout->addWidget(m_messageBtn);
+
+   m_tempMessageEdit = new LabelledLineEdit(tr("Enter message :"), this);
+   m_tempMessageEdit->setText(tr("Temporary message"));
+   enableLayout->addWidget(m_tempMessageEdit);
+
+   m_timeoutBox = new LabelledDoubleSpinBox(tr("Temp Message Timeout (Seconds)"), this);
+   m_timeoutBox->setRange(0, 10);
+   enableLayout->addWidget(m_timeoutBox);
+
+   //   QFrame *colorBtnFrame = new QFrame(this);
+   QVBoxLayout* clMain = new QVBoxLayout;
+   QHBoxLayout* cl1 = new QHBoxLayout, *cl2 = new QHBoxLayout;
+   clMain->addLayout(cl1);
+   clMain->addLayout(cl2);
+   //   colorBtnFrame->setLayout(clMain);
+
+   m_textColorBtn = new QPushButton(tr("Set Color"), this);
+   cl1->addWidget(m_textColorBtn);
+   m_backColorBtn = new QPushButton(tr("Set Background"), this);
+   cl1->addWidget(m_backColorBtn);
+   m_textColorBtn = new QPushButton(tr("Set Temporary Color"), this);
+   cl2->addWidget(m_textColorBtn);
+   m_backColorBtn = new QPushButton(tr("Set Temporary Background"), this);
+   cl2->addWidget(m_backColorBtn);
+   // TODO set colors.
+
+   enableLayout->addLayout(clMain);
+
+   m_tempMessageBtn = new QPushButton(tr("Set Temporary Message"), this);
+   connect(m_tempMessageBtn, &QPushButton::clicked, this,
+           &MainWindow::setTempMessage);
+   enableLayout->addWidget(m_tempMessageBtn);
 
    l1->addWidget(enableBox, 0, 0);
 

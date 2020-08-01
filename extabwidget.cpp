@@ -47,7 +47,7 @@ QBrush ExTabWidget::messageBackground() {
   return d_ptr->messageBackgroundBrush();
 }
 
-QColor ExTabWidget::messageTextColor() {
+QColor ExTabWidget::messageColor() {
   return d_ptr->messageTextColor();
 }
 
@@ -120,17 +120,17 @@ void ExTabWidget::setMessage(QString message, uint timeout) {
   d_ptr->setMessage(message, timeout);
 }
 
-void ExTabWidget::setMessage(QColor color, QString message, uint timeout) {
-  d_ptr->setMessage(color, message, timeout);
-}
+//void ExTabWidget::setMessage(QColor color, QString message, uint timeout) {
+//  d_ptr->setMessage(color, message, timeout);
+//}
 
-void ExTabWidget::setMessage(QColor color, QColor back, QString message, uint timeout) {
-  d_ptr->setMessage(color, back, message, timeout);
-}
+//void ExTabWidget::setMessage(QColor color, QColor back, QString message, uint timeout) {
+//  d_ptr->setMessage(color, back, message, timeout);
+//}
 
-void ExTabWidget::setMessage(QColor color, QBrush back, QString message, uint timeout) {
-  d_ptr->setMessage(color, back, message, timeout);
-}
+//void ExTabWidget::setMessage(QColor color, QBrush back, QString message, uint timeout) {
+//  d_ptr->setMessage(color, back, message, timeout);
+//}
 
 void ExTabWidget::setMarquee(bool marquee) {
   d_ptr->setMarquee(marquee);
@@ -146,8 +146,11 @@ void ExTabWidget::clearMessage() {
 
 void ExTabWidget::paintEvent(QPaintEvent *evt) {
   QTabWidget::paintEvent(evt);
+  QStyleOption opt;
+  opt.init(this);
+//  style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
   QPainter* painter = new QPainter(this);
-  d_ptr->paint(painter, evt);
+  d_ptr->paint(painter, evt->rect().width() - 10, style());
   delete painter;
 }
 

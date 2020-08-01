@@ -40,7 +40,7 @@ class MainWindow : public QMainWindow
    Q_OBJECT
 
 public:
-  //! Constructs MainWindow test application.
+   //! Constructs MainWindow test application.
    explicit MainWindow(QWidget* parent = nullptr);
    ~MainWindow();
 
@@ -74,11 +74,17 @@ private:
    LabelledDoubleSpinBox* m_minDblSpin, *m_maxDblSpin, *m_stepDblSpin;
    LabelledLineEdit* m_exPrefixEdit;
    QCheckBox* m_exNegBeforePrefixBox;
+   QColor m_text, m_back, m_tempText, m_tempBack;
 
    ExTabWidget* m_exTabWidget;
-   QCheckBox* m_enableClockBox, *m_showSecondsBox;
-   QCheckBox* m_enableMessageBox, *m_enableMarqueeBox;
+   QCheckBox* m_showClockBox, *m_showSecondsBox;
+   QCheckBox* m_showMessageBox, *m_enableMarqueeBox;
    QDoubleSpinBox* m_marqueeSpeedBox;
+   LabelledDoubleSpinBox* m_timeoutBox;
+   LabelledLineEdit* m_messageEdit, *m_tempMessageEdit;
+   QPushButton* m_messageBtn, *m_tempMessageBtn;
+   QPushButton* m_textColorBtn, *m_backColorBtn, *m_tempTextColorBtn, *m_tempBackColorBtn;
+
 
    void setLabelStylesheet();
    void setWidgetStylesheet();
@@ -100,6 +106,8 @@ private:
    void exSpinBoxChanged(int value);
    void setCurrentWidgetAlignment();
    void exBoxTypeChanged(int index);
+   void setMessage();
+   void setTempMessage();
 
    void chooseWidget(const QString& text);
    void labelTextHasChanged(const QString& text);

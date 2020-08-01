@@ -85,11 +85,15 @@ void ExTabWidgetPrivate::showFrame(bool frame)
    q_ptr->update();
 }
 
-void ExTabWidgetPrivate::showClock(bool clock)
+void ExTabWidgetPrivate::showClock(bool showClock)
 {
-   m_showClock = clock;
+   m_showClock = showClock;
 
    if (m_showClock) {
+      if (m_showMessages) {
+         m_messageRect = nullptr;
+      }
+
       if (m_clockTimer) {
          if (m_clockTimer->isActive()) {
             return;
@@ -209,13 +213,20 @@ void ExTabWidgetPrivate::updateMarquee()
    q_ptr->update();
 }
 
-void ExTabWidgetPrivate::showLogin(bool login)
+void ExTabWidgetPrivate::showLogin(bool showLogin)
 {
-   m_showLogin = login;
+   if (showLogin != m_showLogin) {
+      if (m_showMessages) {
+         m_messageRect = nullptr;
+      }
 
-   clearFrames();
 
-   q_ptr->update();
+      m_showLogin = showLogin;
+
+      clearFrames();
+
+      q_ptr->update();
+   }
 }
 
 void ExTabWidgetPrivate::setLoginType()
@@ -330,6 +341,9 @@ bool ExTabWidgetPrivate::mouseReleaseEvent(QMouseEvent* /*event*/)
                }
 
                break;
+
+            case ExTabWidget::None:
+               break;
             }
          }
       }
@@ -363,25 +377,14 @@ void ExTabWidgetPrivate::resize()
    q_ptr->update();
 }
 
-void ExTabWidgetPrivate::paint(QPainter* painter, QPaintEvent* event)
+void ExTabWidgetPrivate::paintLogin(QPainter* painter, int w, int h)
 {
-
-   int w = event->rect().width() - 10;
-   int h = q_ptr->tabBar()->height();
-   int tw = q_ptr->tabBar()->width();
-   int sh = h * 0.6; // set the font height to be 60% of the total height.
-   int frameWidth;
-
-   QFont font = painter->font();
-   font.setPixelSize(sh);
-   painter->setFont(font);
-   QFontMetrics fm = painter->fontMetrics();
-   m_frameHeight = fm.height();
-
    if (m_showLogin) {
+      int frameWidth;
 
       if (!m_loginRect) {
          m_loginRect = new QRect();
+         QFontMetrics fm = painter->fontMetrics();
          m_stringAdvance = fm.horizontalAdvance(LOGOUT);
          frameWidth = m_stringAdvance + 20;
          m_loginRect->setX(w - frameWidth);
@@ -402,6 +405,8 @@ void ExTabWidgetPrivate::paint(QPainter* painter, QPaintEvent* event)
          } else {
             painter->setPen(m_palette.color(QPalette::Dark));
          }
+
+         painter->fillRect(*m_loginRect, painter->brush());
 
          painter->drawLine(m_loginRect->x(),
                            m_loginRect->y(),
@@ -450,11 +455,52 @@ void ExTabWidgetPrivate::paint(QPainter* painter, QPaintEvent* event)
       painter->drawText(
          m_loginRect->x() + 10, m_loginRect->y() + m_frameHeight - 4, m_loginText);
    }
+}
 
+void ExTabWidgetPrivate::paintUpperBorder(QPainter* painter, int x, int y, int w, int h)
+{
+   painter->drawLine(x, y, x, y + h);
+   painter->drawLine(x + 1, y + 1, x + 1, y + h - 1);
+   painter->drawLine(x + 1, y, x + w, y);
+   painter->drawLine(x + 2, y + 1, x + w - 1, y + 1);
+}
+
+void ExTabWidgetPrivate::paintLowerBorder(QPainter* painter, int x, int y, int w, int h)
+{
+   painter->drawLine(x + 1, y + h, x + w, y + h);
+   painter->drawLine(x + 2, y + h - 1, x + w - 1, y + h - 1);
+   painter->drawLine(x + w, y + 1, x + w, y + h - 1);
+   painter->drawLine(x + w - 1, y + 2, x + w - 1, y + h - 2);
+}
+
+void ExTabWidgetPrivate::paintBorder(QPainter* painter, int x, int y, int w, int h, bool darkFirst)
+{
+//   painter->fillRect(*m_clockRect, painter->brush());
+
+   if (darkFirst) {
+      painter->setPen(m_palette.color(QPalette::Dark));
+      paintUpperBorder(painter, x, y, w, h);
+      painter->setPen(m_palette.color(QPalette::Light));
+      paintLowerBorder(painter, x, y, w, h);
+
+   } else {
+      painter->setPen(m_palette.color(QPalette::Light));
+      paintUpperBorder(painter, x, y, w, h);
+      painter->setPen(m_palette.color(QPalette::Dark));
+      paintLowerBorder(painter, x, y, w, h);
+   }
+}
+
+void ExTabWidgetPrivate::paintClock(QPainter* painter, int w, int h)
+{
    if (m_showClock) {
+
+      int frameWidth;
 
       if (!m_clockRect) {
          m_clockRect = new QRect();
+
+         QFontMetrics fm = painter->fontMetrics();
 
          if (m_showSeconds) {
             m_stringAdvance = fm.horizontalAdvance(WITHSECONDS);
@@ -477,51 +523,25 @@ void ExTabWidgetPrivate::paint(QPainter* painter, QPaintEvent* event)
       }
 
       if (m_showFrame) {
-         painter->setPen(m_palette.color(QPalette::Dark));
-         painter->drawLine(m_clockRect->x(),
-                           m_clockRect->y(),
-                           m_clockRect->x(),
-                           m_clockRect->y() + m_clockRect->height());
-         painter->drawLine(m_clockRect->x() + 1,
-                           m_clockRect->y() + 1,
-                           m_clockRect->x() + 1,
-                           m_clockRect->y() + m_clockRect->height() - 1);
-         painter->drawLine(m_clockRect->x() + 1,
-                           m_clockRect->y(),
-                           m_clockRect->x() + m_clockRect->width(),
-                           m_clockRect->y());
-         painter->drawLine(m_clockRect->x() + 2,
-                           m_clockRect->y() + 1,
-                           m_clockRect->x() + m_clockRect->width() - 1,
-                           m_clockRect->y() + 1);
-
-         painter->setPen(m_palette.color(QPalette::Light));
-         painter->drawLine(m_clockRect->x() + 1,
-                           m_clockRect->y() + m_clockRect->height(),
-                           m_clockRect->x() + m_clockRect->width(),
-                           m_clockRect->y() + m_clockRect->height());
-         painter->drawLine(m_clockRect->x() + 2,
-                           m_clockRect->y() + m_clockRect->height() - 1,
-                           m_clockRect->x() + m_clockRect->width() - 1,
-                           m_clockRect->y() + m_clockRect->height() - 1);
-         painter->drawLine(m_clockRect->x() + m_clockRect->width(),
-                           m_clockRect->y() + 1,
-                           m_clockRect->x() + m_clockRect->width(),
-                           m_clockRect->y() + m_clockRect->height() - 1);
-         painter->drawLine(m_clockRect->x() + m_clockRect->width() - 1,
-                           m_clockRect->y() + 2,
-                           m_clockRect->x() + m_clockRect->width() - 1,
-                           m_clockRect->y() + m_clockRect->height() - 2);
+         painter->fillRect(*m_clockRect, painter->brush());
+         paintBorder(painter, m_clockRect->x(), m_clockRect->y(), m_clockRect->width(), m_clockRect->height(), false);
       }
 
       painter->setPen(m_palette.color(QPalette::WindowText));
       painter->drawText(
          m_clockRect->x() + 10, m_clockRect->y() + m_frameHeight - 4, m_nowString);
    }
+}
 
+void ExTabWidgetPrivate::paintMessages(QPainter* painter, int w, int h)
+{
    if (m_showMessages) {
 
+      int frameWidth;
       QString text;
+      int tw = q_ptr->tabBar()->width();
+
+      QFontMetrics fm = painter->fontMetrics();
 
       if (!m_messageRect) {
 
@@ -561,22 +581,23 @@ void ExTabWidgetPrivate::paint(QPainter* painter, QPaintEvent* event)
 
       QPalette messagePalette(m_palette);
 
-      if (m_useTempColor) {
-         messagePalette.setColor(QPalette::WindowText, m_tempColor);
+      //      if (m_useTempColor) {
+      //         messagePalette.setColor(QPalette::WindowText, m_tempColor);
 
-      } else {
-         messagePalette.setColor(QPalette::WindowText, m_textColor);
-      }
+      //      } else {
+      //         messagePalette.setColor(QPalette::WindowText, m_textColor);
+      //      }
 
-      if (m_useTempBack && m_tempBackground.color().isValid()) {
-         painter->fillRect(*m_messageRect, m_tempBackground);
+      //      if (m_useTempBack && m_tempBackground.color().isValid()) {
+      //         painter->fillRect(*m_messageRect, m_tempBackground);
 
-      } else if (m_background.color().isValid()) {
-         painter->fillRect(*m_messageRect, m_background);
-      }
+      //      } else if (m_background.color().isValid()) {
+      //         painter->fillRect(*m_messageRect, m_background);
+      //      }
 
       if (m_showFrame) {
-         painter->setPen(m_palette.color(QPalette::Dark));
+         //         painter->setPen(m_palette.color(QPalette::Dark));
+         painter->fillRect(*m_messageRect, painter->brush());
          painter->drawLine(m_messageRect->x(),
                            m_messageRect->y(),
                            m_messageRect->x(),
@@ -617,8 +638,23 @@ void ExTabWidgetPrivate::paint(QPainter* painter, QPaintEvent* event)
 
       painter->setPen(messagePalette.color(QPalette::WindowText));
       painter->drawText(
-         m_messageRect->x() + 10, m_messageRect->y() + m_frameHeight - 6, text);
+         m_messageRect->x() + 10, m_messageRect->y() + m_frameHeight - 5, text);
    }
+}
+
+void ExTabWidgetPrivate::paint(QPainter* painter, int w, QStyle* style)
+{
+   int h = q_ptr->tabBar()->height();
+   int sh = h * 0.6; // set the font height to be 60% of the total height.
+   QFont font = painter->font();
+   font.setPixelSize(sh);
+   painter->setFont(font);
+   QFontMetrics fm = painter->fontMetrics();
+   m_frameHeight = fm.height();
+
+   paintLogin(painter, w, h);
+   paintClock(painter, w, h);
+   paintMessages(painter, w, h);
 }
 
 void ExTabWidgetPrivate::displayLoginText()
@@ -778,12 +814,18 @@ void ExTabWidgetPrivate::nextSecond()
    q_ptr->update();
 }
 
-void ExTabWidgetPrivate::showSeconds(bool show)
+void ExTabWidgetPrivate::showSeconds(bool showSeconds)
 {
-   m_showSeconds = show;
-   q_ptr->update();
-   m_clockRect = nullptr;
-   q_ptr->update();
+   if (showSeconds != m_showSeconds) {
+      if (m_showMessages) {
+         m_messageRect = nullptr;
+      }
+
+      m_showSeconds = showSeconds;
+      q_ptr->update();
+      m_clockRect = nullptr;
+      q_ptr->update();
+   }
 }
 
 void ExTabWidgetPrivate::clearMessage()
@@ -819,18 +861,23 @@ void ExTabWidgetPrivate::timeout()
    clearMessage();
 }
 
-void ExTabWidgetPrivate::setMessage(QString message, uint timeout)
+void ExTabWidgetPrivate::resetMessageData(const QString& message, bool tempColor)
 {
    m_messageText = message;
+   m_useTempColor = tempColor;
+   m_messageRect = nullptr;
    m_marqueePos = 0;
-   m_useTempColor = false;
+}
+
+void ExTabWidgetPrivate::setMessage(const QString& message, uint timeout)
+{
+   resetMessageData(message, false);
    setMessage(timeout);
 }
 
 void ExTabWidgetPrivate::setMessage(QColor color, QString message, uint timeout)
 {
-   m_messageText = message;
-   m_useTempColor = true;
+   resetMessageData(message, true);
    m_tempColor = color;
    setMessage(timeout);
 }
@@ -840,9 +887,8 @@ void ExTabWidgetPrivate::setMessage(QColor color,
                                     QString message,
                                     uint timeout)
 {
-   m_messageText = message;
+   resetMessageData(message, true);
    m_useTempBack = true;
-   m_useTempColor = true;
    m_tempColor = color;
    m_tempBackground = QBrush(back);
    setMessage(timeout);
@@ -853,9 +899,8 @@ void ExTabWidgetPrivate::setMessage(QColor color,
                                     QString message,
                                     uint timeout)
 {
-   m_messageText = message;
+   resetMessageData(message, true);
    m_useTempBack = true;
-   m_useTempColor = true;
    m_tempColor = color;
    m_tempBackground = back;
    setMessage(timeout);

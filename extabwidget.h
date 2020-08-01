@@ -158,6 +158,33 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
    */
    Q_PROPERTY(bool marquee READ isMarqueeEnabled WRITE setMarquee DESIGNABLE true)
 
+
+
+   /*!
+      \property ::messageColor
+
+      \brief  This property describes whether the marquee is enabled.
+
+      @accessor messageColor(), setMessageColor(QColor)
+   */
+   Q_PROPERTY(QColor messageColor READ messageColor WRITE setMessageColor DESIGNABLE true)
+//     /*!
+//      \property ::messageBackground
+
+//      \brief  This property describes whether the marquee is enabled.
+
+//     @accessor messageBackground(), setMessageColor(QColor)
+//       */
+//       Q_PROPERTY(QColor messageBackground READ messageBackground WRITE setMessageBackground DESIGNABLE true)
+     /*!
+      \property ::messageBackground
+
+      \brief  This property describes whether the marquee is enabled.
+
+     @accessor messageBackground(), setMessageColor(QColor)
+       */
+       Q_PROPERTY(QBrush messageBackground READ messageBackground WRITE setMessageBackground DESIGNABLE true)
+
    Q_DECLARE_PRIVATE(ExTabWidget)
 
 public:
@@ -243,7 +270,7 @@ public:
 
       \sa setMessageColor(QColor)
    */
-   QColor messageTextColor();
+   QColor messageColor();
 
    /*!
       \brief Enables/disables the display of the digital clock
@@ -359,6 +386,7 @@ public:
       \sa messageBackgroundBrush(), setMessageBackground(QColor), setMessageColor(QColor)
    */
    void setMessageBackground(QBrush brush);
+
    /*!
       \brief Sets the message text, with an optional timeout in seconds.
 
@@ -367,61 +395,62 @@ public:
       within the tab bar.
    */
    void setMessage(QString message, uint timeout = 0);
-   /*!
-      \brief Sets the message text and text colour, with an optional timeout in seconds.
 
-      Sets the text message and colour for the tab bar. The optional timeout
-      will cause the message to  disappear after timeout seconds.
+//   /*!
+//      \brief Sets the message text and text colour, with an optional timeout in seconds.
 
-      This is only a single line message so "\n" characters are removed. There
-      really is not enough room for a multi line MessageTabWidget within the
-      tab bar.
+//      Sets the text message and colour for the tab bar. The optional timeout
+//      will cause the message to  disappear after timeout seconds.
 
-      This is the equivalent of
-      \code
-      tab->setMessageColor(color);
-      tab->setMessage(message, timeout);
-      \endcode
+//      This is only a single line message so "\n" characters are removed. There
+//      really is not enough room for a multi line MessageTabWidget within the
+//      tab bar.
 
-   */
-   void setMessage(QColor color, QString message, uint timeout = 0);
-   /*!
-      \brief Sets the message text and text colour and background colour, with an optional timeout in seconds.
+//      This is the equivalent of
+//      \code
+//      tab->setMessageColor(color);
+//      tab->setMessage(message, timeout);
+//      \endcode
 
-      Sets the text message and colour for the tab bar. The optional timeout
-      will cause the message to  disappear after timeout seconds.
+//   */
+//   void setMessage(QColor color, QString message, uint timeout = 0);
+//   /*!
+//      \brief Sets the message text and text colour and background colour, with an optional timeout in seconds.
 
-      This is only a single line message so "\n" characters are removed. There
-      really is not enough room for a multi line MessageTabWidget within the
-      tab bar.
+//      Sets the text message and colour for the tab bar. The optional timeout
+//      will cause the message to  disappear after timeout seconds.
 
-      This is the equivalent of
-      \code
-      tab->setMessageColor(color);
-      tab->setMessage(message, timeout);
-      \endcode
+//      This is only a single line message so "\n" characters are removed. There
+//      really is not enough room for a multi line MessageTabWidget within the
+//      tab bar.
 
-   */
-   void setMessage(QColor color, QColor back, QString message, uint timeout = 0);
+//      This is the equivalent of
+//      \code
+//      tab->setMessageColor(color);
+//      tab->setMessage(message, timeout);
+//      \endcode
 
-   /*!
-      \brief Sets the message text and text colour and background brush, with an optional timeout in seconds.
+//   */
+//   void setMessage(QColor color, QColor back, QString message, uint timeout = 0);
 
-      Sets the text message and colour for the tab bar. The optional timeout
-      will cause the message to  disappear after timeout seconds.
+//   /*!
+//      \brief Sets the message text and text colour and background brush, with an optional timeout in seconds.
 
-      This is only a single line message so "\n" characters are removed. There
-      really is not enough room for a multi line MessageTabWidget within the
-      tab bar.
+//      Sets the text message and colour for the tab bar. The optional timeout
+//      will cause the message to  disappear after timeout seconds.
 
-      This is the equivalent of
-      \code
-      tab->setMessageColor(color);
-      tab->setMessage(message, timeout);
-      \endcode
+//      This is only a single line message so "\n" characters are removed. There
+//      really is not enough room for a multi line MessageTabWidget within the
+//      tab bar.
 
-   */
-   void setMessage(QColor color, QBrush back, QString message, uint timeout = 0);
+//      This is the equivalent of
+//      \code
+//      tab->setMessageColor(color);
+//      tab->setMessage(message, timeout);
+//      \endcode
+
+//   */
+//   void setMessage(QColor color, QBrush back, QString message, uint timeout = 0);
    /*!
       \brief Sets the message text scrolling.
 

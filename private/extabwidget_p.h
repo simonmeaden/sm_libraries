@@ -15,6 +15,7 @@
 #include <QPalette>
 #include <QPushButton>
 #include <QTabBar>
+#include <QStyleOption>
 
 /// \cond DO_NOT_DOCUMENT
 
@@ -63,6 +64,12 @@ private:
 class ExTabWidgetPrivate
 {
 
+  class ClockWidget : public QWidget {
+  public:
+    explicit ClockWidget(QWidget *parent=nullptr);
+
+  };
+
   Q_DECLARE_PUBLIC(ExTabWidget)
 public:
   ExTabWidgetPrivate(ExTabWidget* parent, AbstractLoginDialog *customDlg);
@@ -93,15 +100,15 @@ public:
   QTimer* m_marqueeTimer;
   QTimer* m_timeoutTimer;
 
-  void showLogin(bool);
+  void showLogin(bool showLogin);
   void setLoginType();
   //  void setSimpleLogin(bool);
   void setCustomLoginDialog(AbstractLoginDialog* loginDlg);
-  void showClock(bool);
+  void showClock(bool showClock);
   void showMessages(bool);
 
   void nextSecond();
-  void showSeconds(bool);
+  void showSeconds(bool showSeconds);
 
   // Login stuff
   QString m_loginText;
@@ -115,7 +122,13 @@ public:
 
   bool mousePressEvent(QMouseEvent* event);
   bool mouseReleaseEvent(QMouseEvent* event);
-  void paint(QPainter* painter, QPaintEvent* event);
+  void paint(QPainter* painter, int width, QStyle *style);
+  void paintLogin(QPainter *painter, int w, int h);
+  void paintClock(QPainter *painter, int w, int h);
+  void paintMessages(QPainter *painter, int w, int h);
+  void paintBorder(QPainter *painter, int x, int y, int w, int h, bool darkFirst);
+  void paintUpperBorder(QPainter *painter, int x, int y, int w, int h);
+  void paintLowerBorder(QPainter *painter, int x, int y, int w, int h);
   void resize();
 
   void displayLoginText();
@@ -148,16 +161,20 @@ public:
   void setMessageColor(QColor color);
   void setMessageBackground(QColor);
   void setMessageBackground(QBrush);
-  void setMessage(QString message, uint timeout = 0);
+  void setMessage(const QString &message, uint timeout = 0);
   void setMessage(QColor, QString message, uint timeout = 0);
   void setMessage(QColor, QColor, QString message, uint timeout = 0);
   void setMessage(QColor, QBrush, QString message, uint timeout = 0);
-  void setMarquee(bool);
+
+  void setMarquee(bool marquee);
   void startMarqueeTimerIfRequired();
   void stopMarqueeTimer();
   void updateMarquee();
   QBrush messageBackgroundBrush();
   QColor messageTextColor();
+
+private:
+  void resetMessageData(const QString &message, bool tempColor);
 };
 
 /// \endcond
