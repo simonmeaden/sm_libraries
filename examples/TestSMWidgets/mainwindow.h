@@ -77,14 +77,14 @@ private:
    QColor m_text, m_back, m_tempText, m_tempBack;
 
    ExTabWidget* m_exTabWidget;
-   QCheckBox* m_showClockBox, *m_showSecondsBox;
+   QCheckBox* m_showClockBox, *m_showSecondsBox, *m_showClockFrame;
+   LabelledComboBox *m_clockFrameStyleBox;
    QCheckBox* m_showMessageBox, *m_enableMarqueeBox;
    QDoubleSpinBox* m_marqueeSpeedBox;
    LabelledDoubleSpinBox* m_timeoutBox;
    LabelledLineEdit* m_messageEdit, *m_tempMessageEdit;
    QPushButton* m_messageBtn, *m_tempMessageBtn;
    QPushButton* m_textColorBtn, *m_backColorBtn, *m_tempTextColorBtn, *m_tempBackColorBtn;
-
 
    void setLabelStylesheet();
    void setWidgetStylesheet();
@@ -130,6 +130,8 @@ private:
 
    void showClock(bool enable);
    void showSeconds(bool enable);
+   void showClockFrame();
+   void clockFrameStyleChanged(int index);
    void showMessages(bool enable);
    void setMarqueeMoving(bool enable);
    void setMarqueeSpeed(qreal charPerSec);

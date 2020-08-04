@@ -543,6 +543,8 @@ void MainWindow::showClock(bool enable)
 {
    m_exTabWidget->showClock(enable);
    m_showSecondsBox->setEnabled(enable);
+   m_showClockFrame->setEnabled(true);
+   m_clockFrameStyleBox->setEnabled(true);
 
    if (enable) {
       m_showClockBox->setText(tr("Hide Clock"));
@@ -562,6 +564,20 @@ void MainWindow::showSeconds(bool enable)
    } else {
       m_showSecondsBox->setText(tr("Show Seconds"));
    }
+}
+
+void MainWindow::showClockFrame()
+{
+   if (m_showClockFrame->isChecked()) {
+      m_exTabWidget->showClockFrame(true, m_clockFrameStyleBox->currentData(Qt::UserRole).value<QFrame::Shape>());
+   }else {
+     m_exTabWidget->showClockFrame(false);
+   }
+}
+
+void MainWindow::clockFrameStyleChanged(int /*index*/)
+{
+  showClockFrame();
 }
 
 void MainWindow::showMessages(bool enable)
@@ -1267,6 +1283,29 @@ QWidget* MainWindow::initExTabWidget()
    m_showSecondsBox->setEnabled(false);
    connect(m_showSecondsBox, &QCheckBox::clicked, this, &MainWindow::showSeconds);
    enableLayout->addWidget(m_showSecondsBox);
+
+   m_showClockFrame = new QCheckBox(tr("Show Clock Frame"), this);
+   m_showClockFrame->setEnabled(false);
+   connect(m_showClockFrame, &QCheckBox::clicked, this, &MainWindow::showClockFrame);
+   enableLayout->addWidget(m_showClockFrame);
+
+   QStringList frameStyles;
+   frameStyles << "QFrame::NoFrame" << "QFrame::Box" << "QFrame::Panel"
+               << "QFrame::StyledPanel" << "QFrame::HLine"
+               << "QFrame::VLine" << "QFrame::WinPanel";
+   m_clockFrameStyleBox = new LabelledComboBox(tr("Clock Frame Style"), this);
+   m_clockFrameStyleBox->setEnabled(false);
+   connect(m_clockFrameStyleBox, &LabelledComboBox::currentIndexChanged, this,
+           &MainWindow::clockFrameStyleChanged);
+   m_clockFrameStyleBox->addItems(frameStyles);
+   m_clockFrameStyleBox->setItemData(0, QVariant::fromValue<QFrame::Shape>(QFrame::NoFrame));
+   m_clockFrameStyleBox->setItemData(1, QVariant::fromValue<QFrame::Shape>(QFrame::Box));
+   m_clockFrameStyleBox->setItemData(2, QVariant::fromValue<QFrame::Shape>(QFrame::Panel));
+   m_clockFrameStyleBox->setItemData(3, QVariant::fromValue<QFrame::Shape>(QFrame::StyledPanel));
+   m_clockFrameStyleBox->setItemData(4, QVariant::fromValue<QFrame::Shape>(QFrame::HLine));
+   m_clockFrameStyleBox->setItemData(5, QVariant::fromValue<QFrame::Shape>(QFrame::VLine));
+   m_clockFrameStyleBox->setItemData(6, QVariant::fromValue<QFrame::Shape>(QFrame::WinPanel));
+   enableLayout->addWidget(m_clockFrameStyleBox);
 
    m_showMessageBox = new QCheckBox(tr("Show Messages"), this);
    connect(m_showMessageBox, &QCheckBox::clicked, this, &MainWindow::showMessages);

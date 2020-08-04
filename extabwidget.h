@@ -1,31 +1,30 @@
 #ifndef _H
 #define _H
 
-#include <QWidget>
-#include <QTabWidget>
-#include <QPainter>
 #include <QDialog>
-#include <QMouseEvent>
-#include <QPaintEvent>
-#include <QGuiApplication>
-#include <QDialog>
+#include <QDialogButtonBox>
 #include <QGridLayout>
+#include <QGuiApplication>
 #include <QLabel>
 #include <QLineEdit>
-#include <QDialogButtonBox>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QPainter>
 #include <QPushButton>
+#include <QTabWidget>
 #include <QTimer>
+#include <QWidget>
 
-#include "sm_widgets_global.h"
 #include "private/extabwidget_p.h"
+#include "sm_widgets_global.h"
 
 /*!
    \class ExTabWidget
    \file extabwidget.h extabwidget.cpp
    \class ExTabWidget extabwidget.h
 
-   \brief An extension of QTabWidget with the ability to add various things in the unused space to the right
-   of the tabs.
+   \brief An extension of QTabWidget with the ability to add various things in
+   the unused space to the right of the tabs.
 
    \since 5.7.0
    \license The MIT License
@@ -36,62 +35,78 @@
    -# A digital clock
    -# A single line message box.
 
-   More than one of the options can be added at the same time with the order from right to left
-   being the login button, the clock and finally the message box, with the message box taking all
-   available free space.
+   More than one of the options can be added at the same time with the order
+   from right to left being the login button, the clock and finally the message
+   box, with the message box taking all available free space.
 
-   The login button is displayed/hidden using the ExTabWidget::showLogin(bool) method, with
-   true displaying the button.
+   The login button is displayed/hidden using the ExTabWidget::showLogin(bool)
+   method, with true displaying the button.
 
-   //   There are two varieties of login, a fairly standard login dialog with both username and a
+   //   There are two varieties of login, a fairly standard login dialog with
+   both username and a
    //   password
-   //   edit boxes and a 'simple' login which has only a password edit box. Use the ExTabWidget::setLogin(bool) or
-   //   ExTabWidget::setSimpleLogin(bool) methods, with a value of true, to set the login method.
+   //   edit boxes and a 'simple' login which has only a password edit box. Use
+   the ExTabWidget::setLogin(bool) or
+   //   ExTabWidget::setSimpleLogin(bool) methods, with a value of true, to set
+   the login method.
 
-   //   If the login username/password is valid the button will change to display "Log Out" and a
-   //   ExTabWidget::loggedIn() signal is sent, otherwise either a ExTabWidget::usernameBad()
-   //   signal  or a ExTabWidget::passwordBad() signal will be sent, depending on the fault. The
-   //   ExTabWidget::isLoggedIn() method can be used to check whether a user is logged in, and the
-   //   ExTabWidget::username() method can be used to recover the username of the logged in user. If
-   //   the simple login dialog is used or the ExTabWidget::usernameBad() signal was sent then
+   //   If the login username/password is valid the button will change to
+   display "Log Out" and a
+   //   ExTabWidget::loggedIn() signal is sent, otherwise either a
+   ExTabWidget::usernameBad()
+   //   signal  or a ExTabWidget::passwordBad() signal will be sent, depending
+   on the fault. The
+   //   ExTabWidget::isLoggedIn() method can be used to check whether a user is
+   logged in, and the
+   //   ExTabWidget::username() method can be used to recover the username of
+   the logged in user. If
+   //   the simple login dialog is used or the ExTabWidget::usernameBad() signal
+   was sent then
    //   ExTabWidget::username() will return an empty QString.
 
-   Clicking on the button when "Log Out" is displayed will cause a ExTabWidget::loggedOut() signal to
-   be sent. ExTabWidget::loggedIn() returns false and ExTabWidget::username() returns an empty
-   string at this point.
+   Clicking on the button when "Log Out" is displayed will cause a
+   ExTabWidget::loggedOut() signal to be sent. ExTabWidget::loggedIn() returns
+   false and ExTabWidget::username() returns an empty string at this point.
 
-   The simple login method requires that a password is set, only one allowed, using the ExTabWidget::setPassword(QString)
-   method. The standard login requires that one or more username/password pairs be set up using the
-   ExTabWidget::insertPassword(QString username, QString password) method, once for each user. User names must be
-   unique, adding a second entry with the same username will overwrite the first entry.
+   The simple login method requires that a password is set, only one allowed,
+   using the ExTabWidget::setPassword(QString) method. The standard login
+   requires that one or more username/password pairs be set up using the
+   ExTabWidget::insertPassword(QString username, QString password) method, once
+   for each user. User names must be unique, adding a second entry with the same
+   username will overwrite the first entry.
 
-   Setting the value of the ignore case flag to true using the ExTabWidget::setIgnoreCase(bool) method will
-   cause the character case of the password and username to be ignored. If false the case of the username and password
-   are checked, ie UsErNaMe does not equal username.
+   Setting the value of the ignore case flag to true using the
+   ExTabWidget::setIgnoreCase(bool) method will cause the character case of the
+   password and username to be ignored. If false the case of the username and
+   password are checked, ie UsErNaMe does not equal username.
 
-   ExTabWidget::clearPasswords() will remove all passwords from the list. Passwords and usernames for the simple
-   and standard login dialogs are kept separately so it is possible to switch between the two methods if required.
+   ExTabWidget::clearPasswords() will remove all passwords from the list.
+   Passwords and usernames for the simple and standard login dialogs are kept
+   separately so it is possible to switch between the two methods if required.
 
-   The clock is displayed when the ExTabWidget::enableClock(bool) is called with the value of true.
-   By default the digital clock is displayed without seconds. The display seconds use the
-   ExTabWidget::showseconds(bool) method.
+   The clock is displayed when the ExTabWidget::enableClock(bool) is called with
+   the value of true. By default the digital clock is displayed without seconds.
+   The display seconds use the ExTabWidget::showseconds(bool) method.
 
-   The message box can be displayed using the ExTabWidget::enableMessages(bool) method with a value of true.
-   Messages are sent using the ExTabWidget::setMessage(QString, uint) method with the optional uint value
-   indicating a timeout in seconds before the message is erased. Text colour can be modified by using
-   the alternative ExTabWidget::setMessage(QColor, QString, uint) method, alternatively use the
-   ExTabWidget::setMessageColor(QColor color) to permanently change the text colour.
+   The message box can be displayed using the ExTabWidget::enableMessages(bool)
+   method with a value of true. Messages are sent using the
+   ExTabWidget::setMessage(QString, uint) method with the optional uint value
+   indicating a timeout in seconds before the message is erased. Text colour can
+   be modified by using the alternative ExTabWidget::setMessage(QColor, QString,
+   uint) method, alternatively use the ExTabWidget::setMessageColor(QColor
+   color) to permanently change the text colour.
 
-   If messages are too long for the available space you can use the marquee option which causes the message to rotate along
-   message box. To enable this use the ExTabWidget::enableMarquee(bool) with a value of true, adjusting the speed if necessary
-   with the setMarqueeSpeed(qreal) method.
+   If messages are too long for the available space you can use the marquee
+   option which causes the message to rotate along message box. To enable this
+   use the ExTabWidget::enableMarquee(bool) with a value of true, adjusting the
+   speed if necessary with the setMarqueeSpeed(qreal) method.
 
-   Each can be drawn with or without a frame, using the ExTabWidget::showFrame(bool) method. By default a frame
-   is shown.
+   Each can be drawn with or without a frame, using the
+   ExTabWidget::showFrame(bool) method. By default a frame is shown.
 
    \since 5.0
 */
-class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
+class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QFrame
 {
 
    Q_OBJECT
@@ -115,7 +130,8 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
 
                                @accessor showMessages(), isMessagesEnabled()
    */
-   Q_PROPERTY(bool messages READ isMessagesEnabled WRITE showMessages DESIGNABLE true)
+   Q_PROPERTY(
+      bool messages READ isMessagesEnabled WRITE showMessages DESIGNABLE true)
 
    /*!
       \property ExTabWidget::login
@@ -142,13 +158,15 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
    /*!
       \property ignoreCase
 
-      \brief This property defines whether character case is ignored for usernames and passwords.
+      \brief This property defines whether character case is ignored for
+      usernames and passwords.
 
       By default, this property is false and case is not ignored.
 
       @accessor setIgnoreCase(), isIgnoreCase()
    */
-   Q_PROPERTY(bool ignoreCase READ isIgnoreCase WRITE setIgnoreCase DESIGNABLE true)
+   Q_PROPERTY(
+      bool ignoreCase READ isIgnoreCase WRITE setIgnoreCase DESIGNABLE true)
    /*!
       \property ::marquee
 
@@ -156,9 +174,8 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
 
       @accessor setMarquee(bool), isMarqueeEnabled()
    */
-   Q_PROPERTY(bool marquee READ isMarqueeEnabled WRITE setMarquee DESIGNABLE true)
-
-
+   Q_PROPERTY(
+      bool marquee READ isMarqueeEnabled WRITE setMarquee DESIGNABLE true)
 
    /*!
       \property ::messageColor
@@ -167,23 +184,26 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
 
       @accessor messageColor(), setMessageColor(QColor)
    */
-   Q_PROPERTY(QColor messageColor READ messageColor WRITE setMessageColor DESIGNABLE true)
-//     /*!
-//      \property ::messageBackground
+   Q_PROPERTY(
+      QColor messageColor READ messageColor WRITE setMessageColor DESIGNABLE true)
+   //     /*!
+   //      \property ::messageBackground
 
-//      \brief  This property describes whether the marquee is enabled.
+   //      \brief  This property describes whether the marquee is enabled.
 
-//     @accessor messageBackground(), setMessageColor(QColor)
-//       */
-//       Q_PROPERTY(QColor messageBackground READ messageBackground WRITE setMessageBackground DESIGNABLE true)
-     /*!
+   //     @accessor messageBackground(), setMessageColor(QColor)
+   //       */
+   //       Q_PROPERTY(QColor messageBackground READ messageBackground WRITE
+   //       setMessageBackground DESIGNABLE true)
+   /*!
       \property ::messageBackground
 
       \brief  This property describes whether the marquee is enabled.
 
-     @accessor messageBackground(), setMessageColor(QColor)
-       */
-       Q_PROPERTY(QBrush messageBackground READ messageBackground WRITE setMessageBackground DESIGNABLE true)
+      @accessor messageBackground(), setMessageColor(QColor)
+   */
+   Q_PROPERTY(QBrush messageBackground READ messageBackground WRITE
+              setMessageBackground DESIGNABLE true)
 
    Q_DECLARE_PRIVATE(ExTabWidget)
 
@@ -195,23 +215,72 @@ public:
    */
    enum LoginType
    {
-      Simple, //!< A simple password only dialog.
+      Simple,   //!< A simple password only dialog.
       Standard, //!< A more standard username/password dialog type
-      Custom, //!< A custom login dialog.
-      None, //!< No login dialog is set up.
+      Custom,   //!< A custom login dialog.
+      None,     //!< No login dialog is set up.
    };
 
    /*!
-      \brief Constructs an ExTabWidget with parent parent with an optional custom login dialog.
+      \brief Constructs an ExTabWidget with parent parent with an optional custom
+      login dialog.
    */
-   explicit ExTabWidget(QWidget* parent = nullptr, LoginType type = None, AbstractLoginDialog* customDlg = nullptr);
+   explicit ExTabWidget(QWidget* parent = nullptr,
+                        LoginType type = None,
+                        AbstractLoginDialog* customDlg = nullptr);
 
    /*!
       \brief Destroys the tabbed widget.
    */
-   ~ExTabWidget() {
+   ~ExTabWidget() {}
 
-   }
+   int addTab(QWidget* page, const QString& label);
+   int addTab(QWidget* page, const QIcon& icon, const QString& label);
+   void clear();
+   const QWidget* cornerWidget(Qt::Corner corner = Qt::TopRightCorner);
+   int count();
+   int currentIndex();
+   QWidget* currentWidget();
+   bool documentMode();
+   Qt::TextElideMode elideMode();
+   QSize iconSize();
+   int indexOf(QWidget* w);
+   int insertTab(int index, QWidget* page, const QString& label);
+   int insertTab(int index,
+                 QWidget* page,
+                 const QIcon& icon,
+                 const QString& label);
+   bool isMovable();
+   bool isTabEnabled(int index);
+   bool isTabVisible(int index);
+   void removeTab(int index);
+   void setCornerWidget(QWidget* widget, Qt::Corner corner = Qt::TopRightCorner);
+   void setDocumentMode(bool set);
+   void setElideMode(Qt::TextElideMode mode);
+   void setIconSize(const QSize& size);
+   void setMovable(bool movable);
+   void setTabBarAutoHide(bool enabled);
+   void setTabEnabled(int index, bool enable);
+   void setTabIcon(int index, const QIcon& icon);
+   void setTabPosition(QTabWidget::TabPosition position);
+   void setTabShape(QTabWidget::TabShape s);
+   void setTabText(int index, const QString& label);
+   void setTabToolTip(int index, const QString& tip);
+   void setTabVisible(int index, bool visible);
+   void setTabWhatsThis(int index, const QString& text);
+   void setTabsClosable(bool closeable);
+   void setUsesScrollButtons(bool useButtons);
+   QTabBar* tabBar();
+   bool tabBarAutoHide();
+   QIcon tabIcon(int index);
+   QTabWidget::TabPosition tabPosition();
+   QTabWidget::TabShape tabShape();
+   QString tabText(int index);
+   QString tabToolTip(int index);
+   QString tabWhatsThis(int index);
+   bool tabsClosable();
+   bool usesScrollButtons();
+   QWidget *widget(int index);
 
    /*!
       \brief Returns true if the user is logged in, otherwise false.
@@ -249,8 +318,9 @@ public:
    /*!
       \brief Sets the message text scrolling.
 
-      Sets the text message to scrolling if the text is longer than the available space.
-      If the text will fit inside the available space then this is ignored.
+      Sets the text message to scrolling if the text is longer than the available
+      space. If the text will fit inside the available space then this is
+      ignored.
    */
    bool isMarqueeEnabled();
 
@@ -288,9 +358,10 @@ public:
    /*!
       \brief Sets the login type to one of ExTabWidget::LoginType values.
 
-      This is one of the LoginType values. By default it is ExTabWidget::None, however
-      it can be set to ExTabWidget::Simple or ExTabWidget::Standard for one of the
-      internal types or ExTabWidget::Custom if the user supplies a custom login dialog.
+      This is one of the LoginType values. By default it is ExTabWidget::None,
+      however it can be set to ExTabWidget::Simple or ExTabWidget::Standard for
+      one of the internal types or ExTabWidget::Custom if the user supplies a
+      custom login dialog.
 
       \sa loginType(), ExTabWidget::LoginType
    */
@@ -299,9 +370,10 @@ public:
    /*!
       \brief Returns the login type.
 
-      This is one of the LoginType values. By default it is ExTabWidget::None, however
-      it can be set to ExTabWidget::Simple or ExTabWidget::Standard for one of the
-      internal types or ExTabWidget::Custom if the user supplies a custom login dialog.
+      This is one of the LoginType values. By default it is ExTabWidget::None,
+      however it can be set to ExTabWidget::Simple or ExTabWidget::Standard for
+      one of the internal types or ExTabWidget::Custom if the user supplies a
+      custom login dialog.
 
       \sa setLoginType(), ExTabWidget::LoginType
    */
@@ -310,9 +382,9 @@ public:
    /*!
       \brief Sets a custom logging dialog.
 
-      Note: This only stores the custom dialog object, it does not ensure tha it is used.
-      To use the custom dialog you also need to call setLoginType(LoginType) method to
-      ExTabWidget::Custom.
+      Note: This only stores the custom dialog object, it does not ensure tha it
+      is used. To use the custom dialog you also need to call
+      setLoginType(LoginType) method to ExTabWidget::Custom.
    */
    void setCustomLoginDialog(AbstractLoginDialog* loginDlg);
 
@@ -325,9 +397,13 @@ public:
       \brief Shows a frame around the displayed items if true.
 
       The show frame flag operates on all of the extensions, so either they all
-                                                              have frames or none of them have frames.
+                                                              have frames or none
+      of them have frames.
    */
-   void showFrame(bool showFrame);
+   void showFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
+   void showClockFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
+   void showLoginFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
+   void showMessageFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
 
    /*!
       \brief Sets the password for the simple login dialog.
@@ -336,7 +412,8 @@ public:
    /*!
       \brief Adds a username/password pair for the standard login dialog.
 
-      Usernames must be unique, inserting a repeat username will overwrite the earlier version.
+      Usernames must be unique, inserting a repeat username will overwrite the
+      earlier version.
    */
    void addPassword(QString id, QString password);
    /*!
@@ -345,16 +422,16 @@ public:
    void clearPasswords();
 
    /*!
-      \brief Sets the value of the ignore case flag. If set to true all password/username
-      checks ignore the character case.
+      \brief Sets the value of the ignore case flag. If set to true all
+      password/username checks ignore the character case.
    */
    void setIgnoreCase(bool ignoreCase);
 
    /*!
       \brief Set the show seconds flag.
 
-      Show the optional show seconds flag. Displays seconds when true, otherwise the
-      seconds are not displayed.
+      Show the optional show seconds flag. Displays seconds when true, otherwise
+      the seconds are not displayed.
    */
    void showSeconds(bool showSeconds);
 
@@ -364,7 +441,8 @@ public:
       This can temporarily be overridden by using the setMessage() method
       with the text color and background color methods.
 
-      \sa messageBackground(), setMessageBackground(QBrush), setMessageBackground(QColor)
+      \sa messageBackground(), setMessageBackground(QBrush),
+      setMessageBackground(QColor)
 
    */
    void setMessageColor(QColor color);
@@ -374,7 +452,8 @@ public:
       This can temporarily be overridden by using the setMessage() method
       with the text color and background color methods.
 
-      \sa messageBackgroundBrush(), setMessageBackground(QBrush), setMessageColor(QColor)
+      \sa messageBackgroundBrush(), setMessageBackground(QBrush),
+      setMessageColor(QColor)
    */
    void setMessageBackground(QColor color);
    /*!
@@ -383,79 +462,86 @@ public:
       This can temporarily be overridden by using the setMessage() method
       with the text color and background color methods.
 
-      \sa messageBackgroundBrush(), setMessageBackground(QColor), setMessageColor(QColor)
+      \sa messageBackgroundBrush(), setMessageBackground(QColor),
+      setMessageColor(QColor)
    */
    void setMessageBackground(QBrush brush);
 
    /*!
       \brief Sets the message text, with an optional timeout in seconds.
 
-      Sets the text message for the tab bar. This is only a single line message so "\n"
-      characters are removed. There really is not enough room for a multi line MessageTabWidget
-      within the tab bar.
+      Sets the text message for the tab bar. This is only a single line message
+      so "\n" characters are removed. There really is not enough room for a multi
+      line MessageTabWidget within the tab bar.
    */
    void setMessage(QString message, uint timeout = 0);
 
-//   /*!
-//      \brief Sets the message text and text colour, with an optional timeout in seconds.
+   //   /*!
+   //      \brief Sets the message text and text colour, with an optional timeout
+   //      in seconds.
 
-//      Sets the text message and colour for the tab bar. The optional timeout
-//      will cause the message to  disappear after timeout seconds.
+   //      Sets the text message and colour for the tab bar. The optional timeout
+   //      will cause the message to  disappear after timeout seconds.
 
-//      This is only a single line message so "\n" characters are removed. There
-//      really is not enough room for a multi line MessageTabWidget within the
-//      tab bar.
+   //      This is only a single line message so "\n" characters are removed.
+   //      There really is not enough room for a multi line MessageTabWidget
+   //      within the tab bar.
 
-//      This is the equivalent of
-//      \code
-//      tab->setMessageColor(color);
-//      tab->setMessage(message, timeout);
-//      \endcode
+   //      This is the equivalent of
+   //      \code
+   //      tab->setMessageColor(color);
+   //      tab->setMessage(message, timeout);
+   //      \endcode
 
-//   */
-//   void setMessage(QColor color, QString message, uint timeout = 0);
-//   /*!
-//      \brief Sets the message text and text colour and background colour, with an optional timeout in seconds.
+   //   */
+   //   void setMessage(QColor color, QString message, uint timeout = 0);
+   //   /*!
+   //      \brief Sets the message text and text colour and background colour,
+   //      with an optional timeout in seconds.
 
-//      Sets the text message and colour for the tab bar. The optional timeout
-//      will cause the message to  disappear after timeout seconds.
+   //      Sets the text message and colour for the tab bar. The optional timeout
+   //      will cause the message to  disappear after timeout seconds.
 
-//      This is only a single line message so "\n" characters are removed. There
-//      really is not enough room for a multi line MessageTabWidget within the
-//      tab bar.
+   //      This is only a single line message so "\n" characters are removed.
+   //      There really is not enough room for a multi line MessageTabWidget
+   //      within the tab bar.
 
-//      This is the equivalent of
-//      \code
-//      tab->setMessageColor(color);
-//      tab->setMessage(message, timeout);
-//      \endcode
+   //      This is the equivalent of
+   //      \code
+   //      tab->setMessageColor(color);
+   //      tab->setMessage(message, timeout);
+   //      \endcode
 
-//   */
-//   void setMessage(QColor color, QColor back, QString message, uint timeout = 0);
+   //   */
+   //   void setMessage(QColor color, QColor back, QString message, uint timeout
+   //   = 0);
 
-//   /*!
-//      \brief Sets the message text and text colour and background brush, with an optional timeout in seconds.
+   //   /*!
+   //      \brief Sets the message text and text colour and background brush,
+   //      with an optional timeout in seconds.
 
-//      Sets the text message and colour for the tab bar. The optional timeout
-//      will cause the message to  disappear after timeout seconds.
+   //      Sets the text message and colour for the tab bar. The optional timeout
+   //      will cause the message to  disappear after timeout seconds.
 
-//      This is only a single line message so "\n" characters are removed. There
-//      really is not enough room for a multi line MessageTabWidget within the
-//      tab bar.
+   //      This is only a single line message so "\n" characters are removed.
+   //      There really is not enough room for a multi line MessageTabWidget
+   //      within the tab bar.
 
-//      This is the equivalent of
-//      \code
-//      tab->setMessageColor(color);
-//      tab->setMessage(message, timeout);
-//      \endcode
+   //      This is the equivalent of
+   //      \code
+   //      tab->setMessageColor(color);
+   //      tab->setMessage(message, timeout);
+   //      \endcode
 
-//   */
-//   void setMessage(QColor color, QBrush back, QString message, uint timeout = 0);
+   //   */
+   //   void setMessage(QColor color, QBrush back, QString message, uint timeout
+   //   = 0);
    /*!
       \brief Sets the message text scrolling.
 
-      Sets the text message to scrolling if the text is longer than the available space.
-      If the text will fit inside the available space then this is ignored.
+      Sets the text message to scrolling if the text is longer than the available
+      space. If the text will fit inside the available space then this is
+      ignored.
    */
    void setMarquee(bool marquee);
    /*!
@@ -471,43 +557,53 @@ public:
    */
    void clearMessage();
 
+   QString styleSheet() const;
+   QString clockStyleSheet() const;
+   QString loginStyleSheet() const;
+   QString messageStyleSheet() const;
+   //   void setStyleSheet(const QString &styleSheet);
+   void setClockStyleSheet(const QString& styleSheet);
+   void setLoginStyleSheet(const QString& styleSheet);
+   void setMessageStyleSheet(const QString& styleSheet);
+
 signals:
    /*!
       \fn ExTabWidget::loggedOut()
 
-      \brief This signal is emitted when either the simple or the standard login dialog
-      indicate that the user has successfully logged out.
+      \brief This signal is emitted when either the simple or the standard login
+      dialog indicate that the user has successfully logged out.
    */
    void loggedOut();
 
    /*!
       \fn ExTabWidget::loggedIn()
 
-      \brief This signal is emitted when either the simple or the standard login dialog indicate
-      that the user has successfully logged in.
+      \brief This signal is emitted when either the simple or the standard login
+      dialog indicate that the user has successfully logged in.
    */
    void loggedIn();
 
    /*!
       \fn ExTabWidget::passwordBad()
 
-      \brief This signal is emitted when either the simple or the standard login dialog indicate
-      that the password was bad for the username.
+      \brief This signal is emitted when either the simple or the standard login
+      dialog indicate that the password was bad for the username.
    */
 
    void passwordBad();
    /*!
       \fn ExTabWidget::usernameBad()
 
-      \brief This signal is emitted when either the simple or the standard login dialog indicate
-      that the username was not one of the supplied values
+      \brief This signal is emitted when either the simple or the standard login
+      dialog indicate that the username was not one of the supplied values
    */
    void usernameBad();
 
    /*!
       \fn ExTabWidget::loginBad()
 
-      \brief This signal is emitted when a custom login dialog sends a loginIsIncorrect signal.
+      \brief This signal is emitted when a custom login dialog sends a
+      loginIsIncorrect signal.
    */
    void loginBad();
 
@@ -518,14 +614,14 @@ private:
        \brief Reimplements: QTabWidget::paintEvent()
    */
    virtual void paintEvent(QPaintEvent* evt);
-   /*!
-      \brief Reimplements: QTabWidget::mousePressEvent()
-   */
-   virtual void mousePressEvent(QMouseEvent* event);
-   /*!
-      \brief Reimplements: QTabWidget::mouseReleaseEvent()
-   */
-   virtual void mouseReleaseEvent(QMouseEvent* event);
+   //   /*!
+   //      \brief Reimplements: QTabWidget::mousePressEvent()
+   //   */
+   //   virtual void mousePressEvent(QMouseEvent* event);
+   //   /*!
+   //      \brief Reimplements: QTabWidget::mouseReleaseEvent()
+   //   */
+   //   virtual void mouseReleaseEvent(QMouseEvent* event);
    /*!
       \brief Reimplements: QTabWidget::resizeEvent()
    */
@@ -553,20 +649,9 @@ private:
    */
    void loginIsIncorrect();
 
-   /*
-      Triggers the clock update.
-
-      This is necessary as it is not possible
-       to operate a QTimer in the private class.
-   */
-   void nextSecond();
-
    void updateMarquee();
 
    void timeout();
-
-
 };
-
 
 #endif // _H
