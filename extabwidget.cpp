@@ -4,75 +4,77 @@
 ExTabWidget::ExTabWidget(QWidget* parent,
                          ExTabWidget::LoginType type,
                          AbstractLoginDialog* customDlg)
-   : QFrame(parent)
+   : QTabWidget(parent)
    , m_loginType(type)
    , d_ptr(new ExTabWidgetPrivate(this, customDlg))
-{}
+{
+  connect(this, &ExTabWidget::statusChanged, this, &ExTabWidget::statusHasChanged);
+}
 
 int ExTabWidget::addTab(QWidget* page, const QString& label)
 {
-   Q_D(ExTabWidget);
-   return d->m_tabs->addTab(page, label);
+   emit statusChanged();
+   return QTabWidget::addTab(page, label);
 }
 
 int ExTabWidget::addTab(QWidget* page, const QIcon& icon, const QString& label)
 {
-   Q_D(ExTabWidget);
-   return d->m_tabs->addTab(page, icon, label);
+   emit statusChanged();
+   return QTabWidget::addTab(page, icon, label);
 }
 
 void ExTabWidget::clear()
 {
-   Q_D(ExTabWidget);
-   d->m_tabs->clear();
+   emit statusChanged();
+   QTabWidget::clear();
 }
 
-const QWidget* ExTabWidget::cornerWidget(Qt::Corner corner)
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->cornerWidget(corner);
-}
+//const QWidget* ExTabWidget::cornerWidget(Qt::Corner corner)
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->cornerWidget(corner);
+//}
 
-int ExTabWidget::count()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->count();
-}
+//int ExTabWidget::count()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->count();
+//}
 
-int ExTabWidget::currentIndex()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->currentIndex();
-}
+//int ExTabWidget::currentIndex()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->currentIndex();
+//}
 
-bool ExTabWidget::documentMode()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->documentMode();
-}
+//bool ExTabWidget::documentMode()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->documentMode();
+//}
 
-Qt::TextElideMode ExTabWidget::elideMode()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->elideMode();
-}
+//Qt::TextElideMode ExTabWidget::elideMode()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->elideMode();
+//}
 
-QSize ExTabWidget::iconSize()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->iconSize();
-}
+//QSize ExTabWidget::iconSize()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->iconSize();
+//}
 
-int ExTabWidget::indexOf(QWidget* w)
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->indexOf(w);
-}
+//int ExTabWidget::indexOf(QWidget* w)
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->indexOf(w);
+//}
 
 int ExTabWidget::insertTab(int index, QWidget* page, const QString& label)
 {
-   Q_D(ExTabWidget);
-   return d->m_tabs->insertTab(index, page, label);
+   emit statusChanged();
+   return QTabWidget::insertTab(index, page, label);
 }
 
 int ExTabWidget::insertTab(int index,
@@ -80,189 +82,189 @@ int ExTabWidget::insertTab(int index,
                            const QIcon& icon,
                            const QString& label)
 {
-   Q_D(ExTabWidget);
-   return d->m_tabs->insertTab(index, page, icon, label);
+   emit statusChanged();
+   return QTabWidget::insertTab(index, page, icon, label);
 }
 
-bool ExTabWidget::isMovable()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->isMovable();
-}
+//bool ExTabWidget::isMovable()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->isMovable();
+//}
 
-bool ExTabWidget::isTabEnabled(int index)
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->isTabEnabled(index);
-}
+//bool ExTabWidget::isTabEnabled(int index)
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->isTabEnabled(index);
+//}
 
-bool ExTabWidget::isTabVisible(int index)
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->isTabVisible(index);
-}
+//bool ExTabWidget::isTabVisible(int index)
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->isTabVisible(index);
+//}
 
 void ExTabWidget::removeTab(int index)
 {
-   Q_D(ExTabWidget);
-   d->m_tabs->removeTab(index);
+   emit statusChanged();
+   QTabWidget::removeTab(index);
 }
 
-void ExTabWidget::setCornerWidget(QWidget* widget, Qt::Corner corner)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setCornerWidget(widget, corner);
-}
+//void ExTabWidget::setCornerWidget(QWidget* widget, Qt::Corner corner)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setCornerWidget(widget, corner);
+//}
 
-void ExTabWidget::setDocumentMode(bool set)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setDocumentMode(set);
-}
+//void ExTabWidget::setDocumentMode(bool set)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setDocumentMode(set);
+//}
 
-void ExTabWidget::setElideMode(Qt::TextElideMode mode)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setElideMode(mode);
-}
+//void ExTabWidget::setElideMode(Qt::TextElideMode mode)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setElideMode(mode);
+//}
 
 void ExTabWidget::setIconSize(const QSize& size)
 {
-   Q_D(ExTabWidget);
-   d->m_tabs->setIconSize(size);
+   emit statusChanged();
+   QTabWidget::setIconSize(size);
 }
 
-void ExTabWidget::setMovable(bool movable)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setMovable(movable);
-}
+//void ExTabWidget::setMovable(bool movable)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setMovable(movable);
+//}
 
-void ExTabWidget::setTabBarAutoHide(bool enabled)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabBarAutoHide(enabled);
-}
+//void ExTabWidget::setTabBarAutoHide(bool enabled)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setTabBarAutoHide(enabled);
+//}
 
-void ExTabWidget::setTabEnabled(int index, bool enable)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabEnabled(index, enable);
-}
+//void ExTabWidget::setTabEnabled(int index, bool enable)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setTabEnabled(index, enable);
+//}
 
 void ExTabWidget::setTabIcon(int index, const QIcon& icon)
 {
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabIcon(index, icon);
+   emit statusChanged();
+   QTabWidget::setTabIcon(index, icon);
 }
 
-void ExTabWidget::setTabPosition(QTabWidget::TabPosition position)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabPosition(position);
-}
+//void ExTabWidget::setTabPosition(QTabWidget::TabPosition position)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setTabPosition(position);
+//}
 
 void ExTabWidget::setTabShape(QTabWidget::TabShape s)
 {
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabShape(s);
+   emit statusChanged();
+   QTabWidget::setTabShape(s);
 }
 
 void ExTabWidget::setTabText(int index, const QString& label)
 {
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabText(index, label);
+   emit statusChanged();
+   QTabWidget::setTabText(index, label);
 }
 
-void ExTabWidget::setTabToolTip(int index, const QString& tip)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabToolTip(index, tip);
-}
+//void ExTabWidget::setTabToolTip(int index, const QString& tip)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setTabToolTip(index, tip);
+//}
 
 void ExTabWidget::setTabVisible(int index, bool visible)
 {
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabVisible(index, visible);
+   emit statusChanged();
+   QTabWidget::setTabVisible(index, visible);
 }
 
-void ExTabWidget::setTabWhatsThis(int index, const QString& text)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabWhatsThis(index, text);
-}
+//void ExTabWidget::setTabWhatsThis(int index, const QString& text)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setTabWhatsThis(index, text);
+//}
 
-void ExTabWidget::setTabsClosable(bool closeable)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setTabsClosable(closeable);
-}
+//void ExTabWidget::setTabsClosable(bool closeable)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setTabsClosable(closeable);
+//}
 
-void ExTabWidget::setUsesScrollButtons(bool useButtons)
-{
-   Q_D(ExTabWidget);
-   d->m_tabs->setUsesScrollButtons(useButtons);
-}
+//void ExTabWidget::setUsesScrollButtons(bool useButtons)
+//{
+//   Q_D(ExTabWidget);
+//   d->m_tabs->setUsesScrollButtons(useButtons);
+//}
 
-QTabBar* ExTabWidget::tabBar()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabBar();
-}
+//QTabBar* ExTabWidget::tabBar()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabBar();
+//}
 
-bool ExTabWidget::tabBarAutoHide()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabBarAutoHide();
-}
+//bool ExTabWidget::tabBarAutoHide()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabBarAutoHide();
+//}
 
-QIcon ExTabWidget::tabIcon(int index)
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabIcon(index);
-}
+//QIcon ExTabWidget::tabIcon(int index)
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabIcon(index);
+//}
 
-QTabWidget::TabPosition ExTabWidget::tabPosition()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabPosition();
-}
+//QTabWidget::TabPosition ExTabWidget::tabPosition()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabPosition();
+//}
 
-QTabWidget::TabShape ExTabWidget::tabShape()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabShape();
-}
+//QTabWidget::TabShape ExTabWidget::tabShape()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabShape();
+//}
 
-QString ExTabWidget::tabText(int index)
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabText(index);
-}
+//QString ExTabWidget::tabText(int index)
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabText(index);
+//}
 
-QString ExTabWidget::tabToolTip(int index)
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabToolTip(index);
-}
+//QString ExTabWidget::tabToolTip(int index)
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabToolTip(index);
+//}
 
-QString ExTabWidget::tabWhatsThis(int index)
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabWhatsThis(index);
-}
+//QString ExTabWidget::tabWhatsThis(int index)
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabWhatsThis(index);
+//}
 
-bool ExTabWidget::tabsClosable()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->tabsClosable();
-}
+//bool ExTabWidget::tabsClosable()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->tabsClosable();
+//}
 
-bool ExTabWidget::usesScrollButtons()
-{
-   Q_D(ExTabWidget);
-   return d->m_tabs->usesScrollButtons();
-}
+//bool ExTabWidget::usesScrollButtons()
+//{
+//   Q_D(ExTabWidget);
+//   return d->m_tabs->usesScrollButtons();
+//}
 
 bool ExTabWidget::isLoggedIn()
 {
@@ -279,7 +281,7 @@ QString ExTabWidget::username()
 bool ExTabWidget::isClockEnabled()
 {
    Q_D(ExTabWidget);
-   return d->m_showClock;
+   return d->isShowClock();
 }
 
 bool ExTabWidget::isLoginEnabled()
@@ -319,11 +321,12 @@ QColor ExTabWidget::messageColor()
 void ExTabWidget::showClock(bool showClock)
 {
    d_ptr->showClock(showClock);
+   d_ptr->tabwidgetStatusChanged();
 }
 
 void ExTabWidget::showLogin(bool showLogin)
 {
-   d_ptr->showLogin(showLogin);
+   d_ptr->m_wrapper->showLogin(showLogin);
 }
 
 void ExTabWidget::setLoginType(ExTabWidget::LoginType type)
@@ -346,7 +349,7 @@ void ExTabWidget::setCustomLoginDialog(AbstractLoginDialog* loginDlg)
 
 void ExTabWidget::showMessages(bool showMessages)
 {
-   d_ptr->showMessages(showMessages);
+   d_ptr->m_wrapper->showMessages(showMessages);
 }
 
 void ExTabWidget::showFrame(bool showFrame, QFrame::Shape style)
@@ -480,17 +483,21 @@ void ExTabWidget::setMessageStyleSheet(const QString& styleSheet)
    d_ptr->setMessageStyleSheet(styleSheet);
 }
 
-void ExTabWidget::paintEvent(QPaintEvent* evt)
-{
-   d_ptr->paintEvent(evt);
-   //   QTabWidget::paintEvent(evt);
-   //   QStyleOption opt;
-   //   opt.init(this);
-   //   //  style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
-   //   QPainter* painter = new QPainter(this);
-   //   d_ptr->paint(painter, evt->rect().width() - 10, style());
-   //   delete painter;
+void ExTabWidget::statusHasChanged() {
+  d_ptr->tabwidgetStatusChanged();
 }
+
+//void ExTabWidget::paintEvent(QPaintEvent* evt)
+//{
+//   d_ptr->paintEvent(evt);
+//   //   QTabWidget::paintEvent(evt);
+//   //   QStyleOption opt;
+//   //   opt.init(this);
+//   //   //  style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+//   //   QPainter* painter = new QPainter(this);
+//   //   d_ptr->paint(painter, evt->rect().width() - 10, style());
+//   //   delete painter;
+//}
 
 // void ExTabWidget::mousePressEvent(QMouseEvent* event)
 //{
@@ -508,8 +515,8 @@ void ExTabWidget::paintEvent(QPaintEvent* evt)
 
 void ExTabWidget::resizeEvent(QResizeEvent* evt)
 {
-   QFrame::resizeEvent(evt);
-   d_ptr->resize();
+   QTabWidget::resizeEvent(evt);
+   d_ptr->tabwidgetStatusChanged();
 }
 
 void ExTabWidget::checkPassword(QString password)

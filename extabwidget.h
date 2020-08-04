@@ -106,7 +106,7 @@
 
    \since 5.0
 */
-class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QFrame
+class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
 {
 
    Q_OBJECT
@@ -237,50 +237,50 @@ public:
    int addTab(QWidget* page, const QString& label);
    int addTab(QWidget* page, const QIcon& icon, const QString& label);
    void clear();
-   const QWidget* cornerWidget(Qt::Corner corner = Qt::TopRightCorner);
-   int count();
-   int currentIndex();
-   QWidget* currentWidget();
-   bool documentMode();
-   Qt::TextElideMode elideMode();
-   QSize iconSize();
-   int indexOf(QWidget* w);
+//   const QWidget* cornerWidget(Qt::Corner corner = Qt::TopRightCorner);
+//   int count();
+//   int currentIndex();
+//   QWidget* currentWidget();
+//   bool documentMode();
+//   Qt::TextElideMode elideMode();
+//   QSize iconSize();
+//   int indexOf(QWidget* w);
    int insertTab(int index, QWidget* page, const QString& label);
    int insertTab(int index,
                  QWidget* page,
                  const QIcon& icon,
                  const QString& label);
-   bool isMovable();
-   bool isTabEnabled(int index);
-   bool isTabVisible(int index);
+//   bool isMovable();
+//   bool isTabEnabled(int index);
+//   bool isTabVisible(int index);
    void removeTab(int index);
-   void setCornerWidget(QWidget* widget, Qt::Corner corner = Qt::TopRightCorner);
-   void setDocumentMode(bool set);
-   void setElideMode(Qt::TextElideMode mode);
+//   void setCornerWidget(QWidget* widget, Qt::Corner corner = Qt::TopRightCorner);
+//   void setDocumentMode(bool set);
+//   void setElideMode(Qt::TextElideMode mode);
    void setIconSize(const QSize& size);
-   void setMovable(bool movable);
-   void setTabBarAutoHide(bool enabled);
-   void setTabEnabled(int index, bool enable);
+//   void setMovable(bool movable);
+//   void setTabBarAutoHide(bool enabled);
+//   void setTabEnabled(int index, bool enable);
    void setTabIcon(int index, const QIcon& icon);
-   void setTabPosition(QTabWidget::TabPosition position);
+//   void setTabPosition(QTabWidget::TabPosition position);
    void setTabShape(QTabWidget::TabShape s);
    void setTabText(int index, const QString& label);
-   void setTabToolTip(int index, const QString& tip);
+//   void setTabToolTip(int index, const QString& tip);
    void setTabVisible(int index, bool visible);
-   void setTabWhatsThis(int index, const QString& text);
-   void setTabsClosable(bool closeable);
-   void setUsesScrollButtons(bool useButtons);
-   QTabBar* tabBar();
-   bool tabBarAutoHide();
-   QIcon tabIcon(int index);
-   QTabWidget::TabPosition tabPosition();
-   QTabWidget::TabShape tabShape();
-   QString tabText(int index);
-   QString tabToolTip(int index);
-   QString tabWhatsThis(int index);
-   bool tabsClosable();
-   bool usesScrollButtons();
-   QWidget *widget(int index);
+//   void setTabWhatsThis(int index, const QString& text);
+//   void setTabsClosable(bool closeable);
+//   void setUsesScrollButtons(bool useButtons);
+//   QTabBar* tabBar();
+//   bool tabBarAutoHide();
+//   QIcon tabIcon(int index);
+//   QTabWidget::TabPosition tabPosition();
+//   QTabWidget::TabShape tabShape();
+//   QString tabText(int index);
+//   QString tabToolTip(int index);
+//   QString tabWhatsThis(int index);
+//   bool tabsClosable();
+//   bool usesScrollButtons();
+//   QWidget *widget(int index);
 
    /*!
       \brief Returns true if the user is logged in, otherwise false.
@@ -607,13 +607,18 @@ signals:
    */
    void loginBad();
 
-private:
+ signals:
+   void statusChanged();
+
+ private:
    LoginType m_loginType;
 
-   /*!
-       \brief Reimplements: QTabWidget::paintEvent()
-   */
-   virtual void paintEvent(QPaintEvent* evt);
+   void statusHasChanged();
+
+//   /*!
+//       \brief Reimplements: QTabWidget::paintEvent()
+//   */
+//   virtual void paintEvent(QPaintEvent* evt);
    //   /*!
    //      \brief Reimplements: QTabWidget::mousePressEvent()
    //   */
@@ -652,6 +657,8 @@ private:
    void updateMarquee();
 
    void timeout();
+
+
 };
 
 #endif // _H

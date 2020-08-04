@@ -568,16 +568,17 @@ void MainWindow::showSeconds(bool enable)
 
 void MainWindow::showClockFrame()
 {
-   if (m_showClockFrame->isChecked()) {
-      m_exTabWidget->showClockFrame(true, m_clockFrameStyleBox->currentData(Qt::UserRole).value<QFrame::Shape>());
-   }else {
-     m_exTabWidget->showClockFrame(false);
-   }
+   // TODO might still need this.
+   //   if (m_showClockFrame->isChecked()) {
+   //      m_exTabWidget->showClockFrame(true, m_clockFrameStyleBox->currentData(Qt::UserRole).value<QFrame::Shape>());
+   //   }else {
+   //     m_exTabWidget->showClockFrame(false);
+   //   }
 }
 
 void MainWindow::clockFrameStyleChanged(int /*index*/)
 {
-  showClockFrame();
+   showClockFrame();
 }
 
 void MainWindow::showMessages(bool enable)
