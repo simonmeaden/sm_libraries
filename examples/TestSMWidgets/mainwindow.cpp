@@ -543,7 +543,6 @@ void MainWindow::showClock(bool enable)
 {
    m_exTabWidget->showClock(enable);
    m_showSecondsBox->setEnabled(enable);
-   m_showClockFrame->setEnabled(true);
    m_clockFrameStyleBox->setEnabled(true);
 
    if (enable) {
@@ -566,19 +565,9 @@ void MainWindow::showSeconds(bool enable)
    }
 }
 
-void MainWindow::showClockFrame()
-{
-   // TODO might still need this.
-   //   if (m_showClockFrame->isChecked()) {
-   //      m_exTabWidget->showClockFrame(true, m_clockFrameStyleBox->currentData(Qt::UserRole).value<QFrame::Shape>());
-   //   }else {
-   //     m_exTabWidget->showClockFrame(false);
-   //   }
-}
-
 void MainWindow::clockFrameStyleChanged(int /*index*/)
 {
-   showClockFrame();
+   m_exTabWidget->showClockFrame(true, m_clockFrameStyleBox->currentData(Qt::UserRole).value<QFrame::Shape>());
 }
 
 void MainWindow::showMessages(bool enable)
@@ -735,6 +724,12 @@ void MainWindow::exSpinBoxChanged(int value)
    if (m_currentWidget == m_exSpinBox) {
       m_widgetText->setText(QString::number(value));
    }
+}
+
+void MainWindow::setClockStylesheet()
+{
+   QString text = m_clockStylesheetEdit->toPlainText();
+   m_exTabWidget->setClockStyleSheet(text);
 }
 
 void MainWindow::setCurrentWidgetAlignment()
@@ -1285,11 +1280,6 @@ QWidget* MainWindow::initExTabWidget()
    connect(m_showSecondsBox, &QCheckBox::clicked, this, &MainWindow::showSeconds);
    enableLayout->addWidget(m_showSecondsBox);
 
-   m_showClockFrame = new QCheckBox(tr("Show Clock Frame"), this);
-   m_showClockFrame->setEnabled(false);
-   connect(m_showClockFrame, &QCheckBox::clicked, this, &MainWindow::showClockFrame);
-   enableLayout->addWidget(m_showClockFrame);
-
    QStringList frameStyles;
    frameStyles << "QFrame::NoFrame" << "QFrame::Box" << "QFrame::Panel"
                << "QFrame::StyledPanel" << "QFrame::HLine"
@@ -1307,6 +1297,23 @@ QWidget* MainWindow::initExTabWidget()
    m_clockFrameStyleBox->setItemData(5, QVariant::fromValue<QFrame::Shape>(QFrame::VLine));
    m_clockFrameStyleBox->setItemData(6, QVariant::fromValue<QFrame::Shape>(QFrame::WinPanel));
    enableLayout->addWidget(m_clockFrameStyleBox);
+
+   QLabel* lbl = new QLabel(tr("Clock Stylesheet :"), this);
+   enableLayout->addWidget(lbl);
+
+   m_clockStylesheetEdit = new QPlainTextEdit(this);
+   enableLayout->addWidget(m_clockStylesheetEdit);
+   m_clockStylesheetEdit->setPlainText("color: red;"
+                                       "background: lightblue; "
+                                       "border-width: 1px; "
+                                       "border-style: solid;"
+                                       "border-color: blue; "
+                                       "border-radius: 4px;");
+
+   m_clockStylesheetBtn = new QPushButton(tr("Set Stylesheet"), this);
+   connect(m_clockStylesheetBtn, &QPushButton::clicked,
+           this, &MainWindow::setClockStylesheet);
+   enableLayout->addWidget(m_clockStylesheetBtn);
 
    m_showMessageBox = new QCheckBox(tr("Show Messages"), this);
    connect(m_showMessageBox, &QCheckBox::clicked, this, &MainWindow::showMessages);

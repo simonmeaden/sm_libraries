@@ -352,11 +352,6 @@ void ExTabWidget::showMessages(bool showMessages)
    d_ptr->m_wrapper->showMessages(showMessages);
 }
 
-void ExTabWidget::showFrame(bool showFrame, QFrame::Shape style)
-{
-   d_ptr->showFrame(showFrame, style);
-}
-
 void ExTabWidget::showClockFrame(bool showFrame, QFrame::Shape style)
 {
    d_ptr->showClockFrame(showFrame, style);

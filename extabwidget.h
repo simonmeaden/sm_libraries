@@ -400,7 +400,6 @@ public:
                                                               have frames or none
       of them have frames.
    */
-   void showFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
    void showClockFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
    void showLoginFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
    void showMessageFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);

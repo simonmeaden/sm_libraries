@@ -35,8 +35,8 @@ ExTabWidgetPrivate::ExTabWidgetPrivate(ExTabWidget* parent,
    m_marqueePos = 0;
    q_ptr->setContentsMargins(0, 0, 0, 0);
    // TODO REMOVE BELOW
-   q_ptr->tabBar()->setStyleSheet("background: red;");
-   q_ptr->setStyleSheet("background: green;");
+   //   q_ptr->tabBar()->setStyleSheet("background: red;");
+   //   q_ptr->setStyleSheet("background: green;");
    // TODO UNTIL HERE
 }
 
@@ -51,43 +51,12 @@ bool ExTabWidgetPrivate::hasCustomLoginDialog()
    return (m_customLoginDlg);
 }
 
-void ExTabWidgetPrivate::showFrame(bool frame, QFrame::Shape style)
-{
-   m_showFrame = frame;
-   // TODO set clock etc. framestyles
-   //   m_clockWidget->setFrameStyle(style);
-   //   m_loginWidget->setFrameStyle(style);
-   //   m_messageWidget->setFrameStyle(style);
-   q_ptr->update();
-}
-
 void ExTabWidgetPrivate::showClockFrame(bool showFrame, QFrame::Shape style)
 {
    // TODO show/hide clock frames
-   //   if (!m_clockWidget) {
-   //      return;
-   //   }
-
-   //   if (showFrame) {
-   //      m_clockWidget->setFrameStyle(style);
-
-   //   } else {
-   //      m_clockWidget->setFrameStyle(QFrame::NoFrame);
-   //   }
-}
-
-void ExTabWidgetPrivate::showLoginFrame(bool showFrame, QFrame::Shape style)
-{
-   //   if (!m_loginWidget) {
-   //      return;
-   //   }
-
-   //   if (showFrame) {
-   //      m_loginWidget->setFrameStyle(style);
-
-   //   } else {
-   //      m_loginWidget->setFrameStyle(QFrame::NoFrame);
-   //   }
+   if (m_wrapper) {
+      m_wrapper->showClockFrame(showFrame, style);
+   }
 }
 
 void ExTabWidgetPrivate::showMessageFrame(bool showFrame, QFrame::Shape style)
@@ -107,7 +76,7 @@ void ExTabWidgetPrivate::showMessageFrame(bool showFrame, QFrame::Shape style)
 void ExTabWidgetPrivate::showClock(bool showClock)
 {
    m_wrapper->showClock(showClock);
-   m_wrapper->repositionWidgets(m_frameX, m_frameY, m_frameWidth, m_frameHeight);
+   m_wrapper->calculateWidgetSizes(m_frameX, m_frameY, m_frameWidth, m_frameHeight);
    q_ptr->update();
 }
 
@@ -391,7 +360,7 @@ void ExTabWidgetPrivate::tabwidgetStatusChanged()
 
    m_wrapper->setGeometry(q_ptr->tabBar()->width(),
                           q_ptr->tabBar()->y(),
-                          m_frameWidth - 2,
+                          m_frameWidth,
                           m_frameHeight);
    q_ptr->update();
 }
@@ -416,17 +385,9 @@ QString ExTabWidgetPrivate::messageStyleSheet() const
    //   return m_messageWidget->styleSheet();
 }
 
-void ExTabWidgetPrivate::setStyleSheet(const QString& styleSheet)
-{
-   m_stylesheet = styleSheet;
-   //   m_clockWidget->setStyleSheet(styleSheet);
-   //   m_loginWidget->setStyleSheet(styleSheet);
-   //   m_messageWidget->setStyleSheet(styleSheet);
-}
-
 void ExTabWidgetPrivate::setClockStyleSheet(const QString& styleSheet)
 {
-   //   m_clockWidget->setStyleSheet(styleSheet);
+      m_wrapper->setClockStyleSheet(styleSheet);
 }
 
 void ExTabWidgetPrivate::setLoginStyleSheet(const QString& styleSheet)
@@ -880,6 +841,8 @@ void ExTabWidgetPrivate::addPassword(QString id, QString password)
 void ExTabWidgetPrivate::showSeconds(bool showSeconds)
 {
    m_wrapper->setShowSeconds(showSeconds);
+   m_wrapper->calculateWidgetSizes(m_frameX, m_frameY, m_frameWidth, m_frameHeight);
+//   q_ptr->updateGeometry();
 }
 
 void ExTabWidgetPrivate::clearMessage()
@@ -1134,10 +1097,146 @@ void SimpleLoginDialog::acceptLogin()
    emit loginData(m_passEdit->text());
 }
 
+//== ClockWidget ========================================================================
+
+ClockWidget::ClockWidget(QWidget* parent)
+   : QFrame(parent)
+   , m_clockTimer(nullptr)
+   , m_showSeconds(false)
+{
+//   setStyleSheet("background: yellow;");
+}
+
+bool ClockWidget::isShowing()
+{
+   return m_showClock;
+}
+
+void ClockWidget::showClock(bool showClock)
+{
+   if (showClock != m_showClock) {
+      m_showClock = showClock;
+
+      if (showClock) {
+         if (m_clockTimer && m_clockTimer->isActive()) {
+            return;
+
+         } else {
+            if (!m_clockTimer) {
+               m_clockTimer = new QTimer(this);
+               connect(m_clockTimer, &QTimer::timeout,
+                       this, &ClockWidget::nextSecond,
+                       Qt::UniqueConnection);
+            }
+
+            m_clockTimer->start(CLOCK_TIME);
+         }
+
+      } else {
+         if (m_clockTimer) {
+            if (m_clockTimer->isActive()) {
+               m_clockTimer->stop();
+            }
+
+            m_clockTimer->deleteLater();
+            m_clockTimer = nullptr;
+         }
+      }
+   }
+}
+
+void ClockWidget::showClockFrame(bool showFrame, QFrame::Shape style) {
+  if (showFrame) {
+    setFrameStyle(style);
+
+  } else {
+    setFrameStyle(QFrame::NoFrame);
+  }
+}
+
+bool ClockWidget::showSeconds() const
+{
+  return m_showSeconds;
+}
+
+void ClockWidget::setShowSeconds(bool value)
+{
+  m_showSeconds = value;
+  update();
+}
+
+void ClockWidget::paintEvent(QPaintEvent* evt)
+{
+   QFrame::paintEvent(evt);
+   QPainter painter(this);
+
+   if (m_showClock) {
+      QFontMetrics fm = painter.fontMetrics();
+      int h = fm.height();
+      int w = fm.horizontalAdvance(m_nowString);
+      int x = (m_size.width() - w) / 2;
+      int y = m_size.height() - ((m_size.height() - h) / 2);
+      painter.drawText(x, y, m_nowString);
+   }
+}
+
+int ClockWidget::calculateRequiredWidth(int x, int y, int w, int h)
+{
+   if (w < 0) {
+      return -1;
+   }
+
+   QFontMetrics fm = fontMetrics();
+   int reqWidth;
+
+   // always use WITHSECONDS as it is the longer. Dont want width to change.
+   if (m_showSeconds) {
+      reqWidth = fm.horizontalAdvance(WITHSECONDS) + 25;
+
+   } else {
+      reqWidth = fm.horizontalAdvance(NOSECONDS) + 25;
+   }
+
+   if (reqWidth > w) {
+      reqWidth = w;
+   }
+
+   return reqWidth;
+}
+
+QSize ClockWidget::sizeHint() const
+{
+   return m_size;
+}
+
+void ClockWidget::setSizeHint(const QSize& size)
+{
+  if (m_size != size){
+    m_size = size;
+    updateGeometry();
+  }
+}
+
+void ClockWidget::nextSecond()
+{
+   QString format = "hh:mm";
+
+   if (m_showSeconds) {
+      format += ":ss";
+   }
+
+   QDateTime now = QDateTime::currentDateTime();
+   m_nowString = now.toString(format);
+
+   update();
+}
+
+//== WrapperWidget ========================================================================
+
 bool WrapperWidget::isShowClock()
 {
    if (m_clockWidget) {
-      return m_clockWidget->isShown();
+      return m_clockWidget->isShowing();
    }
 
    return false;

@@ -2,7 +2,6 @@
 #define EXTENDEDTABWIDGETPRIVATE_H
 
 #include <QDateTime>
-#include <QTimer>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QFont>
@@ -10,13 +9,15 @@
 #include <QGuiApplication>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMainWindow>
 #include <QObject>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPalette>
 #include <QPushButton>
-#include <QTabBar>
 #include <QStyleOption>
+#include <QTabBar>
+#include <QTimer>
 
 /// \cond DO_NOT_DOCUMENT
 
@@ -59,145 +60,40 @@ private:
 
    void initGui(bool largeText);
    void acceptLogin();
-
 };
 
 class ClockWidget : public QFrame
 {
 public:
-   explicit ClockWidget(QWidget* parent = nullptr)
-      : QFrame(parent)
-      , m_clockTimer(nullptr)
-      , m_showSeconds(false) {
-      setStyleSheet("background: yellow;");
-   }
+   explicit ClockWidget(QWidget* parent = nullptr);
 
-   //   int calculateRequiredWidth() {
-   //      QFontMetrics fm = fontMetrics();
+   bool isShowing();
+   void showClock(bool showClock);
+   void showClockFrame(bool showFrame, QFrame::Shape style);
 
-   //      // always use LOGOUT as it is the longer. Dont want width to change.
-   //      if (m_showSeconds) {
-   //         return fm.horizontalAdvance(WITHSECONDS) + 20;
+   bool showSeconds() const;
+   void setShowSeconds(bool value);
 
-   //      } else {
-   //         return fm.horizontalAdvance(NOSECONDS) + 20;
-   //      }
-   //   }
+   void paintEvent(QPaintEvent* evt);
+   int calculateRequiredWidth(int x, int y, int w, int h);
 
-   bool isShown() {
-      return m_showClock;
-   }
-
-   void showClock(bool showClock) {
-      if (showClock != m_showClock) {
-         m_showClock = showClock;
-
-         if (showClock) {
-            if (m_clockTimer && m_clockTimer->isActive()) {
-               return;
-
-            } else {
-               if (!m_clockTimer) {
-                  m_clockTimer = new QTimer(this);
-                  connect(m_clockTimer, &QTimer::timeout,
-                          this, &ClockWidget::nextSecond,
-                          Qt::UniqueConnection);
-               }
-
-               m_clockTimer->start(CLOCK_TIME);
-            }
-
-         } else {
-            if (m_clockTimer) {
-               if (m_clockTimer->isActive()) {
-                  m_clockTimer->stop();
-               }
-
-               m_clockTimer->deleteLater();
-               m_clockTimer = nullptr;
-            }
-         }
-      }
-   }
-
-   bool showSeconds() const {
-      return m_showSeconds;
-   }
-   void setShowSeconds(bool value) {
-      m_showSeconds = value;
-      update();
-   }
-
-   void paintEvent(QPaintEvent* evt) {
-      QFrame::paintEvent(evt);
-
-      QPainter* painter = new QPainter(this);
-
-      if (m_showClock) {
-         int advance, width;
-         QFontMetrics fm = painter->fontMetrics();
-
-         if (m_showSeconds) {
-            advance = fm.horizontalAdvance(WITHSECONDS);
-
-         } else {
-            advance = fm.horizontalAdvance(NOSECONDS);
-         }
-
-         painter->setPen(QColor("black"));
-         painter->drawText(
-            m_rect.x() + 10, m_rect.y() + m_rect.height() - 4, m_nowString);
-      }
-   }
-
-   int repositionWidget(int x, int y, int w, int h) {
-      QFontMetrics fm = fontMetrics();
-      int reqWidth;
-
-      // always use LOGOUT as it is the longer. Dont want width to change.
-      if (m_showSeconds) {
-         reqWidth = fm.horizontalAdvance(WITHSECONDS) + 20;
-
-      } else {
-         reqWidth = fm.horizontalAdvance(NOSECONDS) + 20;
-      }
-
-      if (reqWidth > w) {
-         reqWidth = w;
-      }
-
-      m_rect = QRect(x, y, reqWidth, h);
-      setGeometry(m_rect);
-      return reqWidth;
-   }
+   QSize sizeHint() const override;
+   void setSizeHint(const QSize& size);
 
 protected:
-   void nextSecond() {
-      QString format = "hh:mm";
-
-      if (m_showSeconds) {
-         format += ":ss";
-      }
-
-      QTimer* m_clockTimer;
-      QDateTime now = QDateTime::currentDateTime();
-      m_nowString = now.toString(format);
-      //      m_now = now.toTime_t();
-
-      update();
-   }
-   //   uint m_now;
+   void nextSecond();
 
 private:
    QTimer* m_clockTimer;
    QRect m_rect;
    bool m_showSeconds, m_showClock;
    QString m_nowString;
+   QSize m_size;
+   //   QString m_stylesheet;
 
    static const QString WITHSECONDS;
    static const QString NOSECONDS;
    const static int CLOCK_TIME = 1000;
-
 };
 
 class LoginWidget : public QPushButton
@@ -205,8 +101,42 @@ class LoginWidget : public QPushButton
 public:
    explicit LoginWidget(QWidget* parent = nullptr)
       : QPushButton(parent)
-      , m_loginText(LOGIN) {
+      , m_loginText(LOGIN)
+   {}
 
+   bool isShowing() {
+      return m_showLogin;
+   }
+   void showLogin(bool showLogin) {
+      if (showLogin != m_showLogin) {
+         m_showLogin = showLogin;
+
+         if (showLogin) {
+//            if (m_clockTimer && m_clockTimer->isActive()) {
+//               return;
+
+//            } else {
+//               if (!m_clockTimer) {
+//                  m_clockTimer = new QTimer(this);
+//                  connect(m_clockTimer, &QTimer::timeout,
+//                          this, &ClockWidget::nextSecond,
+//                          Qt::UniqueConnection);
+//               }
+
+//               m_clockTimer->start(CLOCK_TIME);
+//            }
+
+//         } else {
+//            if (m_clockTimer) {
+//               if (m_clockTimer->isActive()) {
+//                  m_clockTimer->stop();
+//               }
+
+//               m_clockTimer->deleteLater();
+//               m_clockTimer = nullptr;
+//            }
+         }
+      }
    }
 
    int calculateRequiredWidth() {
@@ -220,7 +150,7 @@ public:
       }
    }
 
-   int repositionWidget(int x, int y, int w, int h) {
+   int calculateRequiredWidth(int x, int y, int w, int h) {
       //      int w = 0;
 
       return 0;
@@ -230,10 +160,9 @@ public:
       QPushButton::paintEvent(evt);
    }
 
-protected:
-
 private:
    QString m_loginText;
+   bool m_showLogin;
 
    static const QString LOGIN;
    static const QString LOGOUT;
@@ -244,23 +173,20 @@ class MessageWidget : public QFrame
 public:
    explicit MessageWidget(QWidget* parent = nullptr)
       : QFrame(parent)
-      , m_marqueeSpeed(MARQUEE_TIME) {
-
-   }
+      , m_marqueeSpeed(MARQUEE_TIME)
+   {}
 
    void paintEvent(QPaintEvent* evt) {
       QFrame::paintEvent(evt);
    }
 
-   int repositionWidget(int x, int y, int w, int h) {
+   int calculateRequiredWidth(int x, int y, int w, int h) {
       //      int w = 0;
 
       return 0;
    }
 
-
 protected:
-
 private:
    int m_marqueeSpeed;
 
@@ -279,9 +205,10 @@ public:
       , m_showMessages(false)
       , m_clockWidget(nullptr)
       , m_loginWidget(nullptr)
-      , m_messageWidget(nullptr) {
-      setStyleSheet("background: pink;");
-      setContentsMargins(0, 0, 0, 0);
+      , m_messageWidget(nullptr)
+      , m_filler(nullptr) {
+      setStyleSheet("background: lightgreen;");
+      setContentsMargins(0, 0, 3, 0);
       m_layout->setContentsMargins(0, 0, 0, 0);
       setLayout(m_layout);
    }
@@ -290,40 +217,48 @@ public:
       return false;
    }
 
-   void showLogin(bool show) {
-
-   }
+   void showLogin(bool show) {}
 
    //   void setLoginType(ExTabWidget::LoginType type) {
 
    //   }
 
    void removeWidgetsFromLayout() {
-      if (m_loginWidget) {
-         m_layout->removeWidget(m_loginWidget);
-      }
-
-      if (m_clockWidget) {
-         m_layout->removeWidget(m_clockWidget);
-      }
-
-      if (m_messageWidget) {
-         m_layout->removeWidget(m_messageWidget);
+      for (int i = m_layout->count(); i > 0; --i) {
+         m_layout->takeAt(i - 1);
       }
    }
 
-   void reloadWidgetsToLayout() {
-      if (m_loginWidget) {
-         m_layout->addWidget(m_loginWidget);
+   void addWidgetsToLayout() {
+      // must be reloaded in reverse order.
+      if (m_messageWidget) {
+         m_layout->addWidget(m_messageWidget, 0, 0);
+
+         if (m_filler) {
+            // filler not needed if messages exists.
+            m_filler->deleteLater();
+            m_filler = nullptr;
+         }
+
+      } else {
+         if (!m_filler) {
+            m_filler = new QFrame(this);
+            m_filler->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+            m_filler->setStyleSheet("background: lightblue");
+         }
+
+         m_layout->addWidget(m_filler, 0, 0);
       }
 
       if (m_clockWidget) {
-         m_layout->addWidget(m_clockWidget);
+         m_layout->addWidget(m_clockWidget, 0, 1);
       }
 
-      if (m_messageWidget) {
-         m_layout->addWidget(m_messageWidget);
+      if (m_loginWidget) {
+         m_layout->addWidget(m_loginWidget, 0, 2);
       }
+
+      updateGeometry();
    }
 
    bool isShowClock();
@@ -340,7 +275,13 @@ public:
       if (show) {
          if (!m_clockWidget) {
             m_clockWidget = new ClockWidget(m_parent);
+            m_clockWidget->setSizePolicy(QSizePolicy::Preferred,
+                                         QSizePolicy::Fixed);
             m_clockWidget->showClock(true);
+
+            if (!m_clockStylesheet.isEmpty()) {
+               m_clockWidget->setStyleSheet(m_clockStylesheet);
+            }
          }
 
       } else {
@@ -353,8 +294,13 @@ public:
          // TODO messages
       }
 
-      reloadWidgetsToLayout();
+      addWidgetsToLayout();
+   }
 
+   void showClockFrame(bool showFrame, QFrame::Shape style) {
+      if (m_clockWidget) {
+         m_clockWidget->showClockFrame(showFrame, style);
+      }
    }
 
    void setShowSeconds(bool show) {
@@ -363,35 +309,71 @@ public:
       }
    }
 
+   void setClockStyleSheet(const QString& stylesheet) {
+      if (m_clockWidget) {
+         m_clockWidget->setStyleSheet(stylesheet);
+      }
 
-   void showMessages(bool show) {
-
+      m_clockStylesheet = stylesheet;
    }
 
-   void repositionWidgets(int x, int y, int w, int h) {
+   void setLoginStyleSheet(const QString& stylesheet) {
+      if (m_loginWidget) {
+         m_loginWidget->setStyleSheet(stylesheet);
+      }
+
+      m_loginStylesheet = stylesheet;
+   }
+
+   void setMessageStyleSheet(const QString& stylesheet) {
+      if (m_messageWidget) {
+         m_messageWidget->setStyleSheet(stylesheet);
+      }
+
+      m_messageStylesheet = stylesheet;
+   }
+
+   void showMessages(bool show) {
+      //     f->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+   }
+
+   void calculateWidgetSizes(int x, int y, int w, int h) {
       int availableWidth = w;
 
       if (m_loginWidget) {
-         availableWidth -= m_loginWidget->repositionWidget(x, y, availableWidth, h);
+         int reqWidth =
+            m_loginWidget->calculateRequiredWidth(x, y, availableWidth, h);
+         availableWidth -= reqWidth;
       }
 
       if (m_clockWidget) {
-         availableWidth -= m_clockWidget->repositionWidget(x, y, availableWidth, h);
+         int reqWidth =
+            m_clockWidget->calculateRequiredWidth(x, y, availableWidth, h);
+
+         if (reqWidth < 0) {
+            return;
+         }
+
+         QSize size = QSize(reqWidth, h);
+         m_clockWidget->setSizeHint(size);
+         availableWidth -= reqWidth;
       }
 
       if (m_messageWidget) {
-         m_messageWidget->repositionWidget(x, y, availableWidth, h);
+         m_messageWidget->calculateRequiredWidth(x, y, availableWidth, h);
       }
    }
 
 private:
    QWidget* m_parent;
+   //   QSize m_size;
    QGridLayout* m_layout;
    bool m_showLogin, m_showClock, m_showMessages;
    ClockWidget* m_clockWidget;
    LoginWidget* m_loginWidget;
    MessageWidget* m_messageWidget;
-
+   QFrame* m_filler;
+   QString m_clockStylesheet, m_loginStylesheet, m_messageStylesheet;
 };
 
 class ExTabWidgetPrivate
@@ -417,7 +399,8 @@ public:
    AbstractLoginDialog* m_loginDlg, *m_customLoginDlg;
    QPalette m_palette;
    QRect* m_loginRect, /**m_clockRect,*/ *m_messageRect, *m_messageClip;
-   int m_stringAdvance, m_frameHeight, m_frameWidth, m_frameX, m_frameY, m_messageWidth;
+   int m_stringAdvance, m_frameHeight, m_frameWidth, m_frameX, m_frameY,
+       m_messageWidth;
 
    // Clock stuff.
    QString m_nowString;
@@ -425,9 +408,8 @@ public:
    bool /*m_showSeconds,*/ m_showFrame;
    bool m_isInframe, m_loginPressed, m_ignoreCase;
 
-   void showFrame(bool frame, QFrame::Shape style);
+   //   void showFrame(bool frame, QFrame::Shape style);
    void showClockFrame(bool showFrame, QFrame::Shape style);
-   void showLoginFrame(bool showFrame, QFrame::Shape style);
    void showMessageFrame(bool showFrame, QFrame::Shape style);
 
    //   QTimer* m_clockTimer;
@@ -480,28 +462,28 @@ public:
    QColor messageTextColor();
    void messageTimeout();
 
-
    // general stuff.
    bool mousePressEvent(QMouseEvent* event);
    bool mouseReleaseEvent(QMouseEvent* event);
-   //   void paintEvent(QPaintEvent* evt);
-   //   void paint(QPainter* painter, int width, QStyle* style);
    void paintLogin(QPainter* painter, int w, int h);
-   //   void paintClock(QPainter* painter, int w, int h);
    void paintMessages(QPainter* painter, int w, int h);
-   void paintBorder(QPainter* painter, int x, int y, int w, int h, bool darkFirst);
+   void paintBorder(QPainter* painter,
+                    int x,
+                    int y,
+                    int w,
+                    int h,
+                    bool darkFirst);
    void paintUpperBorder(QPainter* painter, int x, int y, int w, int h);
    void paintLowerBorder(QPainter* painter, int x, int y, int w, int h);
    void tabwidgetStatusChanged();
    QString m_stylesheet;
-   QString  styleSheet() const;
-   QString  clockStyleSheet() const;
-   QString  loginStyleSheet() const;
-   QString  messageStyleSheet() const;
-   void  setStyleSheet(const QString& styleSheet);
-   void  setClockStyleSheet(const QString& styleSheet);
-   void  setLoginStyleSheet(const QString& styleSheet);
-   void  setMessageStyleSheet(const QString& styleSheet);
+   QString styleSheet() const;
+   QString clockStyleSheet() const;
+   QString loginStyleSheet() const;
+   QString messageStyleSheet() const;
+   void setClockStyleSheet(const QString& styleSheet);
+   void setLoginStyleSheet(const QString& styleSheet);
+   void setMessageStyleSheet(const QString& styleSheet);
 
    void clearFrames();
 
@@ -511,8 +493,7 @@ public:
    QColor m_textColor, m_tempColor;
    QBrush m_background, m_tempBackground;
    bool m_marquee, m_useTempColor, m_useTempBack;
-   int m_marqueePos/*, m_marqueeSpeed*/;
-
+   int m_marqueePos /*, m_marqueeSpeed*/;
 
 private:
    void resetMessageData(const QString& message, bool tempColor);
