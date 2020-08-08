@@ -66,13 +66,13 @@ set(WIDGET_HEADER_FILES_P
    private/extabwidget_p.h
    private/clockwidget.h
    private/loginwidget.h
-   private/logindialog.h
+   private/simplecrypt.h
 )
 set(WIDGET_SOURCE_FILES_P
    private/extabwidget_p.cpp
    private/clockwidget.cpp
    private/loginwidget.cpp
-   private/logindialog.cpp
+   private/simplecrypt.cpp
 )
 set(WIDGET_SOURCE_FILES
    exspinbox.cpp

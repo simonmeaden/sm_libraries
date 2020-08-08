@@ -106,11 +106,6 @@ bool ExTabWidget::isMessagesEnabled()
    return d->m_showMessages;
 }
 
-bool ExTabWidget::isIgnoreCase()
-{
-  return d_ptr->isIgnoreCase();
-}
-
 bool ExTabWidget::isMarqueeEnabled()
 {
   // TODO
@@ -170,24 +165,19 @@ void ExTabWidget::showMessageFrame(bool showFrame, QFrame::Shape style)
    d_ptr->showMessageFrame(showFrame, style);
 }
 
-void ExTabWidget::setPassword(QString password)
+void ExTabWidget::setSimplePassword(QString password)
 {
-   d_ptr->addPassword(password);
+   d_ptr->setPassword(password);
 }
 
-void ExTabWidget::addPassword(QString id, QString password)
+void ExTabWidget::addStandardPassword(QString username, QString password)
 {
-   d_ptr->addPassword(id, password);
+   d_ptr->addPassword(username, password);
 }
 
 void ExTabWidget::clearPasswords()
 {
    d_ptr->clearPasswords();
-}
-
-void ExTabWidget::setIgnoreCase(bool ignoreCase)
-{
-   d_ptr->setIgnoreCase(ignoreCase);
 }
 
 void ExTabWidget::showSeconds(bool showSeconds)

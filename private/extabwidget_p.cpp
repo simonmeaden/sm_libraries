@@ -10,10 +10,7 @@ ExTabWidgetPrivate::ExTabWidgetPrivate(ExTabWidget* parent,
                                        AbstractLoginDialog* customDlg = nullptr)
    : q_ptr(parent)
    , m_wrapper(new WrapperWidget(q_ptr))
-   , m_showLogin(false)
-     //   , m_showClock(false)
    , m_showMessages(false)
-   , m_loginRect(nullptr)
    , m_messageRect(nullptr)
    , m_now(0)
    , m_showFrame(true)
@@ -102,13 +99,14 @@ void ExTabWidgetPrivate::showClock(bool showClock)
    q_ptr->update();
 }
 
-bool ExTabWidgetPrivate::isShowClock() {
-  return m_wrapper->isShowClock();
+bool ExTabWidgetPrivate::isShowClock()
+{
+   return m_wrapper->isShowClock();
 }
 
 void ExTabWidgetPrivate::showMessages(bool messages)
 {
-  //   m_showMessages = messages;
+   //   m_showMessages = messages;
 
    //   if (m_showMessages) {
    //      if (!m_messageWidget) {
@@ -376,127 +374,127 @@ void ExTabWidgetPrivate::setClockStyleSheet(const QString& styleSheet)
 
 void ExTabWidgetPrivate::setLoginStyleSheet(const QString& styleSheet)
 {
-   //   m_loginWidget->setStyleSheet(styleSheet);
+   m_wrapper->setLoginStyleSheet(styleSheet);
 }
 
 void ExTabWidgetPrivate::setMessageStyleSheet(const QString& styleSheet)
 {
-   //   m_messageWidget->setStyleSheet(styleSheet);
+   m_wrapper->setMessageStyleSheet(styleSheet);
 }
 
-void ExTabWidgetPrivate::paintLogin(QPainter* painter, int w, int h)
-{
-   //   if (m_showLogin) {
-   //      int frameWidth;
+//void ExTabWidgetPrivate::paintLogin(QPainter* painter, int w, int h)
+//{
+//   if (m_showLogin) {
+//      int frameWidth;
 
-   //      if (!m_loginRect) {
-   //         m_loginRect = new QRect();
-   //         QFontMetrics fm = painter->fontMetrics();
-   //         m_stringAdvance = fm.horizontalAdvance(LOGOUT);
-   //         frameWidth = m_stringAdvance + 20;
-   //         m_loginRect->setX(w - frameWidth);
-   //         m_loginRect->setY((h - (m_frameHeight + 6)) / 2);
-   //         m_loginRect->setWidth(frameWidth);
-   //         m_loginRect->setHeight(m_frameHeight + 2);
+//      if (!m_loginRect) {
+//         m_loginRect = new QRect();
+//         QFontMetrics fm = painter->fontMetrics();
+//         m_stringAdvance = fm.horizontalAdvance(LOGOUT);
+//         frameWidth = m_stringAdvance + 20;
+//         m_loginRect->setX(w - frameWidth);
+//         m_loginRect->setY((h - (m_frameHeight + 6)) / 2);
+//         m_loginRect->setWidth(frameWidth);
+//         m_loginRect->setHeight(m_frameHeight + 2);
 
-   //         w -= (frameWidth + 2);
+//         w -= (frameWidth + 2);
 
-   //      } else {
-   //         w -= (m_loginRect->width() + 2);
-   //      }
+//      } else {
+//         w -= (m_loginRect->width() + 2);
+//      }
 
-   //      if (m_showFrame) {
-   //         if (m_loginPressed) {
-   //            painter->setPen(m_palette.color(QPalette::Light));
+//      if (m_showFrame) {
+//         if (m_loginPressed) {
+//            painter->setPen(m_palette.color(QPalette::Light));
 
-   //         } else {
-   //            painter->setPen(m_palette.color(QPalette::Dark));
-   //         }
+//         } else {
+//            painter->setPen(m_palette.color(QPalette::Dark));
+//         }
 
-   //         painter->fillRect(*m_loginRect, painter->brush());
+//         painter->fillRect(*m_loginRect, painter->brush());
 
-   //         painter->drawLine(m_loginRect->x(),
-   //                           m_loginRect->y(),
-   //                           m_loginRect->x(),
-   //                           m_loginRect->y() + m_loginRect->height());
-   //         painter->drawLine(m_loginRect->x() + 1,
-   //                           m_loginRect->y() + 1,
-   //                           m_loginRect->x() + 1,
-   //                           m_loginRect->y() + m_loginRect->height() - 1);
-   //         painter->drawLine(m_loginRect->x() + 1,
-   //                           m_loginRect->y(),
-   //                           m_loginRect->x() + m_loginRect->width(),
-   //                           m_loginRect->y());
-   //         painter->drawLine(m_loginRect->x() + 2,
-   //                           m_loginRect->y() + 1,
-   //                           m_loginRect->x() + m_loginRect->width() - 1,
-   //                           m_loginRect->y() + 1);
+//         painter->drawLine(m_loginRect->x(),
+//                           m_loginRect->y(),
+//                           m_loginRect->x(),
+//                           m_loginRect->y() + m_loginRect->height());
+//         painter->drawLine(m_loginRect->x() + 1,
+//                           m_loginRect->y() + 1,
+//                           m_loginRect->x() + 1,
+//                           m_loginRect->y() + m_loginRect->height() - 1);
+//         painter->drawLine(m_loginRect->x() + 1,
+//                           m_loginRect->y(),
+//                           m_loginRect->x() + m_loginRect->width(),
+//                           m_loginRect->y());
+//         painter->drawLine(m_loginRect->x() + 2,
+//                           m_loginRect->y() + 1,
+//                           m_loginRect->x() + m_loginRect->width() - 1,
+//                           m_loginRect->y() + 1);
 
-   //         painter->setPen(m_palette.color(QPalette::Light));
-   //         painter->drawLine(m_loginRect->x() + 1,
-   //                           m_loginRect->y() + m_loginRect->height(),
-   //                           m_loginRect->x() + m_loginRect->width(),
-   //                           m_loginRect->y() + m_loginRect->height());
-   //         painter->drawLine(m_loginRect->x() + 2,
-   //                           m_loginRect->y() + m_loginRect->height() - 1,
-   //                           m_loginRect->x() + m_loginRect->width() - 1,
-   //                           m_loginRect->y() + m_loginRect->height() - 1);
-   //         painter->drawLine(m_loginRect->x() + m_loginRect->width(),
-   //                           m_loginRect->y() + 1,
-   //                           m_loginRect->x() + m_loginRect->width(),
-   //                           m_loginRect->y() + m_loginRect->height() - 1);
-   //         painter->drawLine(m_loginRect->x() + m_loginRect->width() - 1,
-   //                           m_loginRect->y() + 2,
-   //                           m_loginRect->x() + m_loginRect->width() - 1,
-   //                           m_loginRect->y() + m_loginRect->height() - 2);
-   //      }
+//         painter->setPen(m_palette.color(QPalette::Light));
+//         painter->drawLine(m_loginRect->x() + 1,
+//                           m_loginRect->y() + m_loginRect->height(),
+//                           m_loginRect->x() + m_loginRect->width(),
+//                           m_loginRect->y() + m_loginRect->height());
+//         painter->drawLine(m_loginRect->x() + 2,
+//                           m_loginRect->y() + m_loginRect->height() - 1,
+//                           m_loginRect->x() + m_loginRect->width() - 1,
+//                           m_loginRect->y() + m_loginRect->height() - 1);
+//         painter->drawLine(m_loginRect->x() + m_loginRect->width(),
+//                           m_loginRect->y() + 1,
+//                           m_loginRect->x() + m_loginRect->width(),
+//                           m_loginRect->y() + m_loginRect->height() - 1);
+//         painter->drawLine(m_loginRect->x() + m_loginRect->width() - 1,
+//                           m_loginRect->y() + 2,
+//                           m_loginRect->x() + m_loginRect->width() - 1,
+//                           m_loginRect->y() + m_loginRect->height() - 2);
+//      }
 
-   //      if (m_loginPressed) {
-   //         painter->setPen(m_palette.color(QPalette::Dark));
+//      if (m_loginPressed) {
+//         painter->setPen(m_palette.color(QPalette::Dark));
 
-   //      } else {
-   //         painter->setPen(m_palette.color(QPalette::Light));
-   //      }
+//      } else {
+//         painter->setPen(m_palette.color(QPalette::Light));
+//      }
 
-   //      painter->setPen(m_palette.color(QPalette::WindowText));
-   //      painter->drawText(
-   //         m_loginRect->x() + 10, m_loginRect->y() + m_frameHeight - 4, m_loginText);
-   //   }
-}
+//      painter->setPen(m_palette.color(QPalette::WindowText));
+//      painter->drawText(
+//         m_loginRect->x() + 10, m_loginRect->y() + m_frameHeight - 4, m_loginText);
+//   }
+//}
 
-void ExTabWidgetPrivate::paintUpperBorder(QPainter* painter, int x, int y, int w, int h)
-{
-   painter->drawLine(x, y, x, y + h);
-   painter->drawLine(x + 1, y + 1, x + 1, y + h - 1);
-   painter->drawLine(x + 1, y, x + w, y);
-   painter->drawLine(x + 2, y + 1, x + w - 1, y + 1);
-}
+//void ExTabWidgetPrivate::paintUpperBorder(QPainter* painter, int x, int y, int w, int h)
+//{
+//   painter->drawLine(x, y, x, y + h);
+//   painter->drawLine(x + 1, y + 1, x + 1, y + h - 1);
+//   painter->drawLine(x + 1, y, x + w, y);
+//   painter->drawLine(x + 2, y + 1, x + w - 1, y + 1);
+//}
 
-void ExTabWidgetPrivate::paintLowerBorder(QPainter* painter, int x, int y, int w, int h)
-{
-   painter->drawLine(x + 1, y + h, x + w, y + h);
-   painter->drawLine(x + 2, y + h - 1, x + w - 1, y + h - 1);
-   painter->drawLine(x + w, y + 1, x + w, y + h - 1);
-   painter->drawLine(x + w - 1, y + 2, x + w - 1, y + h - 2);
-}
+//void ExTabWidgetPrivate::paintLowerBorder(QPainter* painter, int x, int y, int w, int h)
+//{
+//   painter->drawLine(x + 1, y + h, x + w, y + h);
+//   painter->drawLine(x + 2, y + h - 1, x + w - 1, y + h - 1);
+//   painter->drawLine(x + w, y + 1, x + w, y + h - 1);
+//   painter->drawLine(x + w - 1, y + 2, x + w - 1, y + h - 2);
+//}
 
-void ExTabWidgetPrivate::paintBorder(QPainter* painter, int x, int y, int w, int h, bool darkFirst)
-{
-   //   painter->fillRect(*m_clockRect, painter->brush());
+//void ExTabWidgetPrivate::paintBorder(QPainter* painter, int x, int y, int w, int h, bool darkFirst)
+//{
+//   //   painter->fillRect(*m_clockRect, painter->brush());
 
-   if (darkFirst) {
-      painter->setPen(m_palette.color(QPalette::Dark));
-      paintUpperBorder(painter, x, y, w, h);
-      painter->setPen(m_palette.color(QPalette::Light));
-      paintLowerBorder(painter, x, y, w, h);
+//   if (darkFirst) {
+//      painter->setPen(m_palette.color(QPalette::Dark));
+//      paintUpperBorder(painter, x, y, w, h);
+//      painter->setPen(m_palette.color(QPalette::Light));
+//      paintLowerBorder(painter, x, y, w, h);
 
-   } else {
-      painter->setPen(m_palette.color(QPalette::Light));
-      paintUpperBorder(painter, x, y, w, h);
-      painter->setPen(m_palette.color(QPalette::Dark));
-      paintLowerBorder(painter, x, y, w, h);
-   }
-}
+//   } else {
+//      painter->setPen(m_palette.color(QPalette::Light));
+//      paintUpperBorder(painter, x, y, w, h);
+//      painter->setPen(m_palette.color(QPalette::Dark));
+//      paintLowerBorder(painter, x, y, w, h);
+//   }
+//}
 
 //void ExTabWidgetPrivate::paintClock(QPainter* painter, int w, int h)
 //{
@@ -685,16 +683,6 @@ void ExTabWidgetPrivate::checkPassword(QString username, QString password)
    m_wrapper->checkPassword(username, password);
 }
 
-void ExTabWidgetPrivate::setIgnoreCase(bool ignoreCase)
-{
-   m_wrapper->setIgnoreCase(ignoreCase);
-}
-
-bool ExTabWidgetPrivate::isIgnoreCase()
-{
-   return m_wrapper->isIgnoreCase();
-}
-
 void ExTabWidgetPrivate::setLargeTextForLoginDialog(bool)
 {
    // TODO
@@ -705,9 +693,9 @@ bool ExTabWidgetPrivate::isLoginEnabled()
    return m_wrapper->isLoginEnabled();
 }
 
-void ExTabWidgetPrivate::addPassword(QString password)
+void ExTabWidgetPrivate::setPassword(QString password)
 {
-   m_wrapper->addPassword(password);
+   m_wrapper->setPassword(password);
 }
 
 void ExTabWidgetPrivate::addPassword(QString username, QString password)
@@ -1018,10 +1006,10 @@ void WrapperWidget::checkPassword(QString username, QString password)
    }
 }
 
-void WrapperWidget::addPassword(QString password)
+void WrapperWidget::setPassword(QString password)
 {
    if (m_loginWidget) {
-      m_loginWidget->addPassword(password);
+      m_loginWidget->setPassword(password);
    }
 }
 
@@ -1038,21 +1026,6 @@ void WrapperWidget::addPassword(QString id, QString password)
       m_loginWidget->addPassword(id, password);
    }
 }
-
-void WrapperWidget::setIgnoreCase(bool ignoreCase)
-{
-   if (m_loginWidget) {
-      m_loginWidget->setIgnoreCase(ignoreCase);
-   }
-
-   m_ignoreCase = ignoreCase;
-}
-
-bool WrapperWidget::isIgnoreCase()
-{
-   return m_ignoreCase;
-}
-
 
 bool WrapperWidget::isShowClock()
 {
@@ -1173,43 +1146,43 @@ void WrapperWidget::calculateWidgetSizes(int x, int y, int w, int h)
 
 void WrapperWidget::removeWidgetsFromLayout()
 {
-  for (int i = m_layout->count(); i > 0; --i) {
-    m_layout->takeAt(i - 1);
-  }
+   for (int i = m_layout->count(); i > 0; --i) {
+      m_layout->takeAt(i - 1);
+   }
 }
 
 void WrapperWidget::addWidgetsToLayout()
 {
-  int column = 0;
+   int column = 0;
 
-  if (m_messageWidget) {
-    m_layout->addWidget(m_messageWidget, 0, column++);
+   if (m_messageWidget) {
+      m_layout->addWidget(m_messageWidget, 0, column++);
 
-    if (m_filler) {
-      // filler not needed if messages exists.
-      m_filler->deleteLater();
-      m_filler = nullptr;
-    }
+      if (m_filler) {
+         // filler not needed if messages exists.
+         m_filler->deleteLater();
+         m_filler = nullptr;
+      }
 
-  } else {
-    if (!m_filler) {
-      m_filler = new QFrame(this);
-      m_filler->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-      m_filler->setStyleSheet("background: lightblue");
-    }
+   } else {
+      if (!m_filler) {
+         m_filler = new QFrame(this);
+         m_filler->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+         m_filler->setStyleSheet("background: lightblue");
+      }
 
-    m_layout->addWidget(m_filler, 0, column++);
-  }
+      m_layout->addWidget(m_filler, 0, column++);
+   }
 
-  if (m_clockWidget) {
-    m_layout->addWidget(m_clockWidget, 0, column++);
-  }
+   if (m_clockWidget) {
+      m_layout->addWidget(m_clockWidget, 0, column++);
+   }
 
-  if (m_loginWidget) {
-    m_layout->addWidget(m_loginWidget, 0, column++);
-  }
+   if (m_loginWidget) {
+      m_layout->addWidget(m_loginWidget, 0, column++);
+   }
 
-  updateGeometry();
+   updateGeometry();
 }
 
 /// \endcond

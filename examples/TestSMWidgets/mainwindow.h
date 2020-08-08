@@ -78,11 +78,15 @@ private:
 
    ExTabWidget* m_exTabWidget;
    QCheckBox* m_showClockBox, *m_showSecondsBox/*, *m_showClockFrame*/;
-   LabelledComboBox *m_clockFrameStyleBox;
-   QPlainTextEdit *m_clockStylesheetEdit;
-   QPushButton *m_clockStylesheetBtn;
+   LabelledComboBox* m_clockFrameStyleBox;
+   QPlainTextEdit* m_clockStylesheetEdit;
+   QPushButton* m_clockStylesheetBtn;
 
    QCheckBox* m_showLoginBox;
+   LabelledComboBox* m_loginStyleBox;
+   LabelledLineEdit* m_loginSimplePasswordEdit, *m_loginStandardPasswordEdit,
+     *m_loginStandardUsernameEdit;
+   QPushButton *m_simpleLoginBtn, *m_stdPasswordBtn, *m_clearStdPasswordsBtn;
 
    QCheckBox* m_showMessageBox, *m_enableMarqueeBox;
    QDoubleSpinBox* m_marqueeSpeedBox;
@@ -123,6 +127,11 @@ private:
    void labelTextFormatHasChanged(const QString&);
    void widgetTextFormatHasChanged(const QString&);
    void spinWidgetChanged();
+   void clockFrameStyleChanged(int);
+   void loginStyleChanged(int);
+
+   void setSimpleLogin();
+   void setStandardLogin();
 
    void setAlignmentStatus();
    void setStylesheetStatus();
@@ -136,7 +145,6 @@ private:
 
    void showClock(bool enable);
    void showSeconds(bool enable);
-   void clockFrameStyleChanged(int index);
    void showMessages(bool enable);
    void setMarqueeMoving(bool enable);
    void setMarqueeSpeed(qreal charPerSec);
@@ -155,9 +163,9 @@ private:
    QWidget* initPolicyBox();
    QWidget* initLabelledWidgetFrame();
    QWidget* initExTabWidget();
-   QWidget *initClockControls();
-   QWidget *initLoginControls();
-   QWidget *initMessageControls();
+   QWidget* initClockControls();
+   QWidget* initLoginControls();
+   QWidget* initMessageControls();
 };
 
 #endif // MAINWINDOW_H

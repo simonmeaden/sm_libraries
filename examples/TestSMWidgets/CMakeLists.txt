@@ -1,11 +1,11 @@
 message("Output include dir" ${INCLUDE_OUTPUT_DIRECTORY})
 
 set(APP_SOURCE_FILES
-   simplecrypt.cpp
+#   simplecrypt.cpp
    mainwindow.cpp
    )
 set(APP_HEADER_FILES
-   simplecrypt.h
+#   simplecrypt.h
    mainwindow.h
    )
 

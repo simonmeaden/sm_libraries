@@ -75,11 +75,6 @@
    for each user. User names must be unique, adding a second entry with the same
    username will overwrite the first entry.
 
-   Setting the value of the ignore case flag to true using the
-   ExTabWidget::setIgnoreCase(bool) method will cause the character case of the
-   password and username to be ignored. If false the case of the username and
-   password are checked, ie UsErNaMe does not equal username.
-
    ExTabWidget::clearPasswords() will remove all passwords from the list.
    Passwords and usernames for the simple and standard login dialogs are kept
    separately so it is possible to switch between the two methods if required.
@@ -155,18 +150,6 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
    */
    Q_PROPERTY(AbstractLoginDialog::LoginType loginType READ loginType WRITE setLoginType)
 
-   /*!
-      \property ignoreCase
-
-      \brief This property defines whether character case is ignored for
-      usernames and passwords.
-
-      By default, this property is false and case is not ignored.
-
-      @accessor setIgnoreCase(), isIgnoreCase()
-   */
-   Q_PROPERTY(
-      bool ignoreCase READ isIgnoreCase WRITE setIgnoreCase DESIGNABLE true)
    /*!
       \property ::marquee
 
@@ -279,13 +262,6 @@ public:
    bool isMessagesEnabled();
 
    /*!
-      \brief Returns the value of the ignore case flag.
-
-      True if the character case of usernames and passwords are to be ignored.
-   */
-   bool isIgnoreCase();
-
-   /*!
       \brief Sets the message text scrolling.
 
       Sets the text message to scrolling if the text is longer than the available
@@ -361,24 +337,18 @@ public:
    /*!
       \brief Sets the password for the simple login dialog.
    */
-   void setPassword(QString password);
+   void setSimplePassword(QString password);
    /*!
       \brief Adds a username/password pair for the standard login dialog.
 
       Usernames must be unique, inserting a repeat username will overwrite the
       earlier version.
    */
-   void addPassword(QString id, QString password);
+   void addStandardPassword(QString id, QString password);
    /*!
       \brief Clears all password/usernames.
    */
    void clearPasswords();
-
-   /*!
-      \brief Sets the value of the ignore case flag. If set to true all
-      password/username checks ignore the character case.
-   */
-   void setIgnoreCase(bool ignoreCase);
 
 
    /*!

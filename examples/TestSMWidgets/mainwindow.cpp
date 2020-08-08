@@ -27,6 +27,7 @@
 int main(int argc, char* argv[])
 {
    qRegisterMetaType<Qt::Alignment>("Qt::Alignment");
+   qRegisterMetaType<AbstractLoginDialog::LoginType>("AbstractLoginDialog::LoginType");
 
    QApplication a(argc, argv);
    MainWindow w;
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget* parent)
    initGui();
 
    m_tabs->setCurrentIndex(1);
+   m_exTabWidget->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow() {}
@@ -570,6 +572,24 @@ void MainWindow::clockFrameStyleChanged(int /*index*/)
    m_exTabWidget->setClockFrameStyle(m_clockFrameStyleBox->currentData(Qt::UserRole).value<QFrame::Shape>());
 }
 
+void MainWindow::loginStyleChanged(int /*index*/)
+{
+   m_exTabWidget->setLoginType(m_loginStyleBox->currentData(Qt::UserRole).value<AbstractLoginDialog::LoginType>());
+}
+
+void MainWindow::setSimpleLogin()
+{
+   QString password = m_loginSimplePasswordEdit->text();
+   m_exTabWidget->setSimplePassword(password);
+}
+
+void MainWindow::setStandardLogin()
+{
+   QString username = m_loginStandardUsernameEdit->text();
+   QString password = m_loginStandardPasswordEdit->text();
+   m_exTabWidget->addStandardPassword(username, password);
+}
+
 void MainWindow::showMessages(bool enable)
 {
    m_exTabWidget->showMessages(enable);
@@ -596,19 +616,20 @@ void MainWindow::setMarqueeMoving(bool enable)
 
 void MainWindow::setMarqueeSpeed(qreal charPerSec)
 {
-  m_exTabWidget->setMarqueeSpeed(charPerSec);
+   m_exTabWidget->setMarqueeSpeed(charPerSec);
 }
 
 void MainWindow::showLogin(bool enable)
 {
-  m_exTabWidget->showLogin(enable);
+   m_exTabWidget->showLogin(enable);
+   m_loginStyleBox->setEnabled(enable);
 
-  if (enable) {
-    m_showLoginBox->setText(tr("Hide Login"));
+   if (enable) {
+      m_showLoginBox->setText(tr("Hide Login"));
 
-  } else {
-    m_showLoginBox->setText(tr("Show Login"));
-  }
+   } else {
+      m_showLoginBox->setText(tr("Show Login"));
+   }
 }
 
 void MainWindow::setSizePolicyStatus()
@@ -1274,127 +1295,165 @@ QWidget* MainWindow::initLabelledWidgetFrame()
 
 QWidget* MainWindow::initClockControls()
 {
-  QGroupBox* box = new QGroupBox(tr("Enable Clock Variables"), this);
-  QVBoxLayout* layout = new QVBoxLayout;
-  box->setLayout(layout);
+   QGroupBox* box = new QGroupBox(tr("Enable Clock Variables"), this);
+   QVBoxLayout* layout = new QVBoxLayout;
+   box->setLayout(layout);
 
-  m_showClockBox = new QCheckBox(tr("Enable Clock"), this);
-  connect(m_showClockBox, &QCheckBox::clicked, this, &MainWindow::showClock);
-  layout->addWidget(m_showClockBox);
+   m_showClockBox = new QCheckBox(tr("Enable Clock"), this);
+   connect(m_showClockBox, &QCheckBox::clicked, this, &MainWindow::showClock);
+   layout->addWidget(m_showClockBox);
 
-  m_showSecondsBox = new QCheckBox(tr("Show Seconds"), this);
-  m_showSecondsBox->setEnabled(false);
-  connect(m_showSecondsBox, &QCheckBox::clicked, this, &MainWindow::showSeconds);
-  layout->addWidget(m_showSecondsBox);
+   m_showSecondsBox = new QCheckBox(tr("Show Seconds"), this);
+   m_showSecondsBox->setEnabled(false);
+   connect(m_showSecondsBox, &QCheckBox::clicked, this, &MainWindow::showSeconds);
+   layout->addWidget(m_showSecondsBox);
 
-  QStringList frameStyles;
-  frameStyles << "QFrame::NoFrame" << "QFrame::Box" << "QFrame::Panel"
-              << "QFrame::StyledPanel" << "QFrame::HLine"
-              << "QFrame::VLine" << "QFrame::WinPanel";
-  m_clockFrameStyleBox = new LabelledComboBox(tr("Clock Frame Style"), this);
-  m_clockFrameStyleBox->setEnabled(false);
-  connect(m_clockFrameStyleBox, &LabelledComboBox::currentIndexChanged, this,
-          &MainWindow::clockFrameStyleChanged);
-  m_clockFrameStyleBox->addItems(frameStyles);
-  m_clockFrameStyleBox->setItemData(0, QVariant::fromValue<QFrame::Shape>(QFrame::NoFrame));
-  m_clockFrameStyleBox->setItemData(1, QVariant::fromValue<QFrame::Shape>(QFrame::Box));
-  m_clockFrameStyleBox->setItemData(2, QVariant::fromValue<QFrame::Shape>(QFrame::Panel));
-  m_clockFrameStyleBox->setItemData(3, QVariant::fromValue<QFrame::Shape>(QFrame::StyledPanel));
-  m_clockFrameStyleBox->setItemData(4, QVariant::fromValue<QFrame::Shape>(QFrame::HLine));
-  m_clockFrameStyleBox->setItemData(5, QVariant::fromValue<QFrame::Shape>(QFrame::VLine));
-  m_clockFrameStyleBox->setItemData(6, QVariant::fromValue<QFrame::Shape>(QFrame::WinPanel));
-  layout->addWidget(m_clockFrameStyleBox);
+   QStringList frameStyles;
+   frameStyles << "QFrame::NoFrame" << "QFrame::Box" << "QFrame::Panel"
+               << "QFrame::StyledPanel" << "QFrame::HLine"
+               << "QFrame::VLine" << "QFrame::WinPanel";
+   m_clockFrameStyleBox = new LabelledComboBox(tr("Clock Frame Style"), this);
+   m_clockFrameStyleBox->setEnabled(false);
+   connect(m_clockFrameStyleBox, &LabelledComboBox::currentIndexChanged, this,
+           &MainWindow::clockFrameStyleChanged);
+   m_clockFrameStyleBox->addItems(frameStyles);
+   m_clockFrameStyleBox->setItemData(0, QVariant::fromValue<QFrame::Shape>(QFrame::NoFrame));
+   m_clockFrameStyleBox->setItemData(1, QVariant::fromValue<QFrame::Shape>(QFrame::Box));
+   m_clockFrameStyleBox->setItemData(2, QVariant::fromValue<QFrame::Shape>(QFrame::Panel));
+   m_clockFrameStyleBox->setItemData(3, QVariant::fromValue<QFrame::Shape>(QFrame::StyledPanel));
+   m_clockFrameStyleBox->setItemData(4, QVariant::fromValue<QFrame::Shape>(QFrame::HLine));
+   m_clockFrameStyleBox->setItemData(5, QVariant::fromValue<QFrame::Shape>(QFrame::VLine));
+   m_clockFrameStyleBox->setItemData(6, QVariant::fromValue<QFrame::Shape>(QFrame::WinPanel));
+   layout->addWidget(m_clockFrameStyleBox);
 
-  QLabel* lbl = new QLabel(tr("Clock Stylesheet :"), this);
-  layout->addWidget(lbl);
+   QLabel* lbl = new QLabel(tr("Clock Stylesheet :"), this);
+   layout->addWidget(lbl);
 
-  m_clockStylesheetEdit = new QPlainTextEdit(this);
-  layout->addWidget(m_clockStylesheetEdit);
-  m_clockStylesheetEdit->setPlainText("color: red;"
-                                      "background: lightblue; "
-                                      "border-width: 1px; "
-                                      "border-style: solid;"
-                                      "border-color: blue; "
-                                      "border-radius: 4px;");
+   m_clockStylesheetEdit = new QPlainTextEdit(this);
+   layout->addWidget(m_clockStylesheetEdit);
+   m_clockStylesheetEdit->setPlainText("color: red;"
+                                       "background: lightblue; "
+                                       "border-width: 1px; "
+                                       "border-style: solid;"
+                                       "border-color: blue; "
+                                       "border-radius: 4px;");
 
-  m_clockStylesheetBtn = new QPushButton(tr("Set Stylesheet"), this);
-  connect(m_clockStylesheetBtn, &QPushButton::clicked,
-          this, &MainWindow::setClockStylesheet);
-  layout->addWidget(m_clockStylesheetBtn);
+   m_clockStylesheetBtn = new QPushButton(tr("Set Stylesheet"), this);
+   connect(m_clockStylesheetBtn, &QPushButton::clicked,
+           this, &MainWindow::setClockStylesheet);
+   layout->addWidget(m_clockStylesheetBtn);
 
-  QFrame* dummy = new QFrame(this);
-  dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  layout->addWidget(dummy);
+   QFrame* dummy = new QFrame(this);
+   dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   layout->addWidget(dummy);
 
-  return box;
+   return box;
 }
 
-QWidget *MainWindow::initLoginControls()
+QWidget* MainWindow::initLoginControls()
 {
-  QGroupBox* box = new QGroupBox(tr("Enable Message Controls"), this);
-  QVBoxLayout* layout = new QVBoxLayout;
-  box->setLayout(layout);
+   QGroupBox* box = new QGroupBox(tr("Enable Message Controls"), this);
+   QVBoxLayout* layout = new QVBoxLayout;
+   box->setLayout(layout);
 
-  m_showLoginBox = new QCheckBox(tr("Enable Login"), this);
-  connect(m_showLoginBox, &QCheckBox::clicked, this, &MainWindow::showLogin);
-  layout->addWidget(m_showLoginBox);
+   m_showLoginBox = new QCheckBox(tr("Enable Login"), this);
+   connect(m_showLoginBox, &QCheckBox::clicked, this, &MainWindow::showLogin);
+   layout->addWidget(m_showLoginBox);
 
-  // TODO
+   QStringList loginStyles;
+   loginStyles << "Simple Login" << "Standard login" << "Custom Login";
+   m_loginStyleBox = new LabelledComboBox(tr("Login Style"), this);
+   m_loginStyleBox->setEnabled(false);
+   connect(m_loginStyleBox, &LabelledComboBox::currentIndexChanged, this,
+           &MainWindow::loginStyleChanged);
+   m_loginStyleBox->addItems(loginStyles);
+   m_loginStyleBox->setItemData(0, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Simple));
+   m_loginStyleBox->setItemData(1, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Standard));
+   m_loginStyleBox->setItemData(2, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Custom));
+   layout->addWidget(m_loginStyleBox);
 
-  QFrame* dummy = new QFrame(this);
-  dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  layout->addWidget(dummy);
+   m_loginSimplePasswordEdit = new LabelledLineEdit(tr("Simple Password"), this);
+   layout->addWidget(m_loginSimplePasswordEdit);
 
-  return box;
+   m_simpleLoginBtn = new QPushButton(tr("Set Simple Password"), this);
+   connect(m_simpleLoginBtn, &QPushButton::clicked,
+           this, &MainWindow::setSimpleLogin);
+   layout->addWidget(m_simpleLoginBtn);
+
+   QHBoxLayout *standardPasswordLayout=new QHBoxLayout;
+   m_loginStandardUsernameEdit = new LabelledLineEdit(tr("Standard Username"), this);
+   standardPasswordLayout->addWidget(m_loginStandardUsernameEdit);
+   m_loginStandardPasswordEdit = new LabelledLineEdit(tr("Standard Password"), this);
+   standardPasswordLayout->addWidget(m_loginStandardPasswordEdit);
+   layout->addLayout(standardPasswordLayout);
+
+   m_stdPasswordBtn = new QPushButton(tr("Set Standard User"), this);
+   connect(m_stdPasswordBtn, &QPushButton::clicked,
+           this, &MainWindow::setStandardLogin);
+   layout->addWidget(m_stdPasswordBtn);
+
+   m_clearStdPasswordsBtn = new QPushButton(tr("Clear Standard passwords"), this);
+   connect(m_clearStdPasswordsBtn, &QPushButton::clicked,
+           m_exTabWidget, &ExTabWidget::clearPasswords);
+   layout->addWidget(m_clearStdPasswordsBtn);
+
+
+   // TODO
+
+   QFrame* dummy = new QFrame(this);
+   dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   layout->addWidget(dummy);
+
+   return box;
 
 }
 
 QWidget* MainWindow::initMessageControls()
 {
-  QGroupBox* box = new QGroupBox(tr("Enable Message Controls"), this);
-  QVBoxLayout* layout = new QVBoxLayout;
-  box->setLayout(layout);
+   QGroupBox* box = new QGroupBox(tr("Enable Message Controls"), this);
+   QVBoxLayout* layout = new QVBoxLayout;
+   box->setLayout(layout);
 
-  m_showMessageBox = new QCheckBox(tr("Show Messages"), this);
-  connect(m_showMessageBox, &QCheckBox::clicked, this, &MainWindow::showMessages);
-  layout->addWidget(m_showMessageBox);
+   m_showMessageBox = new QCheckBox(tr("Show Messages"), this);
+   connect(m_showMessageBox, &QCheckBox::clicked, this, &MainWindow::showMessages);
+   layout->addWidget(m_showMessageBox);
 
-  m_enableMarqueeBox = new QCheckBox(tr("Start marquee"), this);
-  connect(m_enableMarqueeBox, &QCheckBox::clicked, this, &MainWindow::setMarqueeMoving);
-  layout->addWidget(m_enableMarqueeBox);
+   m_enableMarqueeBox = new QCheckBox(tr("Start marquee"), this);
+   connect(m_enableMarqueeBox, &QCheckBox::clicked, this, &MainWindow::setMarqueeMoving);
+   layout->addWidget(m_enableMarqueeBox);
 
-  m_messageEdit = new LabelledLineEdit(tr("Enter message :"), this);
-  m_messageEdit->setText(
-     tr("This is a very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very long message"));
-  layout->addWidget(m_messageEdit);
+   m_messageEdit = new LabelledLineEdit(tr("Enter message :"), this);
+   m_messageEdit->setText(
+      tr("This is a very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very, very long message"));
+   layout->addWidget(m_messageEdit);
 
-  m_messageBtn = new QPushButton(tr("Set Message"), this);
-  connect(m_messageBtn, &QPushButton::clicked, this,
-          &MainWindow::setMessage);
-  layout->addWidget(m_messageBtn);
+   m_messageBtn = new QPushButton(tr("Set Message"), this);
+   connect(m_messageBtn, &QPushButton::clicked, this,
+           &MainWindow::setMessage);
+   layout->addWidget(m_messageBtn);
 
-  m_tempMessageEdit = new LabelledLineEdit(tr("Enter message :"), this);
-  m_tempMessageEdit->setText(tr("Temporary message"));
-  layout->addWidget(m_tempMessageEdit);
+   m_tempMessageEdit = new LabelledLineEdit(tr("Enter message :"), this);
+   m_tempMessageEdit->setText(tr("Temporary message"));
+   layout->addWidget(m_tempMessageEdit);
 
-  m_timeoutBox = new LabelledDoubleSpinBox(tr("Temp Message Timeout (Seconds)"), this);
-  m_timeoutBox->setRange(0, 10);
-  layout->addWidget(m_timeoutBox);
+   m_timeoutBox = new LabelledDoubleSpinBox(tr("Temp Message Timeout (Seconds)"), this);
+   m_timeoutBox->setRange(0, 10);
+   layout->addWidget(m_timeoutBox);
 
-  m_tempMessageBtn = new QPushButton(tr("Set Temporary Message"), this);
-  connect(m_tempMessageBtn, &QPushButton::clicked, this,
-          &MainWindow::setTempMessage);
-  layout->addWidget(m_tempMessageBtn);
+   m_tempMessageBtn = new QPushButton(tr("Set Temporary Message"), this);
+   connect(m_tempMessageBtn, &QPushButton::clicked, this,
+           &MainWindow::setTempMessage);
+   layout->addWidget(m_tempMessageBtn);
 
-  QFrame* dummy = new QFrame(this);
-  dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  layout->addWidget(dummy);
+   QFrame* dummy = new QFrame(this);
+   dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+   layout->addWidget(dummy);
 
-  return box;
+   return box;
 }
 
 QWidget* MainWindow::initExTabWidget()
-{  
+{
    m_exTabWidget = new ExTabWidget(this);
    QFrame* f1 = new QFrame(this);
    QGridLayout* l1 = new QGridLayout;

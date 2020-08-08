@@ -21,7 +21,6 @@
 
 /// \cond DO_NOT_DOCUMENT
 
-#include "logindialog.h"
 #include "loginwidget.h"
 #include "clockwidget.h"
 
@@ -80,13 +79,11 @@ public:
    bool hasCustomLoginDialog();
    void checkPassword(QString password);
    void checkPassword(QString username, QString password);
-   void addPassword(QString password);
+   void setPassword(QString password);
    void addPassword(QString id, QString password);
    void clearPasswords();
    void loginIsCorrect(QString username);
    void loginIsIncorrect();
-   void setIgnoreCase(bool ignoreCase);
-   bool isIgnoreCase();
 
    // clock methods
    bool isShowClock();
@@ -131,11 +128,10 @@ private:
    bool m_ignoreCase, m_showSeconds;
    QFrame::Shape m_clockFrame;
 
-   void loginClicked(bool clicked) {
+   void loginClicked(bool /*clicked*/) {
       if (m_loginWidget) {
          if (isLoggedIn()) { // if it's logged in already then log out.
             m_loginWidget->logOut();
-            m_loginWidget->displayLoginText();
             emit loggedOut();
 
          } else {
@@ -166,10 +162,9 @@ public:
    ExTabWidget* q_ptr;
    WrapperWidget* m_wrapper;
 
-   bool /*m_loggedIn,*/ m_showLogin, /*m_login,*/ /*m_simplelogin,*/ /*m_showClock,*/
-        m_showMessages;
+   bool m_showMessages;
    QPalette m_palette;
-   QRect* m_loginRect, /**m_clockRect,*/ *m_messageRect, *m_messageClip;
+   QRect* m_messageRect, *m_messageClip;
    int m_stringAdvance, m_frameHeight, m_frameWidth, m_frameX, m_frameY,
        m_messageWidth;
 
@@ -193,11 +188,9 @@ public:
    void setLoginText(const QString& text);
    QString logoutText() const;
    void setLogoutText(const QString& text);
-   void setIgnoreCase(bool);
-   bool isIgnoreCase();
    bool isLoggedIn();
    bool isLoginEnabled();
-   void addPassword(QString password);
+   void setPassword(QString password);
    void addPassword(QString username, QString);
    void clearPasswords();
    void setLargeTextForLoginDialog(bool);
@@ -232,16 +225,16 @@ public:
    // general stuff.
    //   bool mousePressEvent(QMouseEvent* event);
    //   bool mouseReleaseEvent(QMouseEvent* event);
-   void paintLogin(QPainter* painter, int w, int h);
+//   void paintLogin(QPainter* painter, int w, int h);
    void paintMessages(QPainter* painter, int w, int h);
-   void paintBorder(QPainter* painter,
-                    int x,
-                    int y,
-                    int w,
-                    int h,
-                    bool darkFirst);
-   void paintUpperBorder(QPainter* painter, int x, int y, int w, int h);
-   void paintLowerBorder(QPainter* painter, int x, int y, int w, int h);
+//   void paintBorder(QPainter* painter,
+//                    int x,
+//                    int y,
+//                    int w,
+//                    int h,
+//                    bool darkFirst);
+//   void paintUpperBorder(QPainter* painter, int x, int y, int w, int h);
+//   void paintLowerBorder(QPainter* painter, int x, int y, int w, int h);
    void tabwidgetStatusChanged();
    QString m_stylesheet;
    QString clockStyleSheet() const;
