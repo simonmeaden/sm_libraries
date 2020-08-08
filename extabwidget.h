@@ -153,7 +153,7 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
 
       @accessor loginType(), setLoginType()
    */
-   Q_PROPERTY(ExTabWidget::LoginType loginType READ loginType WRITE setLoginType)
+   Q_PROPERTY(AbstractLoginDialog::LoginType loginType READ loginType WRITE setLoginType)
 
    /*!
       \property ignoreCase
@@ -186,15 +186,6 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
    */
    Q_PROPERTY(
       QColor messageColor READ messageColor WRITE setMessageColor DESIGNABLE true)
-   //     /*!
-   //      \property ::messageBackground
-
-   //      \brief  This property describes whether the marquee is enabled.
-
-   //     @accessor messageBackground(), setMessageColor(QColor)
-   //       */
-   //       Q_PROPERTY(QColor messageBackground READ messageBackground WRITE
-   //       setMessageBackground DESIGNABLE true)
    /*!
       \property ::messageBackground
 
@@ -208,25 +199,13 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
    Q_DECLARE_PRIVATE(ExTabWidget)
 
 public:
-   /*!
-      \enum ::LoginType
-
-      Defines which type of login dialog will be displayed.
-   */
-   enum LoginType
-   {
-      Simple,   //!< A simple password only dialog.
-      Standard, //!< A more standard username/password dialog type
-      Custom,   //!< A custom login dialog.
-      None,     //!< No login dialog is set up.
-   };
 
    /*!
       \brief Constructs an ExTabWidget with parent parent with an optional custom
       login dialog.
    */
    explicit ExTabWidget(QWidget* parent = nullptr,
-                        LoginType type = None,
+                        AbstractLoginDialog::LoginType type = AbstractLoginDialog::None,
                         AbstractLoginDialog* customDlg = nullptr);
 
    /*!
@@ -234,53 +213,48 @@ public:
    */
    ~ExTabWidget() {}
 
+   // ReImplemented from QTabWidget.
    int addTab(QWidget* page, const QString& label);
    int addTab(QWidget* page, const QIcon& icon, const QString& label);
    void clear();
-//   const QWidget* cornerWidget(Qt::Corner corner = Qt::TopRightCorner);
-//   int count();
-//   int currentIndex();
-//   QWidget* currentWidget();
-//   bool documentMode();
-//   Qt::TextElideMode elideMode();
-//   QSize iconSize();
-//   int indexOf(QWidget* w);
    int insertTab(int index, QWidget* page, const QString& label);
    int insertTab(int index,
                  QWidget* page,
                  const QIcon& icon,
                  const QString& label);
-//   bool isMovable();
-//   bool isTabEnabled(int index);
-//   bool isTabVisible(int index);
    void removeTab(int index);
-//   void setCornerWidget(QWidget* widget, Qt::Corner corner = Qt::TopRightCorner);
-//   void setDocumentMode(bool set);
-//   void setElideMode(Qt::TextElideMode mode);
    void setIconSize(const QSize& size);
-//   void setMovable(bool movable);
-//   void setTabBarAutoHide(bool enabled);
-//   void setTabEnabled(int index, bool enable);
    void setTabIcon(int index, const QIcon& icon);
-//   void setTabPosition(QTabWidget::TabPosition position);
    void setTabShape(QTabWidget::TabShape s);
    void setTabText(int index, const QString& label);
-//   void setTabToolTip(int index, const QString& tip);
    void setTabVisible(int index, bool visible);
-//   void setTabWhatsThis(int index, const QString& text);
-//   void setTabsClosable(bool closeable);
-//   void setUsesScrollButtons(bool useButtons);
-//   QTabBar* tabBar();
-//   bool tabBarAutoHide();
-//   QIcon tabIcon(int index);
-//   QTabWidget::TabPosition tabPosition();
-//   QTabWidget::TabShape tabShape();
-//   QString tabText(int index);
-//   QString tabToolTip(int index);
-//   QString tabWhatsThis(int index);
-//   bool tabsClosable();
-//   bool usesScrollButtons();
-//   QWidget *widget(int index);
+
+   //! Returns true if the clock is enabled, otherwise false.
+   bool isClockEnabled();
+   //! Enables/disables the display of the digital clock
+   //!
+   //! Shows the clock if true, otherwise hides it.
+   void showClock(bool showClock);
+   //! Shows a frame around the displayed items if true.
+   //!
+   //! The show frame flag operates on all of the extensions, so either they all
+   //!  have frames or none of them have frames.
+   void setClockFrameStyle(QFrame::Shape style = QFrame::NoFrame);
+   //! Set the show seconds flag.
+   //!
+   //! Show the optional show seconds flag. Displays seconds when true, otherwise
+   //! the seconds are not displayed.
+   void showSeconds(bool showSeconds);
+   //! Returns the stylesheet for the clock widget.
+   QString clockStyleSheet() const;
+   //! Sets the stylesheet for the clock widget alone.
+   void setClockStyleSheet(const QString& styleSheet);
+
+
+   QString loginText() const;
+   void setLoginText(const QString &text);
+   QString logoutText() const;
+   void setLogoutText(const QString &text);
 
    /*!
       \brief Returns true if the user is logged in, otherwise false.
@@ -293,10 +267,6 @@ public:
    */
    QString username();
 
-   /*!
-      \brief Returns true if the clock is enabled, otherwise false.
-   */
-   bool isClockEnabled();
 
    /*!
       \brief Returns true if the login is enabled, otherwise false.
@@ -343,13 +313,6 @@ public:
    QColor messageColor();
 
    /*!
-      \brief Enables/disables the display of the digital clock
-
-      Shows the clock if true, otherwise hides it.
-   */
-   void showClock(bool showClock);
-
-   /*!
       \brief Enables/disables the display of the login button
 
       Shows the login button if showLogin is true, otherwise hides it.
@@ -365,7 +328,7 @@ public:
 
       \sa loginType(), ExTabWidget::LoginType
    */
-   void setLoginType(LoginType type);
+   void setLoginType(AbstractLoginDialog::LoginType type);
 
    /*!
       \brief Returns the login type.
@@ -377,7 +340,7 @@ public:
 
       \sa setLoginType(), ExTabWidget::LoginType
    */
-   LoginType loginType();
+   AbstractLoginDialog::LoginType loginType();
 
    /*!
       \brief Sets a custom logging dialog.
@@ -393,15 +356,6 @@ public:
    */
    void showMessages(bool showMessages);
 
-   /*!
-      \brief Shows a frame around the displayed items if true.
-
-      The show frame flag operates on all of the extensions, so either they all
-                                                              have frames or none
-      of them have frames.
-   */
-   void showClockFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
-   void showLoginFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
    void showMessageFrame(bool showFrame, QFrame::Shape style = QFrame::NoFrame);
 
    /*!
@@ -426,13 +380,6 @@ public:
    */
    void setIgnoreCase(bool ignoreCase);
 
-   /*!
-      \brief Set the show seconds flag.
-
-      Show the optional show seconds flag. Displays seconds when true, otherwise
-      the seconds are not displayed.
-   */
-   void showSeconds(bool showSeconds);
 
    /*!
       \brief Sets the text colour the message is drawn in.
@@ -557,11 +504,9 @@ public:
    void clearMessage();
 
    QString styleSheet() const;
-   QString clockStyleSheet() const;
    QString loginStyleSheet() const;
    QString messageStyleSheet() const;
    //   void setStyleSheet(const QString &styleSheet);
-   void setClockStyleSheet(const QString& styleSheet);
    void setLoginStyleSheet(const QString& styleSheet);
    void setMessageStyleSheet(const QString& styleSheet);
 
@@ -606,18 +551,19 @@ signals:
    */
    void loginBad();
 
- signals:
+signals:
+   //! This signal is inended for internal use and informes the ExTabWidget whenever
+   //! a tab is added, removed or modified.
    void statusChanged();
 
- private:
-   LoginType m_loginType;
+private:
 
    void statusHasChanged();
 
-//   /*!
-//       \brief Reimplements: QTabWidget::paintEvent()
-//   */
-//   virtual void paintEvent(QPaintEvent* evt);
+   //   /*!
+   //       \brief Reimplements: QTabWidget::paintEvent()
+   //   */
+   //   virtual void paintEvent(QPaintEvent* evt);
    //   /*!
    //      \brief Reimplements: QTabWidget::mousePressEvent()
    //   */
@@ -642,16 +588,6 @@ private:
       Checks the username/password for a standard login dialog.
    */
    void checkPassword(QString id, QString password);
-
-   /*
-      Receives a correct login from custom login dialog.
-   */
-   void loginIsCorrect(QString username = QString());
-
-   /*
-      Receives an incorrect login from custom login dialog.
-   */
-   void loginIsIncorrect();
 
    void updateMarquee();
 

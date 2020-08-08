@@ -82,6 +82,8 @@ private:
    QPlainTextEdit *m_clockStylesheetEdit;
    QPushButton *m_clockStylesheetBtn;
 
+   QCheckBox* m_showLoginBox;
+
    QCheckBox* m_showMessageBox, *m_enableMarqueeBox;
    QDoubleSpinBox* m_marqueeSpeedBox;
    LabelledDoubleSpinBox* m_timeoutBox;
@@ -139,6 +141,9 @@ private:
    void setMarqueeMoving(bool enable);
    void setMarqueeSpeed(qreal charPerSec);
 
+   void showLogin(bool enable);
+
+
    void initGui();
    QWidget* initLabelledWidgets();
    QWidget* initChooseWidgetBox();
@@ -150,6 +155,9 @@ private:
    QWidget* initPolicyBox();
    QWidget* initLabelledWidgetFrame();
    QWidget* initExTabWidget();
+   QWidget *initClockControls();
+   QWidget *initLoginControls();
+   QWidget *initMessageControls();
 };
 
 #endif // MAINWINDOW_H

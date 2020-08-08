@@ -5,28 +5,19 @@
 /// \cond DO_NOT_DOCUMENT
 const QString LoginWidget::LOGIN = "Log In";
 const QString LoginWidget::LOGOUT = "Log Out";
-const QString ClockWidget::WITHSECONDS = "00:00:00";
-const QString ClockWidget::NOSECONDS = "00:00";
 
 ExTabWidgetPrivate::ExTabWidgetPrivate(ExTabWidget* parent,
                                        AbstractLoginDialog* customDlg = nullptr)
    : q_ptr(parent)
    , m_wrapper(new WrapperWidget(q_ptr))
-   , m_loggedIn(false)
    , m_showLogin(false)
      //   , m_showClock(false)
    , m_showMessages(false)
-   , m_loginDlg(new LoginDialog(q_ptr))
-   , m_customLoginDlg(customDlg)
    , m_loginRect(nullptr)
    , m_messageRect(nullptr)
    , m_now(0)
    , m_showFrame(true)
    , m_isInframe(false)
-   , m_loginPressed(false)
-   , m_ignoreCase(false)
-   , m_marqueeTimer(nullptr)
-   , m_timeoutTimer(nullptr)
    , m_textColor(QColor("black"))
    , m_background(m_palette.window())
    , m_marquee(false)
@@ -34,6 +25,19 @@ ExTabWidgetPrivate::ExTabWidgetPrivate(ExTabWidget* parent,
    m_timeout = 0;
    m_marqueePos = 0;
    q_ptr->setContentsMargins(0, 0, 0, 0);
+
+   if (customDlg) {
+      m_wrapper->setLoginType(AbstractLoginDialog::Custom);
+      m_wrapper->setCustomLoginDialog(customDlg);
+   }
+
+   // send wrapper signals on to ExTabWidget
+   q_ptr->connect(m_wrapper, &WrapperWidget::loggedIn, q_ptr, &ExTabWidget::loggedIn);
+   q_ptr->connect(m_wrapper, &WrapperWidget::loggedOut, q_ptr, &ExTabWidget::loggedOut);
+   q_ptr->connect(m_wrapper, &WrapperWidget::passwordBad, q_ptr, &ExTabWidget::passwordBad);
+   q_ptr->connect(m_wrapper, &WrapperWidget::usernameBad, q_ptr, &ExTabWidget::usernameBad);
+   q_ptr->connect(m_wrapper, &WrapperWidget::loginBad, q_ptr, &ExTabWidget::loginBad);
+
    // TODO REMOVE BELOW
    //   q_ptr->tabBar()->setStyleSheet("background: red;");
    //   q_ptr->setStyleSheet("background: green;");
@@ -48,15 +52,33 @@ ExTabWidgetPrivate::~ExTabWidgetPrivate()
 
 bool ExTabWidgetPrivate::hasCustomLoginDialog()
 {
-   return (m_customLoginDlg);
+   return m_wrapper->hasCustomLoginDialog();
 }
 
-void ExTabWidgetPrivate::showClockFrame(bool showFrame, QFrame::Shape style)
+void ExTabWidgetPrivate::setClockFrame(QFrame::Shape style)
 {
    // TODO show/hide clock frames
-   if (m_wrapper) {
-      m_wrapper->showClockFrame(showFrame, style);
-   }
+   m_wrapper->setClockFrame(style);
+}
+
+QString ExTabWidgetPrivate::loginText() const
+{
+   return m_wrapper->loginText();
+}
+
+void ExTabWidgetPrivate::setLoginText(const QString& text)
+{
+   m_wrapper->setLoginText(text);
+}
+
+QString ExTabWidgetPrivate::logoutText() const
+{
+   return m_wrapper->logoutText();
+}
+
+void ExTabWidgetPrivate::setLogoutText(const QString& text)
+{
+   m_wrapper->setLogoutText(text);
 }
 
 void ExTabWidgetPrivate::showMessageFrame(bool showFrame, QFrame::Shape style)
@@ -80,9 +102,13 @@ void ExTabWidgetPrivate::showClock(bool showClock)
    q_ptr->update();
 }
 
+bool ExTabWidgetPrivate::isShowClock() {
+  return m_wrapper->isShowClock();
+}
+
 void ExTabWidgetPrivate::showMessages(bool messages)
 {
-   //   m_showMessages = messages;
+  //   m_showMessages = messages;
 
    //   if (m_showMessages) {
    //      if (!m_messageWidget) {
@@ -130,11 +156,12 @@ void ExTabWidgetPrivate::setMarqueeSpeed(qreal charPerSecond)
 
 void ExTabWidgetPrivate::stopMarqueeTimer()
 {
-   if (m_marqueeTimer) {
-      m_marqueeTimer->stop();
-      m_marqueeTimer->deleteLater();
-      m_marqueeTimer = nullptr;
-   }
+   // TODO
+   //   if (m_marqueeTimer) {
+   //      m_marqueeTimer->stop();
+   //      m_marqueeTimer->deleteLater();
+   //      m_marqueeTimer = nullptr;
+   //   }
 }
 
 void ExTabWidgetPrivate::startMarqueeTimerIfRequired()
@@ -174,152 +201,114 @@ void ExTabWidgetPrivate::updateMarquee()
 
 void ExTabWidgetPrivate::showLogin(bool showLogin)
 {
-   //   if (showLogin != m_showLogin) {
-   //      if (!m_loginWidget) {
-   //         m_loginWidget = new LoginWidget(q_ptr);
-   //      }
-
-   //      if (m_showMessages) {
-   //         m_messageRect = nullptr;
-   //      }
-
-
-   //      m_showLogin = showLogin;
-
-   //      q_ptr->update();
-
-   //   } else {
-   //      m_loginWidget = nullptr;
-   //   }
+   m_wrapper->showLogin(showLogin);
+   m_wrapper->calculateWidgetSizes(m_frameX, m_frameY, m_frameWidth, m_frameHeight);
+   q_ptr->update();
 }
 
-void ExTabWidgetPrivate::setLoginType()
+AbstractLoginDialog::LoginType ExTabWidgetPrivate::loginType()
 {
-   Q_Q(ExTabWidget);
+   return m_wrapper->loginType();
+}
 
-   q->disconnect(m_loginDlg, nullptr, nullptr, nullptr);
+bool ExTabWidgetPrivate::isLoggedIn()
+{
+   return m_wrapper->isLoggedIn();
+}
 
-   switch (q->m_loginType) {
-   case ExTabWidget::Simple:
-      m_loginDlg = new SimpleLoginDialog(q_ptr);
-      q->connect(m_loginDlg,
-                 qOverload<QString>(&AbstractLoginDialog::loginData),
-                 q_ptr,
-                 qOverload<QString>(&ExTabWidget::checkPassword));
-      break;
-
-   case ExTabWidget::Standard:
-      m_loginDlg = new LoginDialog(q_ptr);
-      q->connect(m_loginDlg,
-                 qOverload<QString, QString>(&AbstractLoginDialog::loginData),
-                 q_ptr,
-                 qOverload<QString, QString>(&ExTabWidget::checkPassword));
-      break;
-
-   case ExTabWidget::Custom:
-      if (m_customLoginDlg) {
-         m_loginDlg = m_customLoginDlg;
-         q->connect(m_loginDlg,
-                    &AbstractLoginDialog::loginCorrect,
-                    q_ptr,
-                    &ExTabWidget::loginIsCorrect);
-         q->connect(m_loginDlg,
-                    &AbstractLoginDialog::loginIncorrect,
-                    q_ptr,
-                    &ExTabWidget::loginIsIncorrect);
-      }
-
-      break;
-
-   case ExTabWidget::None:
-      break;
-   }
-
+void ExTabWidgetPrivate::setLoginType(AbstractLoginDialog::LoginType type)
+{
+   m_wrapper->setLoginType(type);
 }
 
 void ExTabWidgetPrivate::setCustomLoginDialog(AbstractLoginDialog* loginDlg)
 {
-   m_customLoginDlg = loginDlg;
+   m_wrapper->setCustomLoginDialog(loginDlg);
 }
 
-bool ExTabWidgetPrivate::mousePressEvent(QMouseEvent* event)
+QString ExTabWidgetPrivate::username()
 {
-   //    Q_Q(ExTabWidget);
-   int x = event->x();
-   int y = event->y();
-
-   if (isInLoginFrame(x, y)) {
-      m_isInframe = true;
-      m_loginPressed = true;
-
-   } else {
-      m_isInframe = false;
-      m_loginPressed = false;
-   }
-
-   return m_isInframe;
+   return m_wrapper->username();
 }
 
-bool ExTabWidgetPrivate::mouseReleaseEvent(QMouseEvent* /*event*/)
-{
-   Q_Q(ExTabWidget);
+//bool ExTabWidgetPrivate::mousePressEvent(QMouseEvent* event)
+//{
+//   //    Q_Q(ExTabWidget);
+//   int x = event->x();
+//   int y = event->y();
 
-   if (m_showLogin) {
-      if (m_isInframe) {
-         m_loginPressed = false;
+//   if (isInLoginFrame(x, y)) {
+//      m_isInframe = true;
+////      m_loginPressed = true;
 
-         if (isLoggedIn()) { // if it's logged in already then log out.
-            m_loggedIn = false;
-            displayLoginText();
-            emit q->loggedOut();
+//   } else {
+//      m_isInframe = false;
+////      m_loginPressed = false;
+//   }
 
-         } else {
-            switch (q->m_loginType) {
-            case ExTabWidget::Simple:
-               m_loginDlg->setAttribute(Qt::WA_DeleteOnClose, true);
-               m_loginDlg->exec();
+//   return m_isInframe;
+//}
 
-               if (isLoggedIn()) {
-                  displayLogoutText();
-               }
+//bool ExTabWidgetPrivate::mouseReleaseEvent(QMouseEvent* /*event*/)
+//{
+//   Q_Q(ExTabWidget);
 
-               break;
+//   if (m_showLogin) {
+//      if (m_isInframe) {
+//         m_loginPressed = false;
 
-            case ExTabWidget::Standard:
-               m_loginDlg->setAttribute(Qt::WA_DeleteOnClose, true);
+//         if (isLoggedIn()) { // if it's logged in already then log out.
+//            m_loggedIn = false;
+//            displayLoginText();
+//            emit q->loggedOut();
 
-               m_loginDlg->exec();
+//         } else {
+//            switch (q->m_loginType) {
+//            case ExTabWidget::Simple:
+//               m_loginDlg->setAttribute(Qt::WA_DeleteOnClose, true);
+//               m_loginDlg->exec();
 
-               if (isLoggedIn()) {
-                  displayLogoutText();
-               }
+//               if (isLoggedIn()) {
+//                  displayLogoutText();
+//               }
 
-               break;
+//               break;
 
-            case ExTabWidget::Custom:
-               m_loginDlg->setAttribute(Qt::WA_DeleteOnClose, true);
-               m_loginDlg->exec();
+//            case ExTabWidget::Standard:
+//               m_loginDlg->setAttribute(Qt::WA_DeleteOnClose, true);
 
-               if (isLoggedIn()) {
-                  displayLogoutText();
-               }
+//               m_loginDlg->exec();
 
-               break;
+//               if (isLoggedIn()) {
+//                  displayLogoutText();
+//               }
 
-            case ExTabWidget::None:
-               break;
-            }
-         }
-      }
+//               break;
 
-      return true;
+//            case ExTabWidget::Custom:
+//               m_loginDlg->setAttribute(Qt::WA_DeleteOnClose, true);
+//               m_loginDlg->exec();
 
-   } else {
-      return false;
-   }
+//               if (isLoggedIn()) {
+//                  displayLogoutText();
+//               }
 
-   q_ptr->update();
-}
+//               break;
+
+//            case ExTabWidget::None:
+//               break;
+//            }
+//         }
+//      }
+
+//      return true;
+
+//   } else {
+//      return false;
+//   }
+
+//   q_ptr->update();
+//}
 
 //void ExTabWidgetPrivate::paintEvent(QPaintEvent* evt)
 //{
@@ -336,19 +325,19 @@ bool ExTabWidgetPrivate::mouseReleaseEvent(QMouseEvent* /*event*/)
 //   }
 //}
 
-/*!
-   \internal
+///*!
+//   \internal
 
-   \brief checks whether the click is inside the login frame.
-*/
-bool ExTabWidgetPrivate::isInLoginFrame(int x, int y)
-{
-   if (m_loginRect) {
-      return m_loginRect->contains(x, y, false);
-   }
+//   \brief checks whether the click is inside the login frame.
+//*/
+//bool ExTabWidgetPrivate::isInLoginFrame(int x, int y)
+//{
+//   if (m_loginRect) {
+//      return m_loginRect->contains(x, y, false);
+//   }
 
-   return false;
-}
+//   return false;
+//}
 
 void ExTabWidgetPrivate::tabwidgetStatusChanged()
 {
@@ -365,29 +354,24 @@ void ExTabWidgetPrivate::tabwidgetStatusChanged()
    q_ptr->update();
 }
 
-QString ExTabWidgetPrivate::styleSheet() const
-{
-   //   return m_clockWidget->styleSheet();
-}
-
 QString ExTabWidgetPrivate::clockStyleSheet() const
 {
-   //   return m_clockWidget->styleSheet();
+   return m_wrapper->clockStyleSheet();
 }
 
 QString ExTabWidgetPrivate::loginStyleSheet() const
 {
-   //   return m_loginWidget->styleSheet();
+   return m_wrapper->loginStyleSheet();
 }
 
 QString ExTabWidgetPrivate::messageStyleSheet() const
 {
-   //   return m_messageWidget->styleSheet();
+   return m_wrapper->messageStyleSheet();
 }
 
 void ExTabWidgetPrivate::setClockStyleSheet(const QString& styleSheet)
 {
-      m_wrapper->setClockStyleSheet(styleSheet);
+   m_wrapper->setClockStyleSheet(styleSheet);
 }
 
 void ExTabWidgetPrivate::setLoginStyleSheet(const QString& styleSheet)
@@ -681,168 +665,65 @@ void ExTabWidgetPrivate::paintMessages(QPainter* painter, int w, int h)
 //   paintMessages(painter, w, h);
 //}
 
-void ExTabWidgetPrivate::displayLoginText()
-{
-   //   m_loginText = LOGIN;
-}
+//void ExTabWidgetPrivate::displayLoginText()
+//{
+//   //   m_loginText = LOGIN;
+//}
 
-void ExTabWidgetPrivate::displayLogoutText()
-{
-   //   m_loginText = LOGOUT;
-}
+//void ExTabWidgetPrivate::displayLogoutText()
+//{
+//   //   m_loginText = LOGOUT;
+//}
 
 void ExTabWidgetPrivate::checkPassword(QString password)
 {
-   Q_Q(ExTabWidget);
-
-   if (q->m_loginType == ExTabWidget::Simple) {
-      Q_Q(ExTabWidget);
-      bool result;
-
-      if (m_ignoreCase) {
-         result = (password.toLower() == m_password.toLower());
-
-      } else {
-         result = (password == m_password);
-      }
-
-      if (result) {
-         emit q->loggedIn();
-         m_loggedIn = true;
-
-      } else {
-         emit q->passwordBad();
-      }
-   }
+   m_wrapper->checkPassword(password);
 }
 
 void ExTabWidgetPrivate::checkPassword(QString username, QString password)
 {
-   Q_Q(ExTabWidget);
-
-   QString pw, un;
-
-   if (q->m_loginType == ExTabWidget::Standard) {
-      if (!m_ignoreCase) {
-         pw = m_passwords.value(username);
-
-         if (pw.isEmpty()) {
-            emit q->usernameBad();
-            m_loggedIn = false;
-            return;
-         }
-
-         bool result = (password == pw);
-
-         if (result) {
-            emit q->loggedIn();
-            m_loggedIn = true;
-            m_username = "";
-
-         } else {
-            emit q->passwordBad();
-            m_loggedIn = false;
-         }
-
-      } else {
-
-         pw = password.toLower();
-         un = username.toLower();
-         bool unFound = false;
-
-         QListIterator<QString> it(m_passwords.keys());
-
-         while (it.hasNext()) {
-            QString id = it.next();
-
-            if (id.toLower() == un) {
-               unFound = true;
-               QString storedPw = m_passwords.value(id);
-
-               if (storedPw.toLower() == pw) {
-                  emit q->loggedIn();
-                  m_username = un;
-                  m_loggedIn = true;
-                  return;
-               }
-
-               if (unFound) {
-                  emit q->usernameBad();
-                  return;
-               }
-            }
-         }
-
-         emit q->passwordBad();
-         m_username = "";
-         m_loggedIn = false;
-      }
-   }
-}
-
-void ExTabWidgetPrivate::loginIsCorrect(QString username)
-{
-   Q_Q(ExTabWidget);
-
-   emit q->loggedIn();
-   m_loggedIn = true;
-   m_username = username;
-}
-
-void ExTabWidgetPrivate::loginIsIncorrect()
-{
-   Q_Q(ExTabWidget);
-
-   emit q->loginBad();
-   m_username = "";
-   m_loggedIn = false;
+   m_wrapper->checkPassword(username, password);
 }
 
 void ExTabWidgetPrivate::setIgnoreCase(bool ignoreCase)
 {
-   m_ignoreCase = ignoreCase;
+   m_wrapper->setIgnoreCase(ignoreCase);
+}
+
+bool ExTabWidgetPrivate::isIgnoreCase()
+{
+   return m_wrapper->isIgnoreCase();
 }
 
 void ExTabWidgetPrivate::setLargeTextForLoginDialog(bool)
 {
-
+   // TODO
 }
 
-bool ExTabWidgetPrivate::isLoggedIn()
+bool ExTabWidgetPrivate::isLoginEnabled()
 {
-   return m_loggedIn;
+   return m_wrapper->isLoginEnabled();
 }
 
 void ExTabWidgetPrivate::addPassword(QString password)
 {
-   m_password = password.toLatin1();
+   m_wrapper->addPassword(password);
 }
 
-void ExTabWidgetPrivate::addPassword(QString id, QString password)
+void ExTabWidgetPrivate::addPassword(QString username, QString password)
 {
-   m_passwords.insert(id, password.toLatin1());
+   m_wrapper->addPassword(username, password);
 }
 
-//void ExTabWidgetPrivate::nextSecond()
-//{
-//   QString format = "hh:mm";
-
-//   if (m_showSeconds) {
-//      format += ":ss";
-//   }
-
-//   QDateTime now = QDateTime::currentDateTime();
-//   m_nowString = now.toString(format);
-//   m_now = now.toTime_t();
-
-//   q_ptr->update();
-//}
+void ExTabWidgetPrivate::clearPasswords()
+{
+   m_wrapper->clearPasswords();
+}
 
 void ExTabWidgetPrivate::showSeconds(bool showSeconds)
 {
    m_wrapper->setShowSeconds(showSeconds);
    m_wrapper->calculateWidgetSizes(m_frameX, m_frameY, m_frameWidth, m_frameHeight);
-//   q_ptr->updateGeometry();
 }
 
 void ExTabWidgetPrivate::clearMessage()
@@ -871,11 +752,11 @@ void ExTabWidgetPrivate::setMessageBackground(QBrush brush)
 
 void ExTabWidgetPrivate::messageTimeout()
 {
-   m_useTempColor = false;
-   m_timeoutTimer->stop();
-   m_timeoutTimer->deleteLater();
-   m_timeoutTimer = nullptr;
-   clearMessage();
+   //   m_useTempColor = false;
+   //   m_timeoutTimer->stop();
+   //   m_timeoutTimer->deleteLater();
+   //   m_timeoutTimer = nullptr;
+   //   clearMessage();
 }
 
 void ExTabWidgetPrivate::resetMessageData(const QString& message, bool tempColor)
@@ -925,313 +806,253 @@ void ExTabWidgetPrivate::setMessage(QColor color,
 
 void ExTabWidgetPrivate::setMessage(uint timeout)
 {
-   if (m_timeoutTimer) { // new message before timeout cancel timeout.
-      if (m_timeoutTimer->isActive()) {
-         m_timeoutTimer->stop();
-         m_timeoutTimer->deleteLater();
-         m_timeoutTimer = nullptr;
-      }
-   }
+   //   if (m_timeoutTimer) { // new message before timeout cancel timeout.
+   //      if (m_timeoutTimer->isActive()) {
+   //         m_timeoutTimer->stop();
+   //         m_timeoutTimer->deleteLater();
+   //         m_timeoutTimer = nullptr;
+   //      }
+   //   }
 
-   if (timeout > 0) {
-      if (m_timeoutTimer) {
-         if (m_timeoutTimer->isActive()) {
-            m_timeoutTimer->stop();
-         }
+   //   if (timeout > 0) {
+   //      if (m_timeoutTimer) {
+   //         if (m_timeoutTimer->isActive()) {
+   //            m_timeoutTimer->stop();
+   //         }
 
-      } else {
-         m_timeoutTimer = new QTimer(q_ptr);
-      }
+   //      } else {
+   //         m_timeoutTimer = new QTimer(q_ptr);
+   //      }
 
-      m_timeoutTimer->start(timeout);
-   }
+   //      m_timeoutTimer->start(timeout);
+   //   }
 
-   // remove all new line characters, only single line message.
-   int pos = m_messageText.indexOf('\n');
+   //   // remove all new line characters, only single line message.
+   //   int pos = m_messageText.indexOf('\n');
 
-   while (pos != -1) {
-      m_messageText.remove(pos, 1);
-      pos = m_messageText.indexOf('\n');
-   }
+   //   while (pos != -1) {
+   //      m_messageText.remove(pos, 1);
+   //      pos = m_messageText.indexOf('\n');
+   //   }
 
-   q_ptr->update();
+   //   q_ptr->update();
 }
 
-LoginDialog::LoginDialog(QWidget* parent)
-   : AbstractLoginDialog(parent)
-{
-   initGui(false);
-}
-
-LoginDialog::~LoginDialog() {}
-
-void LoginDialog::clearText()
-{
-   m_userEdit->clear();
-   m_passEdit->clear();
-}
-
-void LoginDialog::acceptLogin()
-{
-   emit loginData(m_userEdit->text(), m_passEdit->text());
-}
-
-void LoginDialog::initGui(bool largeText)
-{
-   QFont f = font();
-
-   if (largeText) {
-      f.setPointSize(20);
-      f.setWeight(QFont::Bold);
-      setFont(f);
-   }
-
-   QLabel* lbl1 = new QLabel("User name :", this);
-   lbl1->setFont(f);
-   m_userEdit = new QLineEdit(this);
-   QLabel* lbl2 = new QLabel("Password :", this);
-   lbl2->setFont(f);
-   m_passEdit = new QLineEdit(this);
-   m_passEdit->setEchoMode(QLineEdit::Password);
-
-   QGridLayout* layout = new QGridLayout(this);
-   setLayout(layout);
-
-   layout->addWidget(lbl1, 0, 0);
-   layout->addWidget(m_userEdit, 0, 1);
-   layout->addWidget(lbl2, 1, 0);
-   layout->addWidget(m_passEdit, 1, 1);
-
-   QDialogButtonBox* buttons = new QDialogButtonBox(this);
-   buttons->addButton(QDialogButtonBox::Ok);
-   buttons->addButton(QDialogButtonBox::Cancel);
-   buttons->button(QDialogButtonBox::Ok)->setText(tr("Login"));
-   buttons->button(QDialogButtonBox::Ok)->setFont(f);
-   buttons->button(QDialogButtonBox::Cancel)->setText(tr("Abort"));
-   buttons->button(QDialogButtonBox::Cancel)->setFont(f);
-   layout->addWidget(buttons, 2, 0, 1, 2);
-
-   // close on abort
-   connect(buttons->button(QDialogButtonBox::Cancel),
-           &QPushButton::clicked,
-           this,
-           &LoginDialog::close);
-
-   // acceptLogin and abort on accept.
-   // should acceptLogin first.
-   connect(buttons->button(QDialogButtonBox::Ok),
-           &QPushButton::clicked,
-           this,
-           &LoginDialog::acceptLogin);
-   connect(buttons->button(QDialogButtonBox::Ok),
-           &QPushButton::clicked,
-           this,
-           &LoginDialog::close);
-}
-
-SimpleLoginDialog::SimpleLoginDialog(QWidget* parent)
-   : AbstractLoginDialog(parent)
-{
-   initGui(false);
-}
-
-SimpleLoginDialog::~SimpleLoginDialog() {}
-
-void SimpleLoginDialog::clearText()
-{
-   m_passEdit->clear();
-}
-
-void SimpleLoginDialog::initGui(bool largeText)
-{
-   QFont f = font();
-
-   if (largeText) {
-      f.setPointSize(20);
-      f.setWeight(QFont::Bold);
-      setFont(f);
-   }
-
-   QLabel* lbl1 = new QLabel("Password :", this);
-   lbl1->setFont(f);
-
-   m_passEdit = new QLineEdit(this);
-   m_passEdit->setFont(f);
-   m_passEdit->setEchoMode(QLineEdit::Password);
-
-   QGridLayout* layout = new QGridLayout(this);
-   setLayout(layout);
-
-   layout->addWidget(lbl1, 0, 0);
-   layout->addWidget(m_passEdit, 0, 1);
-
-   QDialogButtonBox* buttons = new QDialogButtonBox(this);
-   buttons->addButton(QDialogButtonBox::Ok);
-   buttons->addButton(QDialogButtonBox::Cancel);
-   buttons->button(QDialogButtonBox::Ok)->setText(tr("Login"));
-   buttons->button(QDialogButtonBox::Ok)->setFont(f);
-   buttons->button(QDialogButtonBox::Cancel)->setText(tr("Abort"));
-   buttons->button(QDialogButtonBox::Cancel)->setFont(f);
-   layout->addWidget(buttons, 1, 0, 1, 2);
-
-   // close on abort
-   connect(buttons->button(QDialogButtonBox::Cancel),
-           &QPushButton::clicked,
-           this,
-           &SimpleLoginDialog::close);
-
-   // acceptLogin and abort on accept.
-   // should acceptLogin first.
-   connect(buttons->button(QDialogButtonBox::Ok),
-           &QPushButton::clicked,
-           this,
-           &SimpleLoginDialog::acceptLogin);
-   connect(buttons->button(QDialogButtonBox::Ok),
-           &QPushButton::clicked,
-           this,
-           &SimpleLoginDialog::close);
-}
-
-void SimpleLoginDialog::acceptLogin()
-{
-   emit loginData(m_passEdit->text());
-}
-
-//== ClockWidget ========================================================================
-
-ClockWidget::ClockWidget(QWidget* parent)
-   : QFrame(parent)
-   , m_clockTimer(nullptr)
-   , m_showSeconds(false)
-{
-//   setStyleSheet("background: yellow;");
-}
-
-bool ClockWidget::isShowing()
-{
-   return m_showClock;
-}
-
-void ClockWidget::showClock(bool showClock)
-{
-   if (showClock != m_showClock) {
-      m_showClock = showClock;
-
-      if (showClock) {
-         if (m_clockTimer && m_clockTimer->isActive()) {
-            return;
-
-         } else {
-            if (!m_clockTimer) {
-               m_clockTimer = new QTimer(this);
-               connect(m_clockTimer, &QTimer::timeout,
-                       this, &ClockWidget::nextSecond,
-                       Qt::UniqueConnection);
-            }
-
-            m_clockTimer->start(CLOCK_TIME);
-         }
-
-      } else {
-         if (m_clockTimer) {
-            if (m_clockTimer->isActive()) {
-               m_clockTimer->stop();
-            }
-
-            m_clockTimer->deleteLater();
-            m_clockTimer = nullptr;
-         }
-      }
-   }
-}
-
-void ClockWidget::showClockFrame(bool showFrame, QFrame::Shape style) {
-  if (showFrame) {
-    setFrameStyle(style);
-
-  } else {
-    setFrameStyle(QFrame::NoFrame);
-  }
-}
-
-bool ClockWidget::showSeconds() const
-{
-  return m_showSeconds;
-}
-
-void ClockWidget::setShowSeconds(bool value)
-{
-  m_showSeconds = value;
-  update();
-}
-
-void ClockWidget::paintEvent(QPaintEvent* evt)
-{
-   QFrame::paintEvent(evt);
-   QPainter painter(this);
-
-   if (m_showClock) {
-      QFontMetrics fm = painter.fontMetrics();
-      int h = fm.height();
-      int w = fm.horizontalAdvance(m_nowString);
-      int x = (m_size.width() - w) / 2;
-      int y = m_size.height() - ((m_size.height() - h) / 2);
-      painter.drawText(x, y, m_nowString);
-   }
-}
-
-int ClockWidget::calculateRequiredWidth(int x, int y, int w, int h)
-{
-   if (w < 0) {
-      return -1;
-   }
-
-   QFontMetrics fm = fontMetrics();
-   int reqWidth;
-
-   // always use WITHSECONDS as it is the longer. Dont want width to change.
-   if (m_showSeconds) {
-      reqWidth = fm.horizontalAdvance(WITHSECONDS) + 25;
-
-   } else {
-      reqWidth = fm.horizontalAdvance(NOSECONDS) + 25;
-   }
-
-   if (reqWidth > w) {
-      reqWidth = w;
-   }
-
-   return reqWidth;
-}
-
-QSize ClockWidget::sizeHint() const
-{
-   return m_size;
-}
-
-void ClockWidget::setSizeHint(const QSize& size)
-{
-  if (m_size != size){
-    m_size = size;
-    updateGeometry();
-  }
-}
-
-void ClockWidget::nextSecond()
-{
-   QString format = "hh:mm";
-
-   if (m_showSeconds) {
-      format += ":ss";
-   }
-
-   QDateTime now = QDateTime::currentDateTime();
-   m_nowString = now.toString(format);
-
-   update();
-}
 
 //== WrapperWidget ========================================================================
+
+WrapperWidget::WrapperWidget(QWidget* parent)
+   : QFrame(parent)
+   , m_parent(parent)
+   , m_layout(new QGridLayout)
+   , m_clockWidget(nullptr)
+   , m_loginWidget(nullptr)
+   , m_messageWidget(nullptr)
+   , m_filler(nullptr)
+   , m_ignoreCase(false)
+   , m_showSeconds(false)
+   , m_clockFrame(QFrame::Shape::NoFrame)
+{
+   setStyleSheet("background: lightgreen;");
+   setContentsMargins(0, 0, 3, 0);
+   m_layout->setContentsMargins(0, 0, 0, 0);
+   setLayout(m_layout);
+}
+
+QString WrapperWidget::loginText() const
+{
+   if (m_loginWidget) {
+      return m_loginWidget->loginText();
+   }
+
+   return LoginWidget::LOGIN;
+}
+
+void WrapperWidget::setLoginText(const QString& text)
+{
+   if (m_loginWidget) {
+      m_loginWidget->setLoginText(text);
+   }
+}
+
+QString WrapperWidget::logoutText() const
+{
+   if (m_loginWidget) {
+      return m_loginWidget->logoutText();
+   }
+
+   return LoginWidget::LOGOUT;
+}
+
+void WrapperWidget::setLogoutText(const QString& text)
+{
+   if (m_loginWidget) {
+      m_loginWidget->setLogoutText(text);
+   }
+}
+
+bool WrapperWidget::isLoggedIn()
+{
+   if (m_loginWidget) {
+      return m_loginWidget->isLoggedIn();
+   }
+
+   return false;
+}
+
+bool WrapperWidget::isLoginEnabled()
+{
+   if (m_loginWidget) {
+      return m_loginWidget->isLoginEnabled();
+   }
+
+   return false;
+}
+
+bool WrapperWidget::isShowLogin()
+{
+   return false;
+}
+
+QString WrapperWidget::username()
+{
+   if (m_loginWidget) {
+      return m_loginWidget->username();
+   }
+
+   return QString();
+}
+
+AbstractLoginDialog::LoginType WrapperWidget::loginType() const
+{
+   if (m_loginWidget) {
+      return m_loginWidget->loginType();
+   }
+
+   return AbstractLoginDialog::None;
+}
+
+void WrapperWidget::setLoginType(const AbstractLoginDialog::LoginType& loginType)
+{
+   if (m_loginWidget) {
+      m_loginWidget->setLoginType(loginType);
+   }
+}
+
+void WrapperWidget::showLogin(bool show)
+{
+   removeWidgetsFromLayout();
+
+   if (show) {
+      if (!m_loginWidget) {
+         m_loginWidget = new LoginWidget(m_parent);
+         m_loginWidget->setSizePolicy(QSizePolicy::Preferred,
+                                      QSizePolicy::Fixed);
+         m_loginWidget->showLogin(true);
+
+         if (!m_loginStylesheet.isEmpty()) {
+            m_loginWidget->setStyleSheet(m_loginStylesheet);
+         }
+
+         connect(m_loginWidget, &LoginWidget::clicked, this, &WrapperWidget::loginClicked);
+         // pass login signals signals on to wrapper signals
+         connect(m_loginWidget, &LoginWidget::loggedIn, this, &WrapperWidget::loggedIn);
+         connect(m_loginWidget, &LoginWidget::loggedOut, this, &WrapperWidget::loggedOut);
+         connect(m_loginWidget, &LoginWidget::passwordBad, this, &WrapperWidget::passwordBad);
+         connect(m_loginWidget, &LoginWidget::usernameBad, this, &WrapperWidget::usernameBad);
+         connect(m_loginWidget, &LoginWidget::loginBad, this, &WrapperWidget::loginBad);
+      }
+
+   } else {
+
+      m_loginWidget->deleteLater();
+      m_loginWidget = nullptr;
+   }
+
+   addWidgetsToLayout();
+}
+
+void WrapperWidget::setLoginStyleSheet(const QString& stylesheet)
+{
+   if (m_loginWidget) {
+      m_loginWidget->setStyleSheet(stylesheet);
+   }
+
+   m_loginStylesheet = stylesheet;
+}
+
+QString WrapperWidget::loginStyleSheet()
+{
+   return m_loginStylesheet;
+}
+
+void WrapperWidget::setCustomLoginDialog(AbstractLoginDialog* loginDlg)
+{
+   if (m_loginWidget) {
+      m_loginWidget->setCustomLoginDialog(loginDlg);
+   }
+
+   // TODO maybe store dialog in no widget.
+}
+
+bool WrapperWidget::hasCustomLoginDialog()
+{
+   if (m_loginWidget) {
+      return m_loginWidget->hasCustomLoginDialog();
+   }
+
+   return false;
+}
+
+void WrapperWidget::checkPassword(QString password)
+{
+   if (m_loginWidget) {
+      m_loginWidget->checkPassword(password);
+   }
+}
+
+void WrapperWidget::checkPassword(QString username, QString password)
+{
+   if (m_loginWidget) {
+      m_loginWidget->checkPassword(username, password);
+   }
+}
+
+void WrapperWidget::addPassword(QString password)
+{
+   if (m_loginWidget) {
+      m_loginWidget->addPassword(password);
+   }
+}
+
+void WrapperWidget::clearPasswords()
+{
+   if (m_loginWidget) {
+      m_loginWidget->clearPasswords();
+   }
+}
+
+void WrapperWidget::addPassword(QString id, QString password)
+{
+   if (m_loginWidget) {
+      m_loginWidget->addPassword(id, password);
+   }
+}
+
+void WrapperWidget::setIgnoreCase(bool ignoreCase)
+{
+   if (m_loginWidget) {
+      m_loginWidget->setIgnoreCase(ignoreCase);
+   }
+
+   m_ignoreCase = ignoreCase;
+}
+
+bool WrapperWidget::isIgnoreCase()
+{
+   return m_ignoreCase;
+}
+
 
 bool WrapperWidget::isShowClock()
 {
@@ -1242,4 +1063,155 @@ bool WrapperWidget::isShowClock()
    return false;
 }
 
+void WrapperWidget::showClock(bool show)
+{
+   // we need to remove the widgets from the layout then after creating
+   // or destroying the clock widget reload them in the right order.
+   removeWidgetsFromLayout();
+
+   if (show) {
+      if (!m_clockWidget) {
+         m_clockWidget = new ClockWidget(m_parent);
+         m_clockWidget->setSizePolicy(QSizePolicy::Preferred,
+                                      QSizePolicy::Fixed);
+         m_clockWidget->showClock(true);
+
+         if (!m_clockStylesheet.isEmpty()) {
+            m_clockWidget->setStyleSheet(m_clockStylesheet);
+         }
+      }
+
+   } else {
+
+      m_clockWidget->deleteLater();
+      m_clockWidget = nullptr;
+   }
+
+   addWidgetsToLayout();
+}
+
+void WrapperWidget::setClockFrame(QFrame::Shape style)
+{
+   if (m_clockWidget) {
+      m_clockWidget->setClockFrame(style);
+   }
+
+   m_clockFrame = style;
+}
+
+void WrapperWidget::setShowSeconds(bool show)
+{
+   if (m_clockWidget) {
+      m_clockWidget->setShowSeconds(show);
+   }
+
+   m_showSeconds = show;
+}
+
+void WrapperWidget::setClockStyleSheet(const QString& stylesheet)
+{
+   if (m_clockWidget) {
+      m_clockWidget->setStyleSheet(stylesheet);
+   }
+
+   m_clockStylesheet = stylesheet;
+}
+
+QString WrapperWidget::clockStyleSheet()
+{
+   return  m_clockStylesheet;
+}
+
+void WrapperWidget::setMessageStyleSheet(const QString& stylesheet)
+{
+   if (m_messageWidget) {
+      m_messageWidget->setStyleSheet(stylesheet);
+   }
+
+   m_messageStylesheet = stylesheet;
+}
+
+QString WrapperWidget::messageStyleSheet()
+{
+   return m_messageStylesheet;
+}
+
+void WrapperWidget::calculateWidgetSizes(int x, int y, int w, int h)
+{
+   int availableWidth = w;
+
+   if (m_loginWidget) {
+      int reqWidth =
+         m_loginWidget->calculateRequiredWidth(availableWidth);
+
+      if (reqWidth < 0) {
+         return;
+      }
+
+      QSize size = QSize(reqWidth, h);
+      m_loginWidget->setSizeHint(size);
+      availableWidth -= reqWidth;
+   }
+
+   if (m_clockWidget) {
+      int reqWidth =
+         m_clockWidget->calculateRequiredWidth(availableWidth);
+
+      if (reqWidth < 0) {
+         return;
+      }
+
+      QSize size = QSize(reqWidth, h);
+      m_clockWidget->setSizeHint(size);
+      availableWidth -= reqWidth;
+   }
+
+   if (m_messageWidget) {
+      m_messageWidget->calculateRequiredWidth(x, y, availableWidth, h);
+   }
+}
+
+void WrapperWidget::removeWidgetsFromLayout()
+{
+  for (int i = m_layout->count(); i > 0; --i) {
+    m_layout->takeAt(i - 1);
+  }
+}
+
+void WrapperWidget::addWidgetsToLayout()
+{
+  int column = 0;
+
+  if (m_messageWidget) {
+    m_layout->addWidget(m_messageWidget, 0, column++);
+
+    if (m_filler) {
+      // filler not needed if messages exists.
+      m_filler->deleteLater();
+      m_filler = nullptr;
+    }
+
+  } else {
+    if (!m_filler) {
+      m_filler = new QFrame(this);
+      m_filler->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+      m_filler->setStyleSheet("background: lightblue");
+    }
+
+    m_layout->addWidget(m_filler, 0, column++);
+  }
+
+  if (m_clockWidget) {
+    m_layout->addWidget(m_clockWidget, 0, column++);
+  }
+
+  if (m_loginWidget) {
+    m_layout->addWidget(m_loginWidget, 0, column++);
+  }
+
+  updateGeometry();
+}
+
 /// \endcond
+
+

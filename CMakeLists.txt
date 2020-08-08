@@ -57,7 +57,6 @@ set(WIDGET_HEADER_FILES
    labelledlineedit.h
    labelledtextfield.h
    labelledwidgets.h
-   abstractlogindialog.h
    extabwidget.h
    sm_widgets_global.h
    collection.h comment.h emitter.h node.h parse.h qyamlcpp.h
@@ -65,9 +64,15 @@ set(WIDGET_HEADER_FILES
 set(EXTRA_FILES QYamlCpp)
 set(WIDGET_HEADER_FILES_P
    private/extabwidget_p.h
+   private/clockwidget.h
+   private/loginwidget.h
+   private/logindialog.h
 )
 set(WIDGET_SOURCE_FILES_P
    private/extabwidget_p.cpp
+   private/clockwidget.cpp
+   private/loginwidget.cpp
+   private/logindialog.cpp
 )
 set(WIDGET_SOURCE_FILES
    exspinbox.cpp

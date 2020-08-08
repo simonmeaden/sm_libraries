@@ -24,6 +24,11 @@
 
 #include <QDialog>
 #include <QWidget>
+#include <QLineEdit>
+#include <QLabel>
+#include <QGridLayout>
+#include <QDialogButtonBox>
+#include <QPushButton>
 
 /*!
    \file abstractlogindialog.h abstractlogindialog.cpp
@@ -119,6 +124,40 @@ signals:
    */
    void loginData(QString username, QString password);
 
+};
+
+class LoginDialog : public AbstractLoginDialog
+{
+  Q_OBJECT
+public:
+  explicit LoginDialog(QWidget* parent);
+  ~LoginDialog();
+
+  // AbstractLoginDialog interface
+  void clearText() override;
+
+private:
+  QLineEdit* m_userEdit, *m_passEdit;
+
+  void initGui(bool largeText);
+  void acceptLogin();
+};
+
+class SimpleLoginDialog : public AbstractLoginDialog
+{
+  Q_OBJECT
+public:
+  explicit SimpleLoginDialog(QWidget* parent);
+  ~SimpleLoginDialog();
+
+  // AbstractLoginDialog interface
+  void clearText() override;
+
+private:
+  QLineEdit* m_passEdit;
+
+  void initGui(bool largeText);
+  void acceptLogin();
 };
 
 
