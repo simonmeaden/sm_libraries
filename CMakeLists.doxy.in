@@ -10,7 +10,7 @@ if (NOT LIBRARIES_BUILD AND CMAKE_BUILD_TYPE STREQUAL Release)
    set(DOXYGEN_QHP_NAMESPACE uk.org.smelecomp)
    set(DOXYGEN_QCH_FILE ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../docs/help/SM_Widgets.qch)
    set(DOXYGEN_QHG_LOCATION "/opt/Qt/5.15.0/gcc_64/bin/qhelpgenerator")
-   set(DOXYGEN_QHP_VIRTUAL_FOLDER "sm_libraries-0.1")
+   set(DOXYGEN_QHP_VIRTUAL_FOLDER "sm_widgets-0.1")
    set(DOXYGEN_GENERATE_TAGFILE sm_widgets.tags)
    set(DOXYGEN_TAGFILES
       "qtcore.tags=/opt/Qt/Docs/Qt-5.15.0/qtcore"
