@@ -24,7 +24,7 @@
 LabelledLineEdit::LabelledLineEdit(const QString& labelText, QWidget* parent, const WidgetFactory& factory)
    : AbstractLabelledWidget(labelText, parent, factory)
 {
-   initGui(QString());
+   LabelledLineEdit::initGui(QString());
 }
 
 LabelledLineEdit::LabelledLineEdit(const QString& labelText,
@@ -32,7 +32,7 @@ LabelledLineEdit::LabelledLineEdit(const QString& labelText,
                                    QWidget* parent, const WidgetFactory& factory)
    : AbstractLabelledWidget(labelText, parent, factory)
 {
-   initGui(contents);
+   LabelledLineEdit::initGui(contents);
 }
 
 void LabelledLineEdit::addAction(QAction* action,

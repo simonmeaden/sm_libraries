@@ -175,6 +175,9 @@ public:
                              QWidget* parent = nullptr,
                              WidgetFactory const& factory = WidgetFactory());
 
+   //! Changes the default factory combo box with a custom supplied one.
+   void setCustomComboBox(QComboBox *replacement);
+
    //! @reimplements QComboBox::addItem(const QString& const QVariant&).
    void addItem(const QString& labelText, const QVariant& userdata = QVariant());
 

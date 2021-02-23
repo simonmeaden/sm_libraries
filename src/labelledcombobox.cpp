@@ -26,7 +26,14 @@ LabelledComboBox::LabelledComboBox(const QString& labelText,
                                    const WidgetFactory &factory)
   : AbstractLabelledWidget(labelText, parent, factory)
 {
-  initGui();
+  LabelledComboBox::initGui();
+}
+
+void LabelledComboBox::setCustomComboBox(QComboBox *replacement)
+{
+  m_widget->deleteLater();
+  m_widget = replacement;
+  LabelledComboBox::initGui();
 }
 
 void LabelledComboBox::addItem(const QString& text, const QVariant& userdata)

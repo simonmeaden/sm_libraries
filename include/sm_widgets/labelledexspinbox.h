@@ -20,7 +20,7 @@
 #ifndef LABELLEDEXSPINBOX_H
 #define LABELLEDEXSPINBOX_H
 
-#include "abstractlabelledwidget.h"
+#include "abstractlabelledspinbox.h"
 #include "sm_widgets_global.h"
 #include "exspinbox.h"
 
@@ -37,7 +37,7 @@
 
    By default the ExSpinBox type is ExSpinBox::Hexadecimal.
 */
-class SM_WIDGETS_SHARED_EXPORT LabelledExSpinBox : public AbstractLabelledWidget
+class SM_WIDGETS_SHARED_EXPORT LabelledExSpinBox : public AbstractLabelledSpinBox
 {
    /*!
       \property LabelledExSpinBox::displayDigits
@@ -113,16 +113,6 @@ class SM_WIDGETS_SHARED_EXPORT LabelledExSpinBox : public AbstractLabelledWidget
    */
    Q_PROPERTY(bool negBeforePrefix READ negBeforePrefix WRITE setNegBeforePrefix)
 
-   /*!
-      \property AbstractLabelledSpinBox::suffix
-
-      \brief This property holds the suffix of the spin box
-
-      @reimplements QSpinBox::suffix
-      @accessor %suffix(), %setSuffix()
-   */
-   Q_PROPERTY(QString suffix READ suffix WRITE setSuffix)
-
    Q_OBJECT
 
 protected:
@@ -173,27 +163,6 @@ public:
    */
    void setShowLeadingZeroes(bool showLeadingZeroes);
 
-   //! @reimplements QSpinBox::suffix() const.
-   QString suffix();
-
-   //! @reimplements QSpinBox::setSuffix().
-   void setSuffix(const QString& labelText);
-
-   //! @reimplements QSpinBox::stepType() const.
-   QAbstractSpinBox::StepType stepType() const;
-
-   //! @reimplements QSpinBox::setStepType().
-   void setStepType(QAbstractSpinBox::StepType type);
-
-   //! @reimplements QSpinBox::cleanText().
-   QString  cleanText() const;
-
-   //! @reimplements QSpinBox::setAlignment() const.
-   void setWidgetAlignment(const Qt::Alignment& widgetAlignment);
-
-   //! @reimplements QSpinBox::alignment() const.
-   Qt::Alignment widgetAlignment() const;
-
    //! @reimplements QSpinBox::value() const.
    int value() const;
 
@@ -243,14 +212,6 @@ signals:
       @notprop value.
    */
    void valueChanged(int);
-
-   /*!
-      \fn LabelledExSpinBox::textChanged(const QString& text)
-
-      @from QSpinBox::textChanged.
-      @notprop value.
-   */
-   void textChanged(const QString& labelText);
 
 private:
    void initGui(const QString& text = QString());

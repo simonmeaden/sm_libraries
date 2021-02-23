@@ -186,6 +186,9 @@ public:
                               QWidget* parent = nullptr,
                               WidgetFactory const& factory = WidgetFactory());
 
+   //! Returns the QLabel widget.
+   QLabel *textfield();
+
    //! @reimplements QLabel::text() const.
    QString text() const;
 

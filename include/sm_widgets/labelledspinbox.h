@@ -20,10 +20,8 @@
 #ifndef LABELLEDSPINBOX_H
 #define LABELLEDSPINBOX_H
 
-#include <QSpinBox>
-
-#include "sm_widgets/abstractlabelledwidget.h"
-#include "sm_widgets/sm_widgets_global.h"
+#include "abstractlabelledspinbox.h"
+#include "sm_widgets_global.h"
 
 /*!
    \file labelledspinbox.h labelledspinbox.cpp
@@ -36,7 +34,7 @@
 
    All properties of the QSpinBox  are copied across to this widget.
 */
-class SM_WIDGETS_SHARED_EXPORT LabelledSpinBox : public AbstractLabelledWidget
+class SM_WIDGETS_SHARED_EXPORT LabelledSpinBox : public AbstractLabelledSpinBox
 {
    /*!
        \property LabelledSpinBox::value
@@ -101,16 +99,6 @@ class SM_WIDGETS_SHARED_EXPORT LabelledSpinBox : public AbstractLabelledWidget
    */
    Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
 
-   /*!
-      \property LabelledSpinBox::suffix
-
-      \brief This property holds the suffix of the spin box
-
-      @reimplements QSpinBox::suffix
-      @accessor %suffix(), %setSuffix()
-   */
-   Q_PROPERTY(QString suffix READ suffix WRITE setSuffix)
-
    Q_OBJECT
 
 protected:
@@ -127,27 +115,6 @@ public:
    explicit LabelledSpinBox(const QString& labelText = QString(),
                             QWidget* parent = nullptr,
                             WidgetFactory const& factory = WidgetFactory());
-
-   //! @reimplements QSpinBox::suffix() const.
-   QString suffix();
-
-   //! @reimplements QSpinBox::setSuffix().
-   void setSuffix(const QString& labelText);
-
-   //! @reimplements QSpinBox::stepType() const.
-   QAbstractSpinBox::StepType stepType() const;
-
-   //! @reimplements QSpinBox::setStepType().
-   void setStepType(QAbstractSpinBox::StepType type);
-
-   //! @reimplements QSpinBox::cleanText().
-   QString  cleanText() const;
-
-   //! @reimplements QSpinBox::setAlignment() const.
-   void setWidgetAlignment(const Qt::Alignment& widgetAlignment);
-
-   //! @reimplements QSpinBox::alignment() const.
-   Qt::Alignment widgetAlignment() const;
 
    //! @reimplements QSpinBox::value() const.
    int value() const;
@@ -196,14 +163,6 @@ signals:
       @notprop value.
    */
    void valueChanged(int);
-
-   /*!
-      \fn AbstractLabelledSpinBox::textChanged(const QString& text)
-
-      @from QSpinBox::textChanged.
-      @notprop value.
-   */
-   void textChanged(const QString& labelText);
 
 private:
    void initGui(const QString& text = QString());

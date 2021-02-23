@@ -25,7 +25,7 @@ LabelledTextField::LabelledTextField(QWidget* parent,
                                      WidgetFactory const& factory)
    : AbstractLabelledWidget(QString(), parent, factory)
 {
-   initGui();
+   LabelledTextField::initGui();
 }
 
 LabelledTextField::LabelledTextField(const QString& labelText,
@@ -33,7 +33,7 @@ LabelledTextField::LabelledTextField(const QString& labelText,
                                      const WidgetFactory& factory)
    : AbstractLabelledWidget(labelText, parent, factory)
 {
-   initGui();
+   LabelledTextField::initGui();
 }
 
 LabelledTextField::LabelledTextField(const QString& labelText,
@@ -45,9 +45,13 @@ LabelledTextField::LabelledTextField(const QString& labelText,
    initGui(contents);
 }
 
+QLabel *LabelledTextField::textfield() {
+  return qobject_cast<QLabel*>(m_widget);
+}
+
 QString LabelledTextField::text() const
 {
-   return qobject_cast<QLabel*>(m_widget)->text();
+  return qobject_cast<QLabel*>(m_widget)->text();
 }
 
 void LabelledTextField::setText(const QString& text)

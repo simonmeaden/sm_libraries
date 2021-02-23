@@ -41,176 +41,188 @@
 */
 class AbstractLabelledWidget : public QWidget
 {
-   /*!
-      \property AbstractLabelledWidget::labelText
+  /*!
+     \property AbstractLabelledWidget::labelText
 
-      \brief This property holds the text of the label.
+     \brief This property holds the text of the label.
 
-      @accessor %labelText(), %setLabelText()
-   */
-   Q_PROPERTY(QString labelText READ labelText WRITE setLabelText)
+     @accessor %labelText(), %setLabelText()
+  */
+  Q_PROPERTY(QString labelText READ labelText WRITE setLabelText)
 
-   /*!
-      \property AbstractLabelledWidget::labelTextFormat
-      \brief This property holds the label's text format
+  /*!
+     \property AbstractLabelledWidget::labelTextFormat
+     \brief This property holds the label's text format
 
-      See the Qt::TextFormat enum for an explanation of the possible options.
+     See the Qt::TextFormat enum for an explanation of the possible options.
 
-      The default format is Qt::AutoText.
+     The default format is Qt::AutoText.
 
-      @accessor %labelTextFormat(), %setTextFormat(Qt::TextFormat)
-   */
-   Q_PROPERTY(Qt::TextFormat labelTextFormat READ labelTextFormat WRITE
-              setLabelTextFormat)
+     @accessor %labelTextFormat(), %setTextFormat(Qt::TextFormat)
+  */
+  Q_PROPERTY(Qt::TextFormat labelTextFormat READ labelTextFormat WRITE
+               setLabelTextFormat)
 
-   /*!
-      \property AbstractLabelledWidget::labelAlignment
+  /*!
+     \property AbstractLabelledWidget::labelAlignment
 
-      \brief This property holds the alignment of the label.
+     \brief This property holds the alignment of the label.
 
-      @accessor %labelAlignment(), %setLabelAlignment()
-   */
-   Q_PROPERTY(
-      Qt::Alignment labelAlignment READ labelAlignment WRITE setLabelAlignment)
+     @accessor %labelAlignment(), %setLabelAlignment()
+  */
+  Q_PROPERTY(
+    Qt::Alignment labelAlignment READ labelAlignment WRITE setLabelAlignment)
 
-   /*!
-      \property AbstractLabelledWidget::labelPosition
+  /*!
+     \property AbstractLabelledWidget::labelPosition
 
-      \brief This property holds the position of the label. Possible values
-      are AbstractLabelledWidget::Left, the default and
-      AbstractLabelledWidget::Right.
+     \brief This property holds the position of the label. Possible values
+     are AbstractLabelledWidget::Left, the default and
+     AbstractLabelledWidget::Right.
 
-      @accessor %position(), %setPosition()
-   */
-   Q_PROPERTY(AbstractLabelledWidget::LabelPosition labelPosition READ
-              labelPosition WRITE setLabelPosition)
+     @accessor %position(), %setPosition()
+  */
+  Q_PROPERTY(AbstractLabelledWidget::LabelPosition labelPosition READ
+               labelPosition WRITE setLabelPosition)
 
-   enum Widget
-   {
-      Widget = 0,
-      Label,
-   };
+  enum Widget
+  {
+    Widget = 0,
+    Label,
+  };
+
+  Q_OBJECT
 
 protected:
-   /// \cond DO_NOT_DOCUMENT
-   struct WidgetFactory
-   {
-      virtual QWidget* newWidget(QWidget*) const {
-         return nullptr;
-      }
-   };
-   /// \endcond
+  /// \cond DO_NOT_DOCUMENT
+  struct WidgetFactory
+  {
+    virtual QWidget* newWidget(QWidget*) const { return nullptr; }
+  };
+  /// \endcond
 
 public:
-   /*!
-      \brief An enum defining the label position.
-   */
-   enum LabelPosition
-   {
-      Left = 0, //!< The label is positioned to the left of the widget.
-      Right,    //!< The label is positioned to the right of the widget.
-      Above,    //!< The label is positioned above the widget.
-      Below,    //!< The label is positioned below the widget.
-   };
+  /*!
+     \brief An enum defining the label position.
+  */
+  enum LabelPosition
+  {
+    Left = 0, //!< The label is positioned to the left of the widget.
+    Right,    //!< The label is positioned to the right of the widget.
+    Above,    //!< The label is positioned above the widget.
+    Below,    //!< The label is positioned below the widget.
+  };
 
-   //! Constructs an abstract spinbox with the given labelText and default parent,
-   //! and label text property.
-   explicit AbstractLabelledWidget(
-      QString labelText = QString(),
-      QWidget* parent = nullptr,
-      WidgetFactory const& factory = WidgetFactory());
-   //! Called when the AbstractLabelledWidget is destroyed.
-   virtual ~AbstractLabelledWidget();
+  //! Constructs an abstract spinbox with the given labelText and default
+  //! parent, and label text property.
+  explicit AbstractLabelledWidget(
+    QString labelText = QString(),
+    QWidget* parent = nullptr,
+    WidgetFactory const& factory = WidgetFactory());
+  //! Called when the AbstractLabelledWidget is destroyed.
+  virtual ~AbstractLabelledWidget();
 
-   //! Sets the label text.
-   void setLabelText(const QString& labelText);
-   //! Returns the label text
-   QString labelText() const;
+  //! Sets the label text.
+  void setLabelText(const QString& labelText);
+  //! Returns the label text
+  QString labelText() const;
 
-   //! Returns the label position.
-   LabelPosition labelPosition() const;
-   //! Sets the label position.
-   void setLabelPosition(const LabelPosition& labelPosition);
+  //! Returns the label position.
+  LabelPosition labelPosition() const;
+  //! Sets the label position.
+  void setLabelPosition(const LabelPosition& labelPosition);
 
-   //! Returns the label alignment.
-   Qt::Alignment labelAlignment() const;
-   //! Sets the label alignment.
-   void setLabelAlignment(const Qt::Alignment& widgetAlignment);
+  //! Returns the label alignment.
+  Qt::Alignment labelAlignment() const;
+  //! Sets the label alignment.
+  void setLabelAlignment(const Qt::Alignment& widgetAlignment);
 
-   //! Returns layout spacing.
-   int spacing();
-   //! Adjusts the layout spacing.
-   void setSpacing(int spacing);
+  //! Returns layout spacing.
+  int spacing();
+  //! Adjusts the layout spacing.
+  void setSpacing(int spacing);
 
-   //! returns the label text format.
-   Qt::TextFormat labelTextFormat() const;
-   //! Sets the label text format.
-   void setLabelTextFormat(Qt::TextFormat format);
+  //! returns the label text format.
+  Qt::TextFormat labelTextFormat() const;
+  //! Sets the label text format.
+  void setLabelTextFormat(Qt::TextFormat format);
 
-   //!  @reimplements QWidget::sizeHint() const.
-   QSize sizeHint() const override;
-   //!  @reimplements QWidget::minimumSizeHint.
-   QSize minimumSizeHint() const override;
+  //!  @reimplements QWidget::sizeHint() const.
+  QSize sizeHint() const override;
+  //!  @reimplements QWidget::minimumSizeHint.
+  QSize minimumSizeHint() const override;
 
-   //! Sets the size policy for the label.
-   //! \see QWidget::setSizePolicy(QSizePolicy)
-   void setLabelSizePolicy(QSizePolicy policy);
-   //! Sets the size policy for the label.
-   //! \see QWidget::setSizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
-   void setLabelSizePolicy(QSizePolicy::Policy horizontal,
+  //! Sets the size policy for the label.
+  //! \see QWidget::setSizePolicy(QSizePolicy)
+  void setLabelSizePolicy(QSizePolicy policy);
+  //! Sets the size policy for the label.
+  //! \see QWidget::setSizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
+  void setLabelSizePolicy(QSizePolicy::Policy horizontal,
+                          QSizePolicy::Policy vertical);
+  //! Sets the size policy for the widget.
+  //! \see QWidget::setSizePolicy(QSizePolicy)
+  void setWidgetSizePolicy(QSizePolicy policy);
+  //! Sets the size policy for the widget.
+  //! \see QWidget::setSizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
+  void setWidgetSizePolicy(QSizePolicy::Policy horizontal,
                            QSizePolicy::Policy vertical);
-   //! Sets the size policy for the widget.
-   //! \see QWidget::setSizePolicy(QSizePolicy)
-   void setWidgetSizePolicy(QSizePolicy policy);
-   //! Sets the size policy for the widget.
-   //! \see QWidget::setSizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
-   void setWidgetSizePolicy(QSizePolicy::Policy horizontal,
-                            QSizePolicy::Policy vertical);
-   //! Returns the size policy for the widget.
-   //! \see QLabel::sesizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
-   QSizePolicy labelSizePolicy();
-   //! Returns the size policy for the widget.
-   //! \see QWidget::sizePolicy()
-   QSizePolicy widgetSizePolicy();
+  //! Returns the size policy for the widget.
+  //! \see QLabel::sesizePolicy(QSizePolicy::Policy, QSizePolicy::Policy)
+  QSizePolicy labelSizePolicy();
+  //! Returns the size policy for the widget.
+  //! \see QWidget::sizePolicy()
+  QSizePolicy widgetSizePolicy();
 
-   //! Returns the stylesheet for the label.
-   //! For the entire widget use QWidget::setStyleSheet()
-   QString labelStyleSheet();
-   //! Sets the stylesheet for the label.
-   //! For the entire widget use QWidget::setStyleSheet()
-   void setLabelStyleSheet(const QString& styleSheet);
-   //! Returns the stylesheet for the widget.
-   //! For the entire widget use QWidget::setStyleSheet()
-   QString widgetStyleSheet();
-   //! Sets the stylesheet for the widget.
-   //! For the entire widget use QWidget::setStyleSheet()
-   void setWidgetStyleSheet(const QString& styleSheet);
+  //! Returns the stylesheet for the label.
+  //! For the entire widget use QWidget::setStyleSheet()
+  QString labelStyleSheet();
+  //! Sets the stylesheet for the label.
+  //! For the entire widget use QWidget::setStyleSheet()
+  void setLabelStyleSheet(const QString& styleSheet);
+  //! Returns the stylesheet for the widget.
+  //! For the entire widget use QWidget::setStyleSheet()
+  QString widgetStyleSheet();
+  //! Sets the stylesheet for the widget.
+  //! For the entire widget use QWidget::setStyleSheet()
+  void setWidgetStyleSheet(const QString& styleSheet);
 
-   //! Clears the label's text.
-   //! @reimplements QLabel::clear().
-   void clearLabel();
+  //! Clears the label's text.
+  //! @reimplements QLabel::clear().
+  void clearLabel();
 
-   //! Returns a pointer to the internal QLabel.
-   QLabel* label() const;
-   //! Allows the user to replace the internal QLabel with an alternative.
-   void setLabel(QLabel* label);
+  //! Returns a pointer to the internal QLabel.
+  QLabel* label() const;
+  //! Allows the user to replace the internal QLabel with an alternative.
+  void setLabel(QLabel* label);
 
 protected:
-   /// \cond DO_NOT_DOCUMENT
-   WidgetFactory* m_factory;
-   /// \endcond
+  /// \cond DO_NOT_DOCUMENT
+  WidgetFactory* m_factory;
+  /// \endcond
 
-   QLabel* m_label;          //!< pointer to the Label.
-   QWidget* m_widget;        //!< pointer to the widget.
-   QGridLayout* m_layout;    //!< widget layout
-   LabelPosition m_position; //!< the label position
+  QLabel* m_label;          //!< pointer to the Label.
+  QWidget* m_widget;        //!< pointer to the widget.
+  QGridLayout* m_layout;    //!< widget layout
+  LabelPosition m_position; //!< the label position
 
-   //! Positions the label appropriately for LabelPosition.
-   void positionLabel();
+  //! Positions the label appropriately for LabelPosition.
+  void positionLabel();
 
 private:
-   //! you should override this for extensions to the abstract class.
-   virtual void initGui(const QString& text = QString());
+  //! you should override this for extensions to the abstract class.
+  virtual void initGui(const QString& text = QString());
+};
+
+class CustomLabelledWidget : public AbstractLabelledWidget
+{
+  Q_OBJECT
+public:
+  explicit CustomLabelledWidget(const QString& text, QWidget* parent);
+
+  void setWidget(QWidget* widget);
+
+private:
+  void initGui(const QString& = QString());
 };
 
 /*!
@@ -220,19 +232,19 @@ private:
    \license The MIT License
    \copyright © 2019 - 2020 Simon Meaden. All rights reserved.
 
-   Not all QWidgets are text alignable, QComboBox for instance. Use this interface
-   for those that are alignable, or that you want to be alignable.
+   Not all QWidgets are text alignable, QComboBox for instance. Use this
+   interface for those that are alignable, or that you want to be alignable.
 */
 class AlignableWidgetInterface
 {
 public:
-   //! Returns the widget alignment.
-   //! This returns 0, indicating that the widget doesn't support text alignment.
-   virtual Qt::Alignment widgetAlignment() const = 0;
+  //! Returns the widget alignment.
+  //! This returns 0, indicating that the widget doesn't support text alignment.
+  virtual Qt::Alignment widgetAlignment() const = 0;
 
-   //! Sets the widget alignment.
-   //! This doesn't do anything and should be overridden in derived classes.
-   virtual void setWidgetAlignment(const Qt::Alignment&) = 0;
+  //! Sets the widget alignment.
+  //! This doesn't do anything and should be overridden in derived classes.
+  virtual void setWidgetAlignment(const Qt::Alignment&) = 0;
 };
 
 /*!
@@ -249,12 +261,11 @@ class TextFormatInterface
 {
 
 public:
+  //! @reimplements QLabel::textFormat() const.
+  virtual Qt::TextFormat textFormat() const = 0;
 
-   //! @reimplements QLabel::textFormat() const.
-   virtual Qt::TextFormat textFormat() const = 0;
-
-   //! @reimplements QLabel::setTextFormat().
-   virtual void setTextFormat(Qt::TextFormat format) = 0;
+  //! @reimplements QLabel::setTextFormat().
+  virtual void setTextFormat(Qt::TextFormat format) = 0;
 };
 
 #endif // ABSTRACTLABELLEDWIDGET_H

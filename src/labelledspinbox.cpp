@@ -29,44 +29,9 @@
 LabelledSpinBox::LabelledSpinBox(const QString& labelText,
                                  QWidget* parent,
                                  const WidgetFactory& factory)
-   : AbstractLabelledWidget(labelText, parent, factory)
+   : AbstractLabelledSpinBox(labelText, parent, factory)
 {
-   initGui();
-}
-
-QString LabelledSpinBox::suffix()
-{
-  return qobject_cast<QSpinBox*>(m_widget)->suffix();
-}
-
-void LabelledSpinBox::setSuffix(const QString& text)
-{
-  qobject_cast<QSpinBox*>(m_widget)->setSuffix(text);
-}
-
-QAbstractSpinBox::StepType LabelledSpinBox::stepType() const
-{
-  return qobject_cast<QSpinBox*>(m_widget)->stepType();
-}
-
-void LabelledSpinBox::setStepType(QAbstractSpinBox::StepType type)
-{
-  qobject_cast<QSpinBox*>(m_widget)->setStepType(type);
-}
-
-QString LabelledSpinBox::cleanText() const
-{
-  return qobject_cast<QSpinBox*>(m_widget)->cleanText();
-}
-
-void LabelledSpinBox::setWidgetAlignment(const Qt::Alignment& widgetAlignment)
-{
-  qobject_cast<QAbstractSpinBox*>(m_widget)->setAlignment(widgetAlignment);
-}
-
-Qt::Alignment LabelledSpinBox::widgetAlignment() const
-{
-  return qobject_cast<QAbstractSpinBox*>(m_widget)->alignment();
+   LabelledSpinBox::initGui();
 }
 
 int LabelledSpinBox::value() const
