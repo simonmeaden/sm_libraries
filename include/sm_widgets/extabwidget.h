@@ -188,18 +188,18 @@ class SM_WIDGETS_SHARED_EXPORT ExTabWidget : public QTabWidget
    Q_DECLARE_PRIVATE(ExTabWidget)
 
 public:
-   /*!
-      \enum ::LoginType
+//   /*!
+//      \enum ::LoginType
 
-      Defines which type of login dialog will be displayed.
-   */
-   enum LoginType
-   {
-      Simple, //!< A simple password only dialog.
-      Standard, //!< A more standard username/password dialog type
-      Custom, //!< A custom login dialog.
-      None, //!< No login dialog is set up.
-   };
+//      Defines which type of login dialog will be displayed.
+//   */
+//   enum LoginType
+//   {
+//      Simple, //!< A simple password only dialog.
+//      Standard, //!< A more standard username/password dialog type
+//      Custom, //!< A custom login dialog.
+//      None, //!< No login dialog is set up.
+//   };
 
    /*!
       \brief Constructs an ExTabWidget with parent parent with an optional custom login dialog.

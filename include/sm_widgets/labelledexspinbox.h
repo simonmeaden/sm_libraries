@@ -190,12 +190,28 @@ public:
    //! @reimplements QSpinBox::setPrefix().
    void setPrefix(const QString& labelText);
 
+   //! @reimplements QSpinBox::suffix().
+   QString suffix();
+   //! @reimplements QSpinBox::setSuffix().
+   void setSuffix(const QString &text);
+
    //! Returns the value of the negative before prefix flag.
    bool negBeforePrefix() const;
    //! Sets the value of the negative before prefix flag.
    //!
    //!
    void setNegBeforePrefix(bool negBeforePrefix);
+
+   //! @reimplements QSpinBox::stepType().
+   QAbstractSpinBox::StepType stepType() const;
+   //! @reimplements QSpinBox::setStepType().
+   void setStepType(QAbstractSpinBox::StepType type);
+   //! @reimplements QSpinBox::cleanText().
+   QString cleanText() const;
+   //! @reimplements QSpinBox::setWidgetAlignment().
+   void setWidgetAlignment(const Qt::Alignment &widgetAlignment);
+   //! @reimplements QSpinBox::widgetAlignment().
+   Qt::Alignment widgetAlignment() const;
 
 signals:
    /*!

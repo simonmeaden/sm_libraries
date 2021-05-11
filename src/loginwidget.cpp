@@ -27,585 +27,651 @@ const QString LoginWidget::LOGIN = tr("Log In");
 const QString LoginWidget::LOGOUT = tr("Log Out");
 
 LoginWidget::LoginWidget(QWidget* parent, quint64 key)
-   : QPushButton(parent)
-   , m_loginText(LOGIN)
-   , m_logoutText(LOGOUT)
-   , m_loginType(AbstractLoginDialog::Standard)
-   , m_loggedIn(false)
-   , m_textLength(0)
-   , m_key(key)
+  : QPushButton(parent)
+  , m_loginText(LOGIN)
+  , m_logoutText(LOGOUT)
+  , m_loginType(AbstractLoginDialog::Standard)
+  , m_loggedIn(false)
+  , m_textLength(0)
+  , m_key(key)
 {
-   setText(m_loginText);
-   setLoginType(m_loginType);
+  setText(m_loginText);
+  setLoginType(m_loginType);
 }
 
-bool LoginWidget::isShowing()
+bool
+LoginWidget::isShowing()
 {
-   return m_showLogin;
+  return m_showLogin;
 }
 
-bool LoginWidget::isLoggedIn()
+bool
+LoginWidget::isLoggedIn()
 {
-   return m_loggedIn;
+  return m_loggedIn;
 }
 
-bool LoginWidget::isLoginEnabled()
+bool
+LoginWidget::isLoginEnabled()
 {
-   return (m_loginType != AbstractLoginDialog::None);
+  return (m_loginType != AbstractLoginDialog::None);
 }
 
-void LoginWidget::showLogin(bool showLogin)
+void
+LoginWidget::showLogin(bool showLogin)
 {
-   if (showLogin != m_showLogin) {
-      m_showLogin = showLogin;
-   }
+  if (showLogin != m_showLogin) {
+    m_showLogin = showLogin;
+  }
 }
 
-void LoginWidget::setCustomLoginDialog(AbstractLoginDialog* loginDlg)
+void
+LoginWidget::setCustomLoginDialog(AbstractLoginDialog* loginDlg)
 {
-   m_loginDlg = loginDlg;
-   m_customLoginDlg = loginDlg;
-   connect(m_loginDlg,
-           &AbstractLoginDialog::loginSucceeded,
-           this,
-           &LoginWidget::loginSucceeded);
-   connect(m_loginDlg,
-           &AbstractLoginDialog::loginFailed,
-           this,
-           &LoginWidget::loginFailed);
+  m_loginDlg = loginDlg;
+  m_customLoginDlg = loginDlg;
+  connect(m_loginDlg,
+          &AbstractLoginDialog::loginSucceeded,
+          this,
+          &LoginWidget::loginSucceeded);
+  connect(m_loginDlg,
+          &AbstractLoginDialog::loginFailed,
+          this,
+          &LoginWidget::loginFailed);
 }
 
-bool LoginWidget::hasCustomLoginDialog()
+bool
+LoginWidget::hasCustomLoginDialog()
 {
-   return (m_customLoginDlg != nullptr);
+  return (m_customLoginDlg != nullptr);
 }
 
-void LoginWidget::setSimplePassword(const QString& password)
+void
+LoginWidget::setSimplePassword(const QString& password)
 {
-   SimpleLoginDialog* dlg = qobject_cast<SimpleLoginDialog*>(m_loginDlg);
+  SimpleLoginDialog* dlg = qobject_cast<SimpleLoginDialog*>(m_loginDlg);
 
-   if (dlg) {
-      dlg->setPassword(password);
-   }
+  if (dlg) {
+    dlg->setPassword(password);
+  }
 }
 
-void LoginWidget::addUser(const QString& username, const QString& password)
+void
+LoginWidget::addUser(const QString& username, const QString& password)
 {
-   StandardLoginDialog* dlg = qobject_cast<StandardLoginDialog*>(m_loginDlg);
+  StandardLoginDialog* dlg = qobject_cast<StandardLoginDialog*>(m_loginDlg);
 
-   if (dlg) {
+  if (dlg) {
+    dlg->addUser(username, password);
+    return;
+
+  } else {
+
+    AbstractCustomLoginDialog* customDlg =
+      qobject_cast<AbstractCustomLoginDialog*>(m_loginDlg);
+
+    if (customDlg) {
       dlg->addUser(username, password);
       return;
-
-   } else {
-
-      AbstractCustomLoginDialog* customDlg = qobject_cast<AbstractCustomLoginDialog*>(m_loginDlg);
-
-      if (customDlg) {
-         dlg->addUser(username, password);
-         return;
-      }
-   }
+    }
+  }
 }
 
-void LoginWidget::removeUser(const QString& username)
+void
+LoginWidget::removeUser(const QString& username)
 {
-   StandardLoginDialog* dlg = qobject_cast<StandardLoginDialog*>(m_loginDlg);
+  StandardLoginDialog* dlg = qobject_cast<StandardLoginDialog*>(m_loginDlg);
 
-   if (dlg) {
+  if (dlg) {
+    dlg->removeUser(username);
+
+  } else {
+
+    AbstractCustomLoginDialog* customDlg =
+      qobject_cast<AbstractCustomLoginDialog*>(m_loginDlg);
+
+    if (customDlg) {
       dlg->removeUser(username);
-
-   } else {
-
-      AbstractCustomLoginDialog* customDlg = qobject_cast<AbstractCustomLoginDialog*>(m_loginDlg);
-
-      if (customDlg) {
-         dlg->removeUser(username);
-         return;
-      }
-   }
+      return;
+    }
+  }
 }
 
-void LoginWidget::clearUsers()
+void
+LoginWidget::clearUsers()
 {
-   StandardLoginDialog* dlg = qobject_cast<StandardLoginDialog*>(m_loginDlg);
+  StandardLoginDialog* dlg = qobject_cast<StandardLoginDialog*>(m_loginDlg);
 
-   if (dlg) {
+  if (dlg) {
+    dlg->clearUsers();
+
+  } else {
+
+    AbstractCustomLoginDialog* customDlg =
+      qobject_cast<AbstractCustomLoginDialog*>(m_loginDlg);
+
+    if (customDlg) {
       dlg->clearUsers();
-
-   } else {
-
-      AbstractCustomLoginDialog* customDlg = qobject_cast<AbstractCustomLoginDialog*>(m_loginDlg);
-
-      if (customDlg) {
-         dlg->clearUsers();
-         return;
-      }
-   }
+      return;
+    }
+  }
 }
 
-AbstractLoginDialog::LoginType LoginWidget::loginType() const
+AbstractLoginDialog::LoginType
+LoginWidget::loginType() const
 {
-   return m_loginType;
+  return m_loginType;
 }
 
-void LoginWidget::setLoginType(const AbstractLoginDialog::LoginType& loginType)
+void
+LoginWidget::setLoginType(const AbstractLoginDialog::LoginType& loginType)
 {
-   m_loginType = loginType;
+  m_loginType = loginType;
 
-   disconnect(this, &LoginWidget::clicked, this, &LoginWidget::loginBtnClicked);
+  disconnect(this, &LoginWidget::clicked, this, &LoginWidget::loginBtnClicked);
 
-   switch (m_loginType) {
-   case AbstractLoginDialog::Simple:
+  switch (m_loginType) {
+    case AbstractLoginDialog::Simple:
       m_loginDlg = new SimpleLoginDialog(m_key, this);
       break;
 
-   case AbstractLoginDialog::Standard:
+    case AbstractLoginDialog::Standard:
       m_loginDlg = new StandardLoginDialog(m_key, 6, 6, this);
       break;
 
-   case AbstractLoginDialog::Custom:
+    case AbstractLoginDialog::Custom:
       if (m_customLoginDlg) {
-         m_loginDlg = m_customLoginDlg;
+        m_loginDlg = m_customLoginDlg;
 
       } else {
-         m_loginDlg = new StandardLoginDialog(m_key, 6, 6, this);
-
+        m_loginDlg = new StandardLoginDialog(m_key, 6, 6, this);
       }
 
       break;
 
-   default:
+    default:
       break;
-   }
+  }
 
-   if (m_loginDlg) {
-      connect(this, &LoginWidget::clicked, this, &LoginWidget::loginBtnClicked);
-      connect(m_loginDlg, &AbstractLoginDialog::loginSucceeded, this, &LoginWidget::loginWasSuccessful);
-      connect(m_loginDlg, &AbstractLoginDialog::loginFailed, this, &LoginWidget::loginHasFailed);
-   }
+  if (m_loginDlg) {
+    connect(this, &LoginWidget::clicked, this, &LoginWidget::loginBtnClicked);
+    connect(m_loginDlg,
+            &AbstractLoginDialog::loginSucceeded,
+            this,
+            &LoginWidget::loginWasSuccessful);
+    connect(m_loginDlg,
+            &AbstractLoginDialog::loginFailed,
+            this,
+            &LoginWidget::loginHasFailed);
+  }
 }
 
-void LoginWidget::loginWasSuccessful(const QString& username)
+void
+LoginWidget::loginWasSuccessful(const QString& username)
 {
-   m_loggedIn = true;
-   emit loginSucceeded(username);
-   setText(m_logoutText);
+  m_loggedIn = true;
+  emit loginSucceeded(username);
+  setText(m_logoutText);
 }
 
-void LoginWidget::loginHasFailed(AbstractLoginDialog::LoginFailureTypes types)
+void
+LoginWidget::loginHasFailed(AbstractLoginDialog::LoginFailureTypes types)
 {
-   m_loggedIn = false;
-   emit loginFailed(types);
-   setText(m_loginText);
+  m_loggedIn = false;
+  emit loginFailed(types);
+  setText(m_loginText);
 }
 
-void LoginWidget::loginBtnClicked()
+void
+LoginWidget::loginBtnClicked()
 {
-   if (m_loggedIn) {
-      m_loggedIn = false;
-      setText(m_loginText);
-      emit loggedOut();
+  if (m_loggedIn) {
+    m_loggedIn = false;
+    setText(m_loginText);
+    emit loggedOut();
 
-   } else {
-      if (m_loginDlg) {
-         m_loginDlg->exec();
-      }
-   }
+  } else {
+    if (m_loginDlg) {
+      m_loginDlg->exec();
+    }
+  }
 }
 
-void LoginWidget::setLoginText(const QString& loginText)
+void
+LoginWidget::setLoginText(const QString& loginText)
 {
-   m_loginText = loginText;
+  m_loginText = loginText;
 
-   if (!isLoggedIn()) {
-      setText(m_loginText);
-   }
+  if (!isLoggedIn()) {
+    setText(m_loginText);
+  }
 }
 
-void LoginWidget::setLogoutText(const QString& logoutText)
+void
+LoginWidget::setLogoutText(const QString& logoutText)
 {
-   m_logoutText = logoutText;
+  m_logoutText = logoutText;
 
-   if (isLoggedIn()) {
-      setText(m_logoutText);
-   }
+  if (isLoggedIn()) {
+    setText(m_logoutText);
+  }
 }
 
-void LoginWidget::setKey(quint64 key)
+void
+LoginWidget::setKey(quint64 key)
 {
-   if (m_loginDlg) {
-      m_loginDlg->setKey(key);
-   }
+  if (m_loginDlg) {
+    m_loginDlg->setKey(key);
+  }
 
-   m_key = key;
+  m_key = key;
 }
 
-int LoginWidget::minUsernameLength() const
+int
+LoginWidget::minUsernameLength() const
 {
-   if (m_loginDlg) {
-      return m_loginDlg->minUsernameLength();
-   }
+  if (m_loginDlg) {
+    return m_loginDlg->minUsernameLength();
+  }
 
-   return 0;
+  return 0;
 }
 
-void LoginWidget::setMinUsernameLength(int length)
+void
+LoginWidget::setMinUsernameLength(int length)
 {
-   if (m_loginDlg) {
-      m_loginDlg->setMinUsernameLength(length);
-   }
+  if (m_loginDlg) {
+    m_loginDlg->setMinUsernameLength(length);
+  }
 }
 
-int LoginWidget::minPasswordLength() const
+int
+LoginWidget::minPasswordLength() const
 {
-   if (m_loginDlg) {
-      return m_loginDlg->minPasswordLength();
-   }
+  if (m_loginDlg) {
+    return m_loginDlg->minPasswordLength();
+  }
 
-   return 0;
+  return 0;
 }
 
-void LoginWidget::setMinPasswordLength(int length)
+void
+LoginWidget::setMinPasswordLength(int length)
 {
-   if (m_loginDlg) {
-      m_loginDlg->setMinPasswordLength(length);
-   }
+  if (m_loginDlg) {
+    m_loginDlg->setMinPasswordLength(length);
+  }
 }
 
-StandardLoginDialog::StandardLoginDialog(quint64 key, int minUsernameLength, int minPasswordLength, QWidget* parent)
-   : AbstractCustomLoginDialog(parent, key, minUsernameLength, minPasswordLength)
-   , m_minUsernameLength(minUsernameLength)
-   , m_minPasswordLength(minPasswordLength)
+StandardLoginDialog::StandardLoginDialog(quint64 key,
+                                         int minUsernameLength,
+                                         int minPasswordLength,
+                                         QWidget* parent)
+  : AbstractCustomLoginDialog(parent, key, minUsernameLength, minPasswordLength)
+  , m_minUsernameLength(minUsernameLength)
+  , m_minPasswordLength(minPasswordLength)
 {
-   initGui(false);
+  initGui(false);
 }
 
 StandardLoginDialog::~StandardLoginDialog() {}
 
-void StandardLoginDialog::addUser(const QString& username, const QString& password)
+void
+StandardLoginDialog::addUser(const QString& username, const QString& password)
 {
-   m_passwords.insert(username, AbstractLoginDialog::encrypt(password, m_key));
+  m_passwords.insert(username, AbstractLoginDialog::encrypt(password, m_key));
 }
 
-void StandardLoginDialog::removeUser(const QString& username)
+void
+StandardLoginDialog::removeUser(const QString& username)
 {
-   m_passwords.remove(username);
+  m_passwords.remove(username);
 }
 
-void StandardLoginDialog::clearUsers()
+void
+StandardLoginDialog::clearUsers()
 {
-   m_passwords.clear();
+  m_passwords.clear();
 }
 
-void StandardLoginDialog::clearText()
+void
+StandardLoginDialog::clearText()
 {
-   m_userEdit->clear();
-   m_passEdit->clear();
+  m_userEdit->clear();
+  m_passEdit->clear();
 }
 
-int StandardLoginDialog::minUsernameLength() const
+int
+StandardLoginDialog::minUsernameLength() const
 {
-   return m_minUsernameLength;
+  return m_minUsernameLength;
 }
 
-void StandardLoginDialog::setMinUsernameLength(int minUsernameLength)
+void
+StandardLoginDialog::setMinUsernameLength(int minUsernameLength)
 {
-   m_minUsernameLength = minUsernameLength;
+  m_minUsernameLength = minUsernameLength;
 }
 
-int StandardLoginDialog::minPasswordLength() const
+int
+StandardLoginDialog::minPasswordLength() const
 {
-   return m_minPasswordLength;
+  return m_minPasswordLength;
 }
 
-void StandardLoginDialog::setMinPasswordLength(int minPasswordLength)
+void
+StandardLoginDialog::setMinPasswordLength(int minPasswordLength)
 {
-   m_minPasswordLength = minPasswordLength;
+  m_minPasswordLength = minPasswordLength;
 }
 
-int StandardLoginDialog::exec()
+int
+StandardLoginDialog::exec()
 {
-   clearText();
-   QDialog::exec();
+  clearText();
+  QDialog::exec();
 }
 
-void StandardLoginDialog::checkPassword()
+void
+StandardLoginDialog::checkPassword()
 {
-   QString username = m_userEdit->text();
-   QString password = m_passEdit->text();
-   AbstractLoginDialog::LoginFailureTypes failures = AbstractLoginDialog::NoFailure;
+  QString username = m_userEdit->text();
+  QString password = m_passEdit->text();
+  AbstractLoginDialog::LoginFailureTypes failures =
+    AbstractLoginDialog::NoFailure;
 
-   if (username.isEmpty()) {
-      failures |= AbstractLoginDialog::NoUsernameSupplied;
-   }
+  if (username.isEmpty()) {
+    failures |= AbstractLoginDialog::NoUsernameSupplied;
+  }
 
-   if (password.isEmpty()) {
-      failures |= AbstractLoginDialog::NoPasswordSupplied;
-   }
+  if (password.isEmpty()) {
+    failures |= AbstractLoginDialog::NoPasswordSupplied;
+  }
 
-   if (failures != AbstractLoginDialog::NoFailure) {
-      emit loginFailed(failures);
-      return;
-   }
+  if (failures != AbstractLoginDialog::NoFailure) {
+    emit loginFailed(failures);
+    return;
+  }
 
-   if (!m_passwords.contains(username)) {
-      emit loginFailed(AbstractLoginDialog::NoSuchUser);
-      return;
-   }
+  if (!m_passwords.contains(username)) {
+    emit loginFailed(AbstractLoginDialog::NoSuchUser);
+    return;
+  }
 
-   QString pw = m_passwords.value(username);
-   QString decryptPw = AbstractLoginDialog::decrypt(pw, m_key);
+  QString pw = m_passwords.value(username);
+  QString decryptPw = AbstractLoginDialog::decrypt(pw, m_key);
 
-   if (password == decryptPw) {
-      emit loginSucceeded();
+  if (password == decryptPw) {
+    emit loginSucceeded();
 
-   } else {
-      emit loginFailed(AbstractLoginDialog::PasswordWrong);
-   }
+  } else {
+    emit loginFailed(AbstractLoginDialog::PasswordWrong);
+  }
 }
 
-void StandardLoginDialog::modifyStoredPassword(quint64 key)
+void
+StandardLoginDialog::modifyStoredPassword(quint64 key)
 {
-   QString pw;
+  QString pw;
 
-   for (auto username : m_passwords.keys()) {
-      QString password = m_passwords.value(username);
-      pw = AbstractLoginDialog::decrypt(password, m_key);
-      m_passwords.insert(username, AbstractLoginDialog::encrypt(password, key));
-   }
+  for (auto username : m_passwords.keys()) {
+    QString password = m_passwords.value(username);
+    pw = AbstractLoginDialog::decrypt(password, m_key);
+    m_passwords.insert(username, AbstractLoginDialog::encrypt(password, key));
+  }
 
-   m_key = key;
+  m_key = key;
 }
 
-void StandardLoginDialog::initGui(bool largeText)
+void
+StandardLoginDialog::initGui(bool largeText)
 {
-   QFont f = font();
+  QFont f = font();
 
-   if (largeText) {
-      f.setPointSize(20);
-      f.setWeight(QFont::Bold);
-      setFont(f);
-   }
+  if (largeText) {
+    f.setPointSize(20);
+    f.setWeight(QFont::Bold);
+    setFont(f);
+  }
 
-   QLabel* lbl1 = new QLabel("User name :", this);
-   lbl1->setFont(f);
-   m_userEdit = new QLineEdit(this);
-   connect(m_userEdit, &QLineEdit::textChanged, this, &StandardLoginDialog::enableOkBtn);
-   QLabel* lbl2 = new QLabel("Password :", this);
-   lbl2->setFont(f);
-   m_passEdit = new QLineEdit(this);
-   m_passEdit->setEchoMode(QLineEdit::Password);
-   connect(m_passEdit, &QLineEdit::textChanged, this, &StandardLoginDialog::enableOkBtn);
+  QLabel* lbl1 = new QLabel("User name :", this);
+  lbl1->setFont(f);
+  m_userEdit = new QLineEdit(this);
+  connect(m_userEdit,
+          &QLineEdit::textChanged,
+          this,
+          &StandardLoginDialog::enableOkBtn);
+  QLabel* lbl2 = new QLabel("Password :", this);
+  lbl2->setFont(f);
+  m_passEdit = new QLineEdit(this);
+  m_passEdit->setEchoMode(QLineEdit::Password);
+  connect(m_passEdit,
+          &QLineEdit::textChanged,
+          this,
+          &StandardLoginDialog::enableOkBtn);
 
-   QGridLayout* layout = new QGridLayout(this);
-   setLayout(layout);
+  QGridLayout* layout = new QGridLayout(this);
+  setLayout(layout);
 
-   layout->addWidget(lbl1, 0, 0);
-   layout->addWidget(m_userEdit, 0, 1);
-   layout->addWidget(lbl2, 1, 0);
-   layout->addWidget(m_passEdit, 1, 1);
+  layout->addWidget(lbl1, 0, 0);
+  layout->addWidget(m_userEdit, 0, 1);
+  layout->addWidget(lbl2, 1, 0);
+  layout->addWidget(m_passEdit, 1, 1);
 
-   m_buttons = new QDialogButtonBox(this);
-   m_buttons->addButton(QDialogButtonBox::Ok);
-   m_buttons->addButton(QDialogButtonBox::Cancel);
-   m_buttons->button(QDialogButtonBox::Ok)->setText(tr("Login"));
-   m_buttons->button(QDialogButtonBox::Ok)->setFont(f);
-   m_buttons->button(QDialogButtonBox::Cancel)->setText(tr("Abort"));
-   m_buttons->button(QDialogButtonBox::Cancel)->setFont(f);
-   layout->addWidget(m_buttons, 2, 0, 1, 2);
+  m_buttons = new QDialogButtonBox(this);
+  m_buttons->addButton(QDialogButtonBox::Ok);
+  m_buttons->addButton(QDialogButtonBox::Cancel);
+  m_buttons->button(QDialogButtonBox::Ok)->setText(tr("Login"));
+  m_buttons->button(QDialogButtonBox::Ok)->setFont(f);
+  m_buttons->button(QDialogButtonBox::Cancel)->setText(tr("Abort"));
+  m_buttons->button(QDialogButtonBox::Cancel)->setFont(f);
+  layout->addWidget(m_buttons, 2, 0, 1, 2);
 
-   m_buttons->button(QDialogButtonBox::Ok)->setEnabled(false);
+  m_buttons->button(QDialogButtonBox::Ok)->setEnabled(false);
 
-   // close on abort
-   connect(m_buttons->button(QDialogButtonBox::Cancel),
-           &QPushButton::clicked,
-           this,
-           &StandardLoginDialog::close);
+  // close on abort
+  connect(m_buttons->button(QDialogButtonBox::Cancel),
+          &QPushButton::clicked,
+          this,
+          &StandardLoginDialog::close);
 
-   // acceptLogin and abort on accept.
-   // should acceptLogin first.
-   connect(m_buttons->button(QDialogButtonBox::Ok),
-           &QPushButton::clicked,
-           this,
-           &StandardLoginDialog::checkPassword);
-   connect(m_buttons->button(QDialogButtonBox::Ok),
-           &QPushButton::clicked,
-           this,
-           &StandardLoginDialog::close);
+  // acceptLogin and abort on accept.
+  // should acceptLogin first.
+  connect(m_buttons->button(QDialogButtonBox::Ok),
+          &QPushButton::clicked,
+          this,
+          &StandardLoginDialog::checkPassword);
+  connect(m_buttons->button(QDialogButtonBox::Ok),
+          &QPushButton::clicked,
+          this,
+          &StandardLoginDialog::close);
 }
 
-void StandardLoginDialog::enableOkBtn(const QString&)
+void
+StandardLoginDialog::enableOkBtn(const QString&)
 {
-   QString username = m_userEdit->text();
-   QString password = m_passEdit->text();
+  QString username = m_userEdit->text();
+  QString password = m_passEdit->text();
 
-   if (username.length() < m_minUsernameLength || password.length() < m_minPasswordLength) {
-      m_buttons->button(QDialogButtonBox::Ok)->setEnabled(false);
+  if (username.length() < m_minUsernameLength ||
+      password.length() < m_minPasswordLength) {
+    m_buttons->button(QDialogButtonBox::Ok)->setEnabled(false);
 
-   } else {
-      m_buttons->button(QDialogButtonBox::Ok)->setEnabled(true);
-
-   }
+  } else {
+    m_buttons->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
 }
 
 SimpleLoginDialog::SimpleLoginDialog(quint64 key, QWidget* parent)
-   : AbstractLoginDialog(parent, key)
+  : AbstractLoginDialog(parent, key)
 {
-   initGui(false);
+  initGui(false);
 }
 
 SimpleLoginDialog::~SimpleLoginDialog() {}
 
-void SimpleLoginDialog::clearText()
+void
+SimpleLoginDialog::clearText()
 {
-   m_passEdit->clear();
+  m_passEdit->clear();
 }
 
-void SimpleLoginDialog::setPassword(const QString& password)
+void
+SimpleLoginDialog::setPassword(const QString& password)
 {
-   m_password = AbstractLoginDialog::encrypt(password, m_key);
+  m_password = AbstractLoginDialog::encrypt(password, m_key);
 }
 
-void SimpleLoginDialog::clearUsers()
+void
+SimpleLoginDialog::clearUsers()
 {
-   m_password.clear();
+  m_password.clear();
 }
 
-int SimpleLoginDialog::exec()
+int
+SimpleLoginDialog::exec()
 {
-   clearText();
-   QDialog::exec();
+  clearText();
+  QDialog::exec();
 }
 
-void SimpleLoginDialog::initGui(bool largeText)
+void
+SimpleLoginDialog::initGui(bool largeText)
 {
-   QFont f = font();
+  QFont f = font();
 
-   if (largeText) {
-      f.setPointSize(20);
-      f.setWeight(QFont::Bold);
-      setFont(f);
-   }
+  if (largeText) {
+    f.setPointSize(20);
+    f.setWeight(QFont::Bold);
+    setFont(f);
+  }
 
-   QLabel* lbl1 = new QLabel("Password :", this);
-   lbl1->setFont(f);
+  QLabel* lbl1 = new QLabel("Password :", this);
+  lbl1->setFont(f);
 
-   m_passEdit = new QLineEdit(this);
-   m_passEdit->setFont(f);
-   m_passEdit->setEchoMode(QLineEdit::Password);
+  m_passEdit = new QLineEdit(this);
+  m_passEdit->setFont(f);
+  m_passEdit->setEchoMode(QLineEdit::Password);
 
-   QGridLayout* layout = new QGridLayout(this);
-   setLayout(layout);
+  QGridLayout* layout = new QGridLayout(this);
+  setLayout(layout);
 
-   layout->addWidget(lbl1, 0, 0);
-   layout->addWidget(m_passEdit, 0, 1);
+  layout->addWidget(lbl1, 0, 0);
+  layout->addWidget(m_passEdit, 0, 1);
 
-   QDialogButtonBox* buttons = new QDialogButtonBox(this);
-   buttons->addButton(QDialogButtonBox::Ok);
-   buttons->addButton(QDialogButtonBox::Cancel);
-   buttons->button(QDialogButtonBox::Ok)->setText(tr("Login"));
-   buttons->button(QDialogButtonBox::Ok)->setFont(f);
-   buttons->button(QDialogButtonBox::Cancel)->setText(tr("Abort"));
-   buttons->button(QDialogButtonBox::Cancel)->setFont(f);
-   layout->addWidget(buttons, 1, 0, 1, 2);
+  QDialogButtonBox* buttons = new QDialogButtonBox(this);
+  buttons->addButton(QDialogButtonBox::Ok);
+  buttons->addButton(QDialogButtonBox::Cancel);
+  buttons->button(QDialogButtonBox::Ok)->setText(tr("Login"));
+  buttons->button(QDialogButtonBox::Ok)->setFont(f);
+  buttons->button(QDialogButtonBox::Cancel)->setText(tr("Abort"));
+  buttons->button(QDialogButtonBox::Cancel)->setFont(f);
+  layout->addWidget(buttons, 1, 0, 1, 2);
 
-   // close on abort
-   connect(buttons->button(QDialogButtonBox::Cancel),
-           &QPushButton::clicked,
-           this,
-           &SimpleLoginDialog::close);
+  // close on abort
+  connect(buttons->button(QDialogButtonBox::Cancel),
+          &QPushButton::clicked,
+          this,
+          &SimpleLoginDialog::close);
 
-   // acceptLogin and abort on accept.
-   // should acceptLogin first.
-   connect(buttons->button(QDialogButtonBox::Ok),
-           &QPushButton::clicked,
-           this,
-           &SimpleLoginDialog::checkPassword);
-   connect(buttons->button(QDialogButtonBox::Ok),
-           &QPushButton::clicked,
-           this,
-           &SimpleLoginDialog::close);
+  // acceptLogin and abort on accept.
+  // should acceptLogin first.
+  connect(buttons->button(QDialogButtonBox::Ok),
+          &QPushButton::clicked,
+          this,
+          &SimpleLoginDialog::checkPassword);
+  connect(buttons->button(QDialogButtonBox::Ok),
+          &QPushButton::clicked,
+          this,
+          &SimpleLoginDialog::close);
 }
 
-void SimpleLoginDialog::checkPassword()
+void
+SimpleLoginDialog::checkPassword()
 {
-   QString password = m_passEdit->text();
+  QString password = m_passEdit->text();
 
-   if (password.isEmpty()) {
-      emit loginFailed(AbstractLoginDialog::NoPasswordSupplied);
-      return;
-   }
+  if (password.isEmpty()) {
+    emit loginFailed(AbstractLoginDialog::NoPasswordSupplied);
+    return;
+  }
 
-   QString pw = AbstractLoginDialog::decrypt(m_password, m_key);
+  QString pw = AbstractLoginDialog::decrypt(m_password, m_key);
 
-   if (password == pw) {
-      emit loginSucceeded();
+  if (password == pw) {
+    emit loginSucceeded();
 
-   } else {
-      emit loginFailed(AbstractLoginDialog::PasswordWrong);
-   }
+  } else {
+    emit loginFailed(AbstractLoginDialog::PasswordWrong);
+  }
 }
 
-void SimpleLoginDialog::modifyStoredPassword(quint64 key)
+void
+SimpleLoginDialog::modifyStoredPassword(quint64 key)
 {
-   QString pw;
+  QString pw;
 
-   if (!m_password.isEmpty()) {
-      SimpleCrypt crypto;
-      crypto.setKey(m_key);
-      crypto.setCompressionMode(SimpleCrypt::CompressionAlways);
-      crypto.setIntegrityProtectionMode(SimpleCrypt::ProtectionHash);
-      pw = AbstractLoginDialog::decrypt(m_password, m_key);
-   }
+  if (!m_password.isEmpty()) {
+    SimpleCrypt crypto;
+    crypto.setKey(m_key);
+    crypto.setCompressionMode(SimpleCrypt::CompressionAlways);
+    crypto.setIntegrityProtectionMode(SimpleCrypt::ProtectionHash);
+    pw = AbstractLoginDialog::decrypt(m_password, m_key);
+  }
 
-   m_key = key;
-   m_password = AbstractLoginDialog::encrypt(pw, m_key);
+  m_key = key;
+  m_password = AbstractLoginDialog::encrypt(pw, m_key);
 }
 
-
-void AbstractLoginDialog::setKey(quint64 key)
+void
+AbstractLoginDialog::setKey(quint64 key)
 {
-   m_key = key;
-   modifyStoredPassword(key);
+  m_key = key;
+  modifyStoredPassword(key);
 }
 
-int AbstractLoginDialog::minUsernameLength() const
+int
+AbstractLoginDialog::minUsernameLength() const
 {
-   return m_minUsernameLength;
+  return m_minUsernameLength;
 }
 
-void AbstractLoginDialog::setMinUsernameLength(int length)
+void
+AbstractLoginDialog::setMinUsernameLength(int length)
 {
-   m_minUsernameLength = length;
+  m_minUsernameLength = length;
 }
 
-int AbstractLoginDialog::minPasswordLength() const
+int
+AbstractLoginDialog::minPasswordLength() const
 {
-   return m_minPasswordlength;
+  return m_minPasswordlength;
 }
 
-void AbstractLoginDialog::setMinPasswordLength(int length)
+void
+AbstractLoginDialog::setMinPasswordLength(int length)
 {
-   m_minPasswordlength = length;
+  m_minPasswordlength = length;
 }
 
-QString AbstractLoginDialog::encrypt(const QString& password, quint64 key)
+QString
+AbstractLoginDialog::encrypt(const QString& password, quint64 key)
 {
-   SimpleCrypt crypto;
-   crypto.setKey(key);
-   crypto.setCompressionMode(SimpleCrypt::CompressionAlways);
-   crypto.setIntegrityProtectionMode(SimpleCrypt::ProtectionHash);
-   return crypto.encryptToString(password);
+  SimpleCrypt crypto;
+  crypto.setKey(key);
+  crypto.setCompressionMode(SimpleCrypt::CompressionAlways);
+  crypto.setIntegrityProtectionMode(SimpleCrypt::ProtectionHash);
+  return crypto.encryptToString(password);
 }
 
-QString AbstractLoginDialog::decrypt(const QString& password, quint64 key)
+QString
+AbstractLoginDialog::decrypt(const QString& password, quint64 key)
 {
-   SimpleCrypt crypto;
-   crypto.setKey(key);
-   crypto.setCompressionMode(SimpleCrypt::CompressionAlways);
-   crypto.setIntegrityProtectionMode(SimpleCrypt::ProtectionHash);
-   return crypto.decryptToString(password);
+  SimpleCrypt crypto;
+  crypto.setKey(key);
+  crypto.setCompressionMode(SimpleCrypt::CompressionAlways);
+  crypto.setIntegrityProtectionMode(SimpleCrypt::ProtectionHash);
+  return crypto.decryptToString(password);
 }
 
 /// \endcond

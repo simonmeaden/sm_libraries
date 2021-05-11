@@ -19,6 +19,8 @@
 */
 #include "sm_widgets/labelledexspinbox.h"
 
+#include <sm_widgets/labelledexspinbox.h>
+
 /*!
    \file labelledexspinbox.h labelledexspinbox.cpp
    \class LabelledExSpinBox labelledexspinbox.h
@@ -33,7 +35,7 @@
 LabelledExSpinBox::LabelledExSpinBox(const QString& text,
                                      QWidget* parent,
                                      const WidgetFactory& factory)
-   : AbstractLabelledWidget(text, parent, factory)
+   : AbstractLabelledSpinBox(text, parent, factory)
 {
    initGui();
 }

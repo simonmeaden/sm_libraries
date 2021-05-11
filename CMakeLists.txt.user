@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.12.4, 2020-08-29T08:45:41. -->
+<!-- Written by QtCreator 4.14.2, 2021-05-11T07:11:25. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -49,7 +49,9 @@
    <value type="bool" key="EditorConfiguration.addFinalNewLine">true</value>
    <value type="bool" key="EditorConfiguration.cleanIndentation">true</value>
    <value type="bool" key="EditorConfiguration.cleanWhitespace">true</value>
+   <value type="QString" key="EditorConfiguration.ignoreFileTypes">*.md, *.MD, Makefile</value>
    <value type="bool" key="EditorConfiguration.inEntireDocument">false</value>
+   <value type="bool" key="EditorConfiguration.skipTrailingWhitespace">true</value>
   </valuemap>
  </data>
  <data>
@@ -57,16 +59,19 @@
   <valuemap type="QVariantMap">
    <valuemap type="QVariantMap" key="AutoTest.ActiveFrameworks">
     <value type="bool" key="AutoTest.Framework.Boost">true</value>
+    <value type="bool" key="AutoTest.Framework.Catch">true</value>
     <value type="bool" key="AutoTest.Framework.GTest">true</value>
     <value type="bool" key="AutoTest.Framework.QtQuickTest">true</value>
     <value type="bool" key="AutoTest.Framework.QtTest">true</value>
    </valuemap>
+   <valuemap type="QVariantMap" key="AutoTest.CheckStates"/>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
    <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey"/>
    <value type="bool" key="ClangCodeModel.UseGlobalConfig">true</value>
    <value type="QString" key="ClangCodeModel.WarningConfigId">Builtin.Questionable</value>
    <valuemap type="QVariantMap" key="ClangTools">
+    <value type="bool" key="ClangTools.AnalyzeOpenFiles">false</value>
     <value type="bool" key="ClangTools.BuildBeforeAnalysis">true</value>
     <value type="QString" key="ClangTools.DiagnosticConfig">Builtin.DefaultTidyAndClazy</value>
     <value type="int" key="ClangTools.ParallelJobs">4</value>
@@ -80,25 +85,27 @@
  <data>
   <variable>ProjectExplorer.Project.Target.0</variable>
   <valuemap type="QVariantMap">
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop 5.15.0</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop 5.15.0</value>
+   <value type="QString" key="DeviceType">Desktop</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Replacement for &quot;Replacement for &quot;Desktop 5.15.0&quot;&quot;</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Replacement for &quot;Replacement for &quot;Desktop 5.15.0&quot;&quot;</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{c816f12d-7bad-4243-918b-40e34756bb6f}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">1</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">7</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=Debug</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=Debug
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/common_lib/sm_libraries/build/debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -112,7 +119,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -126,35 +132,38 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Debug</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=Release</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=Release
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/common_lib/sm_libraries/build/release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">false</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
@@ -164,11 +173,11 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.MakeStep</value>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
@@ -178,23 +187,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=RelWithDebInfo</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_15_0-RelWithDebInfo</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -208,7 +219,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -222,23 +232,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release with Debug Information</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.3">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=MinSizeRel</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=MinSizeRel
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_15_0-MinSizeRel</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -252,7 +264,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -266,6 +277,7 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Minimum Size Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
@@ -274,7 +286,6 @@
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.DeployConfiguration.0">
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">Current executable</value>
       </valuelist>
@@ -292,7 +303,6 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.DefaultDeployConfiguration</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
-   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
     <valuelist type="QVariantList" key="Analyzer.Perf.Events">
@@ -351,22 +361,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">circularbuffer</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.circularbuffer</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">circularbuffer</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -426,22 +431,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">qcircularbuffer</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.qcircularbuffer</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">qcircularbuffer</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.2">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -501,22 +501,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">smwidgets_tst</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.smwidgets_tst</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">smwidgets_tst</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.3">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -576,22 +571,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Qt-Secret-GUI</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.Qt-Secret-GUI</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">Qt-Secret-GUI</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.4">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -651,22 +641,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Qt-SecretAES_TEST</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.Qt-SecretAES_TEST</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">Qt-SecretAES_TEST</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.5">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -726,22 +711,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Qt-SecretTest</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.Qt-SecretTest</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">Qt-SecretTest</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.6">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -801,22 +781,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">QtBigintTest</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.QtBigintTest</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">QtBigintTest</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.7">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -876,22 +851,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">test_smwidgets</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.test_smwidgets</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">test_smwidgets</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.8">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -951,22 +921,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">smwidgets_test</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.smwidgets_test</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">smwidgets_test</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.9">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -1026,22 +991,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">test_sm_widgets</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.test_sm_widgets</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">test_sm_widgets</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">10</value>
   </valuemap>
@@ -1049,25 +1009,27 @@
  <data>
   <variable>ProjectExplorer.Project.Target.1</variable>
   <valuemap type="QVariantMap">
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop 5.14.2</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop 5.14.2</value>
+   <value type="QString" key="DeviceType">Desktop</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Replacement for &quot;Replacement for &quot;Desktop 5.14.2&quot;&quot;</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Replacement for &quot;Replacement for &quot;Desktop 5.14.2&quot;&quot;</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{6d3c400f-0a90-487f-a0f0-3eec4d19ecab}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">1</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">2</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=Debug</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=Debug
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/build/sm_libraries/5.14.2/debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1081,7 +1043,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1095,23 +1056,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Debug</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=Release</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=Release
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/build/sm_libraries/5.14.2/release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1125,7 +1088,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1139,23 +1101,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=RelWithDebInfo</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_14_2-RelWithDebInfo</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1169,7 +1133,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1183,23 +1146,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release with Debug Information</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.3">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=MinSizeRel</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=MinSizeRel
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_14_2-MinSizeRel</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1213,7 +1178,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1227,6 +1191,7 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Minimum Size Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
@@ -1245,7 +1210,6 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.DefaultDeployConfiguration</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
-   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
     <valuelist type="QVariantList" key="Analyzer.Perf.Events">
@@ -1304,22 +1268,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">circularbuffer</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.circularbuffer</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">circularbuffer</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -1379,22 +1338,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">qcircularbuffer</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.qcircularbuffer</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">qcircularbuffer</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.2">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -1454,22 +1408,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">smwidgets_tst</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.smwidgets_tst</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">smwidgets_tst</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">3</value>
   </valuemap>
@@ -1477,25 +1426,27 @@
  <data>
   <variable>ProjectExplorer.Project.Target.2</variable>
   <valuemap type="QVariantMap">
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop 5.14.0</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop 5.14.0</value>
+   <value type="QString" key="DeviceType">Desktop</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Replacement for &quot;Replacement for &quot;Desktop 5.14.0&quot;&quot;</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Replacement for &quot;Replacement for &quot;Desktop 5.14.0&quot;&quot;</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{539464f4-f86f-44aa-91d6-cc4567c0dbdb}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=Debug</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=Debug
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_14_0-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1509,7 +1460,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1523,23 +1473,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Debug</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=Release</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=Release
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_14_0-Release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1553,7 +1505,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1567,23 +1518,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=RelWithDebInfo</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_14_0-RelWithDebInfo</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1597,7 +1550,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1611,23 +1563,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release with Debug Information</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.3">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=MinSizeRel</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=MinSizeRel
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_14_0-MinSizeRel</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1641,7 +1595,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1655,6 +1608,7 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Minimum Size Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
@@ -1673,7 +1627,6 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.DefaultDeployConfiguration</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
-   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
     <valuelist type="QVariantList" key="Analyzer.Perf.Events">
@@ -1732,22 +1685,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">circularbuffer</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.circularbuffer</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">circularbuffer</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -1807,22 +1755,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">qcircularbuffer</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.qcircularbuffer</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">qcircularbuffer</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.2">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -1882,22 +1825,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">smwidgets_tst</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.smwidgets_tst</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">smwidgets_tst</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">3</value>
   </valuemap>
@@ -1905,25 +1843,27 @@
  <data>
   <variable>ProjectExplorer.Project.Target.3</variable>
   <valuemap type="QVariantMap">
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop 5.13.1</value>
-   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop 5.13.1</value>
+   <value type="QString" key="DeviceType">Desktop</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Replacement for &quot;Replacement for &quot;Desktop 5.13.1&quot;&quot;</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Replacement for &quot;Replacement for &quot;Desktop 5.13.1&quot;&quot;</value>
    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">{fedf13fa-ee1a-41ff-a371-e23e897a7a89}</value>
    <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">1</value>
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">2</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=Debug</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=Debug
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/build/sm_libraries/5.13.1/debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1937,7 +1877,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1951,23 +1890,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Debug</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=Release</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=Release
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/build/sm_libraries/5.13.1/release</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -1981,7 +1922,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -1995,23 +1935,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=RelWithDebInfo</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_13_1-RelWithDebInfo</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -2025,7 +1967,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -2039,23 +1980,25 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release with Debug Information</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.3">
-    <valuelist type="QVariantList" key="CMake.Configuration">
-     <value type="QString">CMAKE_BUILD_TYPE:STRING=MinSizeRel</value>
-     <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
-     <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
-     <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>
-     <value type="QString">QT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}</value>
-    </valuelist>
-    <value type="int" key="EnableQmlDebugging">2</value>
+    <value type="QString" key="CMake.Initial.Parameters">-GNinja
+-DQT_QMAKE_EXECUTABLE:STRING=%{Qt:qmakeExecutable}
+-DCMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}
+-DCMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}
+-DCMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}
+-DCMAKE_BUILD_TYPE:STRING=MinSizeRel
+-DCMAKE_CXX_COMPILER:STRING=/usr/bin/g++
+-DCMAKE_C_COMPILER:STRING=/usr/bin/gcc
+-DCMAKE_PREFIX_PATH:STRING=/opt/Qt/6.0.0/gcc_64
+-DQT_QMAKE_EXECUTABLE:STRING=/opt/Qt/6.0.0/gcc_64/bin/qmake</value>
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/simonmeaden/workspace/CommonLib/build-sm_libraries-Desktop_5_13_1-MinSizeRel</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">all</value>
       </valuelist>
@@ -2069,7 +2012,6 @@
     </valuemap>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
-      <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
       <valuelist type="QVariantList" key="CMakeProjectManager.MakeStep.BuildTargets">
        <value type="QString">clean</value>
       </valuelist>
@@ -2083,6 +2025,7 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.CustomParsers"/>
     <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Minimum Size Release</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeBuildConfiguration</value>
@@ -2101,7 +2044,6 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.DefaultDeployConfiguration</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
-   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
     <valuelist type="QVariantList" key="Analyzer.Perf.Events">
@@ -2160,22 +2102,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">circularbuffer</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.circularbuffer</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">circularbuffer</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.1">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -2235,22 +2172,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">qcircularbuffer</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.qcircularbuffer</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">qcircularbuffer</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.2">
     <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
@@ -2310,22 +2242,17 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">smwidgets_tst</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.smwidgets_tst</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">smwidgets_tst</value>
-    <value type="QString" key="RunConfiguration.Arguments"></value>
-    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
-    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
-    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">3</value>
   </valuemap>

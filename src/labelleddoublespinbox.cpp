@@ -22,7 +22,7 @@
 LabelledDoubleSpinBox::LabelledDoubleSpinBox(const QString &labelText,
                                              QWidget *parent,
                                              const WidgetFactory &factory)
-  : AbstractLabelledWidget(labelText, parent, factory)
+  : AbstractLabelledSpinBox(labelText, parent, factory)
 {
 
 }
@@ -58,15 +58,15 @@ void LabelledDoubleSpinBox::setMinimum(double min)
   qobject_cast<QDoubleSpinBox*>(m_widget)->setMinimum(min);
 }
 
-QString LabelledDoubleSpinBox::suffix()
-{
-  return qobject_cast<QSpinBox*>(m_widget)->suffix();
-}
+//QString LabelledDoubleSpinBox::suffix()
+//{
+//  return qobject_cast<QSpinBox*>(m_widget)->suffix();
+//}
 
-void LabelledDoubleSpinBox::setSuffix(const QString& text)
-{
-  qobject_cast<QSpinBox*>(m_widget)->setSuffix(text);
-}
+//void LabelledDoubleSpinBox::setSuffix(const QString& text)
+//{
+//  qobject_cast<QSpinBox*>(m_widget)->setSuffix(text);
+//}
 
 void LabelledDoubleSpinBox::setRange(double min, double max)
 {

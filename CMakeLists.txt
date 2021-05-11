@@ -9,7 +9,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (NOT CMAKE_INSTALL_PREFIX)
@@ -98,8 +98,6 @@ set(MIN_YAMLCPP_VERSION 0.6.0)
 find_package(yaml-cpp ${MIN_YAMLCPP_VERSION} REQUIRED CONFIG)
 set(MIN_QYAMLCPP_VERSION 0.1.0)
 find_package(qyamlcpp ${MIN_QYAMLCPP_VERSION} REQUIRED CONFIG)
-set(MIN_CIRCULARBUFFER_VERSION 0.1.0)
-find_package(circularbuffer ${MIN_CIRCULARBUFFER_VERSION} REQUIRED CONFIG)
 
 add_library(sm_widgets STATIC "")
 target_sources(sm_widgets
@@ -116,9 +114,13 @@ target_sources(sm_widgets
       $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledlineedit.h>
       $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledtextfield.h>
       $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledwidgets.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/loginwidget.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/extabwidget.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/simplecrypt.h>
+#      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/loginwidget.h>
+#      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/extabwidget.h>
+#      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/simplecrypt.h>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/extendedcolordialog.h>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/x11colors.h>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/CircularBuffer.h>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/circularbuffer.h>
 
       $<INSTALL_INTERFACE:include/sm_widgets/sm_widgets_global.h>
       $<INSTALL_INTERFACE:include/sm_widgets/abstractlabelledwidget.h>
@@ -131,21 +133,24 @@ target_sources(sm_widgets
       $<INSTALL_INTERFACE:include/sm_widgets/labelledlineedit.h>
       $<INSTALL_INTERFACE:include/sm_widgets/labelledtextfield.h>
       $<INSTALL_INTERFACE:include/sm_widgets/labelledwidgets.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/loginwidget.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/extabwidget.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/simplecrypt.h>
+#      $<INSTALL_INTERFACE:include/sm_widgets/loginwidget.h>
+#      $<INSTALL_INTERFACE:include/sm_widgets/extabwidget.h>
+      $<INSTALL_INTERFACE:include/sm_widgets/extendedcolordialog.h>
+      $<INSTALL_INTERFACE:include/sm_widgets/x11colors.h>
+      $<INSTALL_INTERFACE:include/sm_widgets/CircularBuffer.h>
+      $<INSTALL_INTERFACE:include/sm_widgets/circularbuffer.h>
 
    PRIVATE
       src/abstractlabelledwidget.cpp
-      src/clockwidget.h
-      src/clockwidget.cpp
-      src/messagewidget.h
-      src/messagewidget.cpp
-      src/loginwidget.cpp
-      src/simplecrypt.cpp
+#      src/clockwidget.h
+#      src/clockwidget.cpp
+#      src/messagewidget.h
+#      src/messagewidget.cpp
+#      src/loginwidget.cpp
+#      src/simplecrypt.cpp
       src/exspinbox.cpp
-      src/extabwidget.cpp
-      src/extabwidget_p.cpp
+#      src/extabwidget.cpp
+#      src/extabwidget_p.cpp
       src/hexformatdelegate.cpp
       src/labelledcombobox.cpp
       src/labelleddoublespinbox.cpp
@@ -153,14 +158,9 @@ target_sources(sm_widgets
       src/labelledlineedit.cpp
       src/labelledspinbox.cpp
       src/labelledtextfield.cpp
+      src/extendedcolordialog.cpp
 
    )
-
-#add_executable(test_sm_widgets
-#      examples/src/main.cpp
-#      examples/src/mainwindow.h
-#      examples/src/mainwindow.cpp
-#   )
 
 target_include_directories(sm_widgets
     PUBLIC

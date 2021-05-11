@@ -1,0 +1,30 @@
+
+
+
+
+
+
+
+m_svgTable->setItem(row++, column, getSvgItem("white"));
+m_svgTable->setItem(row++, column, getSvgItem("whitesmoke"));
+m_svgTable->setItem(row++, column, getSvgItem("mintcream"));
+m_svgTable->setItem(row++, column, getSvgItem("ghostwhite"));
+m_svgTable->setItem(row++, column, getSvgItem("gainsboro"));
+m_svgTable->setItem(row++, column, getSvgItem("lightgray"));
+m_svgTable->setItem(row++, column, getSvgItem("silver"));
+m_svgTable->setItem(row++, column, getSvgItem("darkgray"));
+m_svgTable->setItem(row++, column, getSvgItem("lightslategray", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("slategray", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("dark slate gray", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("DarkSlateGray1", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("DarkSlateGray2", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("DarkSlateGray3", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("DarkSlateGray4", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("gray", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("dimgray", "white"));
+m_svgTable->setItem(row++, column, getSvgItem("black", "white"));
+
+
+
+
+
