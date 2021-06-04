@@ -36,8 +36,9 @@
 //! \sa setTextColor()
 enum ColorType
 {
-  Primary,   //! Used to set and return colors for the primary (left) display
-  Secondary, //! Used to set and return colors for the secondary (right) display
+  Primary,   //!< Used to set and return colors for the primary (left) display
+  Secondary, //!< Used to set and return colors for the secondary (right)
+             //!< display
 };
 
 /// \cond DO_NOT_DOCUMENT
@@ -45,11 +46,11 @@ enum ColorType
 class ColorDropDisplay : public QFrame
 {
   Q_OBJECT
-  enum Side
-  {
-    Left,
-    Right,
-  };
+  //  enum Side
+  //  {
+  //    Left,  //!< The left hand (primary) side is specified
+  //    Right, //!< The right hand (secondary) side is specified
+  //  };
 
 public:
   ColorDropDisplay(const QColor& color,
@@ -353,7 +354,8 @@ public:
   //! \param name - an SVG or X11 color name or a color hash \#ffffff string.
   void setTextColor(ColorType type, const QString& name);
 
-  //! Returns the selected color as a stylesheet rgb() string.
+  //! Returns the selected color as a stylesheet %rgb(int, int, int) or
+  //! %rgba(int, int, int, int) string.
   //!
   //! The type should be either ColorType::Primary or ColorType::Secondary.
   //!
@@ -363,22 +365,22 @@ public:
   //! selected or  'Cancel' has been pressed then an empty string is returned.
   QString rgb(ColorType type, int alpha = -1) const;
 
-  //! Returns the selected color as a stylesheet hsv() string.
+  //! Returns the selected color as a stylesheet %hsv(int, int, int) or an
+  //! %hsva(int, int, int, int) string.
   //!
-  //! If alpha is specified an hsva() form will be returned. The value of
-  //! alpha must it must be between 0 (transparent)
-  //! and 100 (opaque), the default, otherwise it will be ignored.
-  //! If no color has been selected or  'Cancel' has been pressed then
-  //! an empty string is returned.
+  //! If alpha is specified an %hsva() form will be returned. The
+  //! value of alpha must it must be between 0 (transparent) and 100 (opaque),
+  //! the default, otherwise it will be ignored. If no color has been selected
+  //! or  'Cancel' has been pressed then an empty string is returned.
   QString hsv(ColorType type, int alpha = 100) const;
 
-  //! Returns the selected color as a stylesheet hsl() string.
+  //! Returns the selected color as a stylesheet %hsl(int, int, int) or
+  //! %hsla(int, int, int, int) form string.
   //!
-  //! If alpha is specified an hsla() form will be returned. The value of
-  //! alpha must it must be between 0 (transparent)
-  //! and 100 (opaque), the default, otherwise it will be ignored.
-  //! If no color has been selected or  'Cancel' has been pressed then
-  //! an empty string is returned.
+  //! If alpha is specified an %hsla() form will be returned.
+  //! The value of alpha must it must be between 0 (transparent) and 100
+  //! (opaque), the default, otherwise it will be ignored. If no color has been
+  //! selected or  'Cancel' has been pressed then an empty string is returned.
   QString hsl(ColorType type, int alpha = 100) const;
 
   //! Returns the selected color as a stylesheet name string.
