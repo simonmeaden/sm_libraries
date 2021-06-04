@@ -39,6 +39,12 @@
       <arglist></arglist>
     </member>
     <member kind="enumvalue">
+      <name>Primary</name>
+      <anchorfile>extendedcolordialog_8h.html</anchorfile>
+      <anchor>a5e133660cf9d4bcd1cb6a49e3ec16f83a35c33effed98e564ad1bd10ef61d302c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
       <name>Secondary</name>
       <anchorfile>extendedcolordialog_8h.html</anchorfile>
       <anchor>a5e133660cf9d4bcd1cb6a49e3ec16f83acdd030c6485c7b0801d32116fd9d7103</anchor>
