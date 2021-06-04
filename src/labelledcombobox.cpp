@@ -22,8 +22,14 @@
 #include "sm_widgets/labelledcombobox.h"
 
 LabelledComboBox::LabelledComboBox(const QString& labelText,
-                                   QWidget* parent,
-                                   const WidgetFactory &factory)
+                                   QWidget* parent)
+  : LabelledComboBox(LabelledComboBox::WidgetFactory(), labelText, parent)
+{}
+
+LabelledComboBox::LabelledComboBox(const WidgetFactory &factory,
+                                   const QString& labelText,
+                                   QWidget* parent
+                                   )
   : AbstractLabelledWidget(labelText, parent, factory)
 {
   LabelledComboBox::initGui();

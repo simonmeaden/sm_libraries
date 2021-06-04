@@ -25,43 +25,6 @@
 
 #include "qyamlcpp/qyamlcpp.h"
 #include "sm_widgets/labelledwidgets.h"
-#include "sm_widgets/extabwidget.h"
-
-//class CustomLoginDialog : public AbstractLoginDialog
-//{
-//   Q_OBJECT
-//public:
-//   explicit CustomLoginDialog(QWidget* parent = nullptr)
-//      : AbstractLoginDialog(parent) {
-//      initGui();
-//      loadUsers();
-//   }
-
-//   // AbstractLoginDialog interface
-//   void clearText() override;
-
-//private:
-//   LabelledLineEdit* m_usernameEdit, *m_passwordEdit;
-//   LabelledLineEdit* m_addUsernameEdit, *m_addPasswordEdit;
-//   QPushButton* m_loginBtn, *m_addUserBtn, *m_removeUserbtn;
-//   QListWidget* m_userList;
-//   QMap<QString, QString> m_passwords;
-//   quint64 m_key = 0x0c1028074224d489;
-
-//   void loadUsers();
-//   void saveUsers();
-//   void addUser();
-
-//   QWidget* initLoginBox();
-//   QWidget* initManageBox();
-
-//   void initGui();
-//   void enableLogin(const QString&);
-//   void enableAddIn(const QString&);
-
-
-
-//};
 
 /*!
    \file mainwindow.h mainwindow.cpp
@@ -83,7 +46,6 @@ public:
 private:
    QTabWidget* m_tabs;
 
-   //   Qt::Alignment m_alignment;
    QGroupBox* m_labelVerticalBox, *m_labelHorizontalBox, *m_widgetVerticalBox, *m_widgetHorizontalBox;
    QButtonGroup* m_labelVerticalGrp, *m_labelHorizontalGrp, *m_widgetVerticalGrp, *m_widgetHorizontalGrp;
 
@@ -112,7 +74,7 @@ private:
    QCheckBox* m_exNegBeforePrefixBox;
    QColor m_text, m_back, m_tempText, m_tempBack;
 
-   ExTabWidget* m_exTabWidget;
+//   ExTabWidget* m_exTabWidget;
    QCheckBox* m_showClockBox, *m_showSecondsBox/*, *m_showClockFrame*/;
    LabelledComboBox* m_clockFrameStyleBox;
    QPlainTextEdit* m_clockStylesheetEdit;

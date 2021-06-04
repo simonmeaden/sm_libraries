@@ -21,14 +21,15 @@
 */
 #include "sm_widgets/labelledspinbox.h"
 
-/*!
-   \brief Constructs a labelled spin box with a babel of text and 0 as minimum
-   value and 99 as maximum value, a step value of 1.
-   The value is initially set to 0. It is parented to parent.
-*/
 LabelledSpinBox::LabelledSpinBox(const QString& labelText,
-                                 QWidget* parent,
-                                 const WidgetFactory& factory)
+                                 QWidget* parent)
+   : LabelledSpinBox(LabelledSpinBox::WidgetFactory(), labelText, parent)
+{}
+
+LabelledSpinBox::LabelledSpinBox(const WidgetFactory& factory,
+                                 const QString& labelText,
+                                 QWidget* parent
+                                 )
    : AbstractLabelledSpinBox(labelText, parent, factory)
 {
    LabelledSpinBox::initGui();

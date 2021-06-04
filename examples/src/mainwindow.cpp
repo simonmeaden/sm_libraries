@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget* parent)
    initGui();
 
    m_tabs->setCurrentIndex(1);
-   m_exTabWidget->setCurrentIndex(1);
+//   m_exTabWidget->setCurrentIndex(1);
 }
 
 MainWindow::~MainWindow() {}
@@ -533,93 +533,93 @@ QString MainWindow::sizePolicyToString(QSizePolicy::Policy policy)
 
 void MainWindow::showClock(bool enable)
 {
-   m_exTabWidget->showClock(enable);
-   m_showSecondsBox->setEnabled(enable);
-   m_clockFrameStyleBox->setEnabled(true);
+//   m_exTabWidget->showClock(enable);
+//   m_showSecondsBox->setEnabled(enable);
+//   m_clockFrameStyleBox->setEnabled(true);
 
-   if (enable) {
-      m_showClockBox->setText(tr("Hide Clock"));
+//   if (enable) {
+//      m_showClockBox->setText(tr("Hide Clock"));
 
-   } else {
-      m_showClockBox->setText(tr("Show Clock"));
-   }
+//   } else {
+//      m_showClockBox->setText(tr("Show Clock"));
+//   }
 }
 
 void MainWindow::showSeconds(bool enable)
 {
-   m_exTabWidget->showSeconds(enable);
+//   m_exTabWidget->showSeconds(enable);
 
-   if (enable) {
-      m_showSecondsBox->setText(tr("Hide Seconds"));
+//   if (enable) {
+//      m_showSecondsBox->setText(tr("Hide Seconds"));
 
-   } else {
-      m_showSecondsBox->setText(tr("Show Seconds"));
-   }
+//   } else {
+//      m_showSecondsBox->setText(tr("Show Seconds"));
+//   }
 }
 
 void MainWindow::clockFrameStyleChanged(int /*index*/)
 {
-   m_exTabWidget->setClockFrameStyle(m_clockFrameStyleBox->currentData(Qt::UserRole).value<QFrame::Shape>());
+//   m_exTabWidget->setClockFrameStyle(m_clockFrameStyleBox->currentData(Qt::UserRole).value<QFrame::Shape>());
 }
 
 void MainWindow::loginStyleChanged(int /*index*/)
 {
-   m_exTabWidget->setLoginType(m_loginStyleBox->currentData(Qt::UserRole).value<AbstractLoginDialog::LoginType>());
+//   m_exTabWidget->setLoginType(m_loginStyleBox->currentData(Qt::UserRole).value<AbstractLoginDialog::LoginType>());
 }
 
 void MainWindow::setSimpleLogin()
 {
-   QString password = m_loginSimplePasswordEdit->text();
-   m_exTabWidget->setSimplePassword(password);
+//   QString password = m_loginSimplePasswordEdit->text();
+//   m_exTabWidget->setSimplePassword(password);
 }
 
 void MainWindow::setStandardLogin()
 {
-   QString username = m_loginStandardUsernameEdit->text();
-   QString password = m_loginStandardPasswordEdit->text();
-   m_exTabWidget->addStandardPassword(username, password);
+//   QString username = m_loginStandardUsernameEdit->text();
+//   QString password = m_loginStandardPasswordEdit->text();
+//   m_exTabWidget->addStandardPassword(username, password);
 }
 
 void MainWindow::showMessages(bool enable)
 {
-   m_exTabWidget->showMessages(enable);
+//   m_exTabWidget->showMessages(enable);
 
-   if (enable) {
-      m_showMessageBox->setText(tr("Hide Messages"));
+//   if (enable) {
+//      m_showMessageBox->setText(tr("Hide Messages"));
 
-   } else {
-      m_showMessageBox->setText(tr("Show Messages"));
-   }
+//   } else {
+//      m_showMessageBox->setText(tr("Show Messages"));
+//   }
 }
 
 void MainWindow::setMarqueeMoving(bool enable)
 {
-   m_exTabWidget->setMarquee(enable);
+//   m_exTabWidget->setMarquee(enable);
 
-   if (enable) {
-      m_enableMarqueeBox->setText(tr("Stop marquee"));
+//   if (enable) {
+//      m_enableMarqueeBox->setText(tr("Stop marquee"));
 
-   } else {
-      m_enableMarqueeBox->setText(tr("Start marquee"));
-   }
+//   } else {
+//      m_enableMarqueeBox->setText(tr("Start marquee"));
+//   }
 }
 
 void MainWindow::setMarqueeSpeed(qreal charPerSec)
 {
-   m_exTabWidget->setMarqueeSpeed(charPerSec);
+//   m_exTabWidget->setMarqueeSpeed(charPerSec);
 }
 
 void MainWindow::showLogin(bool enable)
 {
-   m_exTabWidget->showLogin(enable);
-   m_loginStyleBox->setEnabled(enable);
+//   m_exTabWidget->showLogin(enable);
+//   m_loginStyleBox->setEnabled(enable);
 
-   if (enable) {
-      m_showLoginBox->setText(tr("Hide Login"));
+//   if (enable) {
+//      m_showLoginBox->setText(tr("Hide Login"));
 
-   } else {
-      m_showLoginBox->setText(tr("Show Login"));
-   }
+//   } else {
+//      m_showLoginBox->setText(tr("Show Login"));
+//   }
 }
 
 void MainWindow::setSizePolicyStatus()
@@ -751,8 +751,8 @@ void MainWindow::exSpinBoxChanged(int value)
 
 void MainWindow::setClockStylesheet()
 {
-   QString text = m_clockStylesheetEdit->toPlainText();
-   m_exTabWidget->setClockStyleSheet(text);
+//   QString text = m_clockStylesheetEdit->toPlainText();
+//   m_exTabWidget->setClockStyleSheet(text);
 }
 
 void MainWindow::setCurrentWidgetAlignment()
@@ -831,7 +831,7 @@ void MainWindow::exBoxTypeChanged(int /*index*/)
 
 void MainWindow::setMessage()
 {
-   m_exTabWidget->setMessage(m_messageEdit->text());
+//   m_exTabWidget->setMessage(m_messageEdit->text());
 }
 
 void MainWindow::setTempMessage()
@@ -846,9 +846,6 @@ QWidget* MainWindow::initLabelledWidgets()
    box->setLayout(l);
 
    m_lineEdit = new LabelledLineEdit(tr("QLineEdit :"), this);
-   // I chose textEdited because it ignores programatically changed text
-   //   connect(m_lineEdit, &LabelledLineEdit::textChanged,
-   //           this, &MainWindow::lineEditChanged);
    connect(m_lineEdit,
            &LabelledLineEdit::textEdited,
            this,
@@ -1346,53 +1343,53 @@ QWidget* MainWindow::initLoginControls()
    QVBoxLayout* layout = new QVBoxLayout;
    box->setLayout(layout);
 
-   m_showLoginBox = new QCheckBox(tr("Enable Login"), this);
-   connect(m_showLoginBox, &QCheckBox::clicked, this, &MainWindow::showLogin);
-   layout->addWidget(m_showLoginBox);
+//   m_showLoginBox = new QCheckBox(tr("Enable Login"), this);
+//   connect(m_showLoginBox, &QCheckBox::clicked, this, &MainWindow::showLogin);
+//   layout->addWidget(m_showLoginBox);
 
-   QStringList loginStyles;
-   loginStyles << "Simple Login" << "Standard login" << "Custom Login";
-   m_loginStyleBox = new LabelledComboBox(tr("Login Style"), this);
-   m_loginStyleBox->setEnabled(false);
-   connect(m_loginStyleBox, &LabelledComboBox::currentIndexChanged, this,
-           &MainWindow::loginStyleChanged);
-   m_loginStyleBox->addItems(loginStyles);
-   m_loginStyleBox->setItemData(0, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Simple));
-   m_loginStyleBox->setItemData(1, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Standard));
-   m_loginStyleBox->setItemData(2, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Custom));
-   layout->addWidget(m_loginStyleBox);
+//   QStringList loginStyles;
+//   loginStyles << "Simple Login" << "Standard login" << "Custom Login";
+//   m_loginStyleBox = new LabelledComboBox(tr("Login Style"), this);
+//   m_loginStyleBox->setEnabled(false);
+//   connect(m_loginStyleBox, &LabelledComboBox::currentIndexChanged, this,
+//           &MainWindow::loginStyleChanged);
+//   m_loginStyleBox->addItems(loginStyles);
+//   m_loginStyleBox->setItemData(0, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Simple));
+//   m_loginStyleBox->setItemData(1, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Standard));
+//   m_loginStyleBox->setItemData(2, QVariant::fromValue<AbstractLoginDialog::LoginType>(AbstractLoginDialog::Custom));
+//   layout->addWidget(m_loginStyleBox);
 
-   m_loginSimplePasswordEdit = new LabelledLineEdit(tr("Simple Password"), this);
-   layout->addWidget(m_loginSimplePasswordEdit);
+//   m_loginSimplePasswordEdit = new LabelledLineEdit(tr("Simple Password"), this);
+//   layout->addWidget(m_loginSimplePasswordEdit);
 
-   m_simpleLoginBtn = new QPushButton(tr("Set Simple Password"), this);
-   connect(m_simpleLoginBtn, &QPushButton::clicked,
-           this, &MainWindow::setSimpleLogin);
-   layout->addWidget(m_simpleLoginBtn);
+//   m_simpleLoginBtn = new QPushButton(tr("Set Simple Password"), this);
+//   connect(m_simpleLoginBtn, &QPushButton::clicked,
+//           this, &MainWindow::setSimpleLogin);
+//   layout->addWidget(m_simpleLoginBtn);
 
-   QHBoxLayout *standardPasswordLayout=new QHBoxLayout;
-   m_loginStandardUsernameEdit = new LabelledLineEdit(tr("Standard Username"), this);
-   standardPasswordLayout->addWidget(m_loginStandardUsernameEdit);
-   m_loginStandardPasswordEdit = new LabelledLineEdit(tr("Standard Password"), this);
-   standardPasswordLayout->addWidget(m_loginStandardPasswordEdit);
-   layout->addLayout(standardPasswordLayout);
+//   QHBoxLayout *standardPasswordLayout=new QHBoxLayout;
+//   m_loginStandardUsernameEdit = new LabelledLineEdit(tr("Standard Username"), this);
+//   standardPasswordLayout->addWidget(m_loginStandardUsernameEdit);
+//   m_loginStandardPasswordEdit = new LabelledLineEdit(tr("Standard Password"), this);
+//   standardPasswordLayout->addWidget(m_loginStandardPasswordEdit);
+//   layout->addLayout(standardPasswordLayout);
 
-   m_stdPasswordBtn = new QPushButton(tr("Set Standard User"), this);
-   connect(m_stdPasswordBtn, &QPushButton::clicked,
-           this, &MainWindow::setStandardLogin);
-   layout->addWidget(m_stdPasswordBtn);
+//   m_stdPasswordBtn = new QPushButton(tr("Set Standard User"), this);
+//   connect(m_stdPasswordBtn, &QPushButton::clicked,
+//           this, &MainWindow::setStandardLogin);
+//   layout->addWidget(m_stdPasswordBtn);
 
-   m_clearStdPasswordsBtn = new QPushButton(tr("Clear Standard passwords"), this);
-   connect(m_clearStdPasswordsBtn, &QPushButton::clicked,
-           m_exTabWidget, &ExTabWidget::clearPasswords);
-   layout->addWidget(m_clearStdPasswordsBtn);
+//   m_clearStdPasswordsBtn = new QPushButton(tr("Clear Standard passwords"), this);
+//   connect(m_clearStdPasswordsBtn, &QPushButton::clicked,
+//           m_exTabWidget, &ExTabWidget::clearPasswords);
+//   layout->addWidget(m_clearStdPasswordsBtn);
 
-   QFrame* dummy = new QFrame(this);
-   dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-   layout->addWidget(dummy);
+//   QFrame* dummy = new QFrame(this);
+//   dummy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//   layout->addWidget(dummy);
 
-//   CustomLoginDialog *customLoginDlg = new CustomLoginDialog(this);
-//   m_exTabWidget->setCustomLoginDialog(customLoginDlg);
+////   CustomLoginDialog *customLoginDlg = new CustomLoginDialog(this);
+////   m_exTabWidget->setCustomLoginDialog(customLoginDlg);
 
    return box;
 
@@ -1444,16 +1441,16 @@ QWidget* MainWindow::initMessageControls()
 
 QWidget* MainWindow::initExTabWidget()
 {
-   m_exTabWidget = new ExTabWidget(this);
-   QFrame* f1 = new QFrame(this);
-   QGridLayout* l1 = new QGridLayout;
-   f1->setLayout(l1);
+//   m_exTabWidget = new ExTabWidget(this);
+//   QFrame* f1 = new QFrame(this);
+//   QGridLayout* l1 = new QGridLayout;
+//   f1->setLayout(l1);
 
-   m_exTabWidget->addTab(initClockControls(), tr("Clock Controls"));
-   m_exTabWidget->addTab(initLoginControls(), tr("Login Controls"));
-   m_exTabWidget->addTab(initMessageControls(), tr("Message Controls"));
+//   m_exTabWidget->addTab(initClockControls(), tr("Clock Controls"));
+//   m_exTabWidget->addTab(initLoginControls(), tr("Login Controls"));
+//   m_exTabWidget->addTab(initMessageControls(), tr("Message Controls"));
 
-   return m_exTabWidget;
+//   return m_exTabWidget;
 }
 
 void MainWindow::initGui()
@@ -1463,7 +1460,7 @@ void MainWindow::initGui()
 
 
    m_tabs->addTab(initLabelledWidgetFrame(), tr("Labelled Widgets"));
-   m_tabs->addTab(initExTabWidget(), tr("Extended TabWidget"));
+//   m_tabs->addTab(initExTabWidget(), tr("Extended TabWidget"));
 }
 
 //void CustomLoginDialog::clearText() {

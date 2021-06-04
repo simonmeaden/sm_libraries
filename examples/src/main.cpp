@@ -26,7 +26,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 int main(int argc, char* argv[])
 {
   qRegisterMetaType<Qt::Alignment>("Qt::Alignment");
-  qRegisterMetaType<AbstractLoginDialog::LoginType>("AbstractLoginDialog::LoginType");
+//  qRegisterMetaType<AbstractLoginDialog::LoginType>("AbstractLoginDialog::LoginType");
 
   QApplication a(argc, argv);
   MainWindow w;

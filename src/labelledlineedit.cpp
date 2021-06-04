@@ -21,359 +21,429 @@
 */
 #include "sm_widgets/labelledlineedit.h"
 
-LabelledLineEdit::LabelledLineEdit(const QString& labelText, QWidget* parent, const WidgetFactory& factory)
-   : AbstractLabelledWidget(labelText, parent, factory)
-{
-   LabelledLineEdit::initGui(QString());
-}
+LabelledLineEdit::LabelledLineEdit(const QString& labelText, QWidget* parent)
+  : LabelledLineEdit(LabelledLineEdit::WidgetFactory(),
+                     labelText,
+                     QString(),
+                     parent)
+{}
 
 LabelledLineEdit::LabelledLineEdit(const QString& labelText,
                                    const QString& contents,
-                                   QWidget* parent, const WidgetFactory& factory)
-   : AbstractLabelledWidget(labelText, parent, factory)
+                                   QWidget* parent)
+  : LabelledLineEdit(LabelledLineEdit::WidgetFactory(),
+                     labelText,
+                     contents,
+                     parent)
+{}
+
+LabelledLineEdit::LabelledLineEdit(const WidgetFactory& factory,
+                                   const QString& labelText,
+                                   const QString& contents,
+                                   QWidget* parent)
+  : AbstractLabelledWidget(labelText, parent, factory)
 {
-   LabelledLineEdit::initGui(contents);
+  LabelledLineEdit::initGui(contents);
 }
 
-void LabelledLineEdit::addAction(QAction* action,
-                                 QLineEdit::ActionPosition labelPosition)
+void
+LabelledLineEdit::addAction(QAction* action,
+                            QLineEdit::ActionPosition labelPosition)
 {
-   qobject_cast<QLineEdit*>(m_widget)->addAction(action, labelPosition);
+  qobject_cast<QLineEdit*>(m_widget)->addAction(action, labelPosition);
 }
 
-QAction* LabelledLineEdit::addAction(const QIcon& icon,
-                                     QLineEdit::ActionPosition labelPosition)
+QAction*
+LabelledLineEdit::addAction(const QIcon& icon,
+                            QLineEdit::ActionPosition labelPosition)
 {
-   return qobject_cast<QLineEdit*>(m_widget)->addAction(icon, labelPosition);
+  return qobject_cast<QLineEdit*>(m_widget)->addAction(icon, labelPosition);
 }
 
-void LabelledLineEdit::backspace()
+void
+LabelledLineEdit::backspace()
 {
-   qobject_cast<QLineEdit*>(m_widget)->backspace();
+  qobject_cast<QLineEdit*>(m_widget)->backspace();
 }
 
-QCompleter* LabelledLineEdit::completer() const
+QCompleter*
+LabelledLineEdit::completer() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->completer();
+  return qobject_cast<QLineEdit*>(m_widget)->completer();
 }
 
-QMenu* LabelledLineEdit::createStandardContextMenu()
+QMenu*
+LabelledLineEdit::createStandardContextMenu()
 {
-   return qobject_cast<QLineEdit*>(m_widget)->createStandardContextMenu();
+  return qobject_cast<QLineEdit*>(m_widget)->createStandardContextMenu();
 }
 
-void LabelledLineEdit::cursorBackward(bool mark, int steps)
+void
+LabelledLineEdit::cursorBackward(bool mark, int steps)
 {
-   qobject_cast<QLineEdit*>(m_widget)->cursorBackward(mark, steps);
+  qobject_cast<QLineEdit*>(m_widget)->cursorBackward(mark, steps);
 }
 
-void LabelledLineEdit::cursorForward(bool mark, int steps)
+void
+LabelledLineEdit::cursorForward(bool mark, int steps)
 {
-   qobject_cast<QLineEdit*>(m_widget)->cursorForward(mark, steps);
+  qobject_cast<QLineEdit*>(m_widget)->cursorForward(mark, steps);
 }
 
-int LabelledLineEdit::cursorPositionAt(const QPoint& pos)
+int
+LabelledLineEdit::cursorPositionAt(const QPoint& pos)
 {
-   return qobject_cast<QLineEdit*>(m_widget)->cursorPositionAt(pos);
+  return qobject_cast<QLineEdit*>(m_widget)->cursorPositionAt(pos);
 }
 
-void LabelledLineEdit::cursorWordBackward(bool mark)
+void
+LabelledLineEdit::cursorWordBackward(bool mark)
 {
-   qobject_cast<QLineEdit*>(m_widget)->cursorWordBackward(mark);
+  qobject_cast<QLineEdit*>(m_widget)->cursorWordBackward(mark);
 }
 
-void LabelledLineEdit::cursorWordForward(bool mark)
+void
+LabelledLineEdit::cursorWordForward(bool mark)
 {
-   qobject_cast<QLineEdit*>(m_widget)->cursorWordForward(mark);
+  qobject_cast<QLineEdit*>(m_widget)->cursorWordForward(mark);
 }
 
-void LabelledLineEdit::del()
+void
+LabelledLineEdit::del()
 {
-   qobject_cast<QLineEdit*>(m_widget)->del();
+  qobject_cast<QLineEdit*>(m_widget)->del();
 }
 
-void LabelledLineEdit::deselect()
+void
+LabelledLineEdit::deselect()
 {
-   qobject_cast<QLineEdit*>(m_widget)->deselect();
+  qobject_cast<QLineEdit*>(m_widget)->deselect();
 }
 
-void LabelledLineEdit::end(bool mark)
+void
+LabelledLineEdit::end(bool mark)
 {
-   return qobject_cast<QLineEdit*>(m_widget)->end(mark);
+  return qobject_cast<QLineEdit*>(m_widget)->end(mark);
 }
 
-void LabelledLineEdit::home(bool mark)
+void
+LabelledLineEdit::home(bool mark)
 {
-   qobject_cast<QLineEdit*>(m_widget)->home(mark);
+  qobject_cast<QLineEdit*>(m_widget)->home(mark);
 }
 
-void LabelledLineEdit::insert(const QString& newText)
+void
+LabelledLineEdit::insert(const QString& newText)
 {
-   qobject_cast<QLineEdit*>(m_widget)->insert(newText);
+  qobject_cast<QLineEdit*>(m_widget)->insert(newText);
 }
 
-int LabelledLineEdit::selectionEnd() const
+int
+LabelledLineEdit::selectionEnd() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->selectionEnd();
+  return qobject_cast<QLineEdit*>(m_widget)->selectionEnd();
 }
 
-int LabelledLineEdit::selectionLength() const
+int
+LabelledLineEdit::selectionLength() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->selectionLength();
+  return qobject_cast<QLineEdit*>(m_widget)->selectionLength();
 }
 
-int LabelledLineEdit::selectionStart() const
+int
+LabelledLineEdit::selectionStart() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->selectionStart();
+  return qobject_cast<QLineEdit*>(m_widget)->selectionStart();
 }
 
-void LabelledLineEdit::setCompleter(QCompleter* c)
+void
+LabelledLineEdit::setCompleter(QCompleter* c)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setCompleter(c);
+  qobject_cast<QLineEdit*>(m_widget)->setCompleter(c);
 }
 
-void LabelledLineEdit::setSelection(int start, int length)
+void
+LabelledLineEdit::setSelection(int start, int length)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setSelection(start, length);
+  qobject_cast<QLineEdit*>(m_widget)->setSelection(start, length);
 }
 
-void LabelledLineEdit::setTextMargins(int left, int top, int right, int bottom)
+void
+LabelledLineEdit::setTextMargins(int left, int top, int right, int bottom)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setTextMargins(left, top, right, bottom);
+  qobject_cast<QLineEdit*>(m_widget)->setTextMargins(left, top, right, bottom);
 }
 
-void LabelledLineEdit::setValidator(const QValidator* v)
+void
+LabelledLineEdit::setValidator(const QValidator* v)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setValidator(v);
+  qobject_cast<QLineEdit*>(m_widget)->setValidator(v);
 }
 
-QMargins LabelledLineEdit::textMargins() const
+QMargins
+LabelledLineEdit::textMargins() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->textMargins();
+  return qobject_cast<QLineEdit*>(m_widget)->textMargins();
 }
 
-const QValidator* LabelledLineEdit::validator() const
+const QValidator*
+LabelledLineEdit::validator() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->validator();
+  return qobject_cast<QLineEdit*>(m_widget)->validator();
 }
 
-QString LabelledLineEdit::text() const
+QString
+LabelledLineEdit::text() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->text();
+  return qobject_cast<QLineEdit*>(m_widget)->text();
 }
 
-void LabelledLineEdit::setText(const QString& text)
+void
+LabelledLineEdit::setText(const QString& text)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setText(text);
+  qobject_cast<QLineEdit*>(m_widget)->setText(text);
 }
 
-bool LabelledLineEdit::hasAcceptableInput() const
+bool
+LabelledLineEdit::hasAcceptableInput() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->hasAcceptableInput();
+  return qobject_cast<QLineEdit*>(m_widget)->hasAcceptableInput();
 }
 
-void LabelledLineEdit::setWidgetAlignment(const Qt::Alignment& widgetAlignment)
+void
+LabelledLineEdit::setWidgetAlignment(const Qt::Alignment& widgetAlignment)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setAlignment(widgetAlignment);
+  qobject_cast<QLineEdit*>(m_widget)->setAlignment(widgetAlignment);
 }
 
-Qt::Alignment LabelledLineEdit::widgetAlignment() const
+Qt::Alignment
+LabelledLineEdit::widgetAlignment() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->alignment();
+  return qobject_cast<QLineEdit*>(m_widget)->alignment();
 }
 
-bool LabelledLineEdit::isClearButtonEnabled() const
+bool
+LabelledLineEdit::isClearButtonEnabled() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->isClearButtonEnabled();
+  return qobject_cast<QLineEdit*>(m_widget)->isClearButtonEnabled();
 }
 
-void LabelledLineEdit::setClearButtonEnabled(bool enable)
+void
+LabelledLineEdit::setClearButtonEnabled(bool enable)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setClearButtonEnabled(enable);
+  qobject_cast<QLineEdit*>(m_widget)->setClearButtonEnabled(enable);
 }
 
-Qt::CursorMoveStyle LabelledLineEdit::cursorMoveStyle() const
+Qt::CursorMoveStyle
+LabelledLineEdit::cursorMoveStyle() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->cursorMoveStyle();
+  return qobject_cast<QLineEdit*>(m_widget)->cursorMoveStyle();
 }
 
-void LabelledLineEdit::setCursorMoveStyle(Qt::CursorMoveStyle style)
+void
+LabelledLineEdit::setCursorMoveStyle(Qt::CursorMoveStyle style)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setCursorMoveStyle(style);
+  qobject_cast<QLineEdit*>(m_widget)->setCursorMoveStyle(style);
 }
 
-int LabelledLineEdit::cursorPosition() const
+int
+LabelledLineEdit::cursorPosition() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->cursorPosition();
+  return qobject_cast<QLineEdit*>(m_widget)->cursorPosition();
 }
 
-void LabelledLineEdit::setCursorPosition(int position)
+void
+LabelledLineEdit::setCursorPosition(int position)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setCursorPosition(position);
+  qobject_cast<QLineEdit*>(m_widget)->setCursorPosition(position);
 }
 
-QString LabelledLineEdit::displayText() const
+QString
+LabelledLineEdit::displayText() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->displayText();
+  return qobject_cast<QLineEdit*>(m_widget)->displayText();
 }
 
-bool LabelledLineEdit::dragEnabled() const
+bool
+LabelledLineEdit::dragEnabled() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->dragEnabled();
+  return qobject_cast<QLineEdit*>(m_widget)->dragEnabled();
 }
 
-void LabelledLineEdit::setDragEnabled(bool enabled)
+void
+LabelledLineEdit::setDragEnabled(bool enabled)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setDragEnabled(enabled);
+  qobject_cast<QLineEdit*>(m_widget)->setDragEnabled(enabled);
 }
 
-QLineEdit::EchoMode LabelledLineEdit::echoMode() const
+QLineEdit::EchoMode
+LabelledLineEdit::echoMode() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->echoMode();
+  return qobject_cast<QLineEdit*>(m_widget)->echoMode();
 }
 
-void LabelledLineEdit::setEchoMode(QLineEdit::EchoMode echomode)
+void
+LabelledLineEdit::setEchoMode(QLineEdit::EchoMode echomode)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setEchoMode(echomode);
+  qobject_cast<QLineEdit*>(m_widget)->setEchoMode(echomode);
 }
 
-bool LabelledLineEdit::hasSelectedText() const
+bool
+LabelledLineEdit::hasSelectedText() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->hasSelectedText();
+  return qobject_cast<QLineEdit*>(m_widget)->hasSelectedText();
 }
 
-QString LabelledLineEdit::inputMask() const
+QString
+LabelledLineEdit::inputMask() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->inputMask();
+  return qobject_cast<QLineEdit*>(m_widget)->inputMask();
 }
 
-void LabelledLineEdit::setInputMask(const QString& inputMask)
+void
+LabelledLineEdit::setInputMask(const QString& inputMask)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setInputMask(inputMask);
+  qobject_cast<QLineEdit*>(m_widget)->setInputMask(inputMask);
 }
 
-int LabelledLineEdit::maxLength() const
+int
+LabelledLineEdit::maxLength() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->maxLength();
+  return qobject_cast<QLineEdit*>(m_widget)->maxLength();
 }
 
-void LabelledLineEdit::setMaxLength(int length)
+void
+LabelledLineEdit::setMaxLength(int length)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setMaxLength(length);
+  qobject_cast<QLineEdit*>(m_widget)->setMaxLength(length);
 }
 
-bool LabelledLineEdit::isModified() const
+bool
+LabelledLineEdit::isModified() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->isModified();
+  return qobject_cast<QLineEdit*>(m_widget)->isModified();
 }
 
-void LabelledLineEdit::setModified(bool modified)
+void
+LabelledLineEdit::setModified(bool modified)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setModified(modified);
+  qobject_cast<QLineEdit*>(m_widget)->setModified(modified);
 }
 
-QString LabelledLineEdit::placeholderText() const
+QString
+LabelledLineEdit::placeholderText() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->placeholderText();
+  return qobject_cast<QLineEdit*>(m_widget)->placeholderText();
 }
 
-void LabelledLineEdit::setPlaceholderText(const QString& placeholderText)
+void
+LabelledLineEdit::setPlaceholderText(const QString& placeholderText)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setPlaceholderText(placeholderText);
+  qobject_cast<QLineEdit*>(m_widget)->setPlaceholderText(placeholderText);
 }
 
-bool LabelledLineEdit::isReadOnly() const
+bool
+LabelledLineEdit::isReadOnly() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->isReadOnly();
+  return qobject_cast<QLineEdit*>(m_widget)->isReadOnly();
 }
 
-void LabelledLineEdit::setReadOnly(bool readonly)
+void
+LabelledLineEdit::setReadOnly(bool readonly)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setReadOnly(readonly);
+  qobject_cast<QLineEdit*>(m_widget)->setReadOnly(readonly);
 }
 
-bool LabelledLineEdit::isRedoAvailable() const
+bool
+LabelledLineEdit::isRedoAvailable() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->isRedoAvailable();
+  return qobject_cast<QLineEdit*>(m_widget)->isRedoAvailable();
 }
 
-QString LabelledLineEdit::selectedText() const
+QString
+LabelledLineEdit::selectedText() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->selectedText();
+  return qobject_cast<QLineEdit*>(m_widget)->selectedText();
 }
 
-bool LabelledLineEdit::isUndoAvailable() const
+bool
+LabelledLineEdit::isUndoAvailable() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->isUndoAvailable();
+  return qobject_cast<QLineEdit*>(m_widget)->isUndoAvailable();
 }
 
-bool LabelledLineEdit::isEmpty() const
+bool
+LabelledLineEdit::isEmpty() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->text().isEmpty();
+  return qobject_cast<QLineEdit*>(m_widget)->text().isEmpty();
 }
 
-int LabelledLineEdit::size() const
+int
+LabelledLineEdit::size() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->text().size();
+  return qobject_cast<QLineEdit*>(m_widget)->text().size();
 }
 
-int LabelledLineEdit::length() const
+int
+LabelledLineEdit::length() const
 {
-   return qobject_cast<QLineEdit*>(m_widget)->text().size();
+  return qobject_cast<QLineEdit*>(m_widget)->text().size();
 }
 
-void LabelledLineEdit::clear()
+void
+LabelledLineEdit::clear()
 {
-   qobject_cast<QLineEdit*>(m_widget)->clear();
+  qobject_cast<QLineEdit*>(m_widget)->clear();
 }
 
-void LabelledLineEdit::initGui(QString contents)
+void
+LabelledLineEdit::initGui(QString contents)
 {
-   qobject_cast<QLineEdit*>(m_widget)->setText(contents);
-   connect(qobject_cast<QLineEdit*>(m_widget),
-           &QLineEdit::cursorPositionChanged,
-           this,
-           &LabelledLineEdit::cursorPositionChanged);
-   connect(qobject_cast<QLineEdit*>(m_widget),
-           &QLineEdit::editingFinished,
-           this,
-           &LabelledLineEdit::editingFinished);
-   connect(qobject_cast<QLineEdit*>(m_widget),
-           &QLineEdit::inputRejected,
-           this,
-           &LabelledLineEdit::inputRejected);
-   connect(qobject_cast<QLineEdit*>(m_widget),
-           &QLineEdit::returnPressed,
-           this,
-           &LabelledLineEdit::returnPressed);
-   connect(qobject_cast<QLineEdit*>(m_widget),
-           &QLineEdit::editingFinished,
-           this,
-           &LabelledLineEdit::selectionChanged);
-     connect(qobject_cast<QLineEdit*>(m_widget),
-             &QLineEdit::textChanged,
-             this,
-             &LabelledLineEdit::textChanged);
-//   connect(qobject_cast<QLineEdit*>(m_widget),
-//           &QLineEdit::textChanged,
-//           this,
-//           &LabelledLineEdit::textHasChanged);
-     connect(qobject_cast<QLineEdit*>(m_widget),
-             &QLineEdit::textEdited,
-             this,
-             &LabelledLineEdit::textEdited);
-//   connect(qobject_cast<QLineEdit*>(m_widget),
-//           &QLineEdit::textEdited,
-//           this,
-//           &LabelledLineEdit::textHasEdited);
+  qobject_cast<QLineEdit*>(m_widget)->setText(contents);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::cursorPositionChanged,
+          this,
+          &LabelledLineEdit::cursorPositionChanged);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::editingFinished,
+          this,
+          &LabelledLineEdit::editingFinished);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::inputRejected,
+          this,
+          &LabelledLineEdit::inputRejected);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::returnPressed,
+          this,
+          &LabelledLineEdit::returnPressed);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::editingFinished,
+          this,
+          &LabelledLineEdit::selectionChanged);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::textChanged,
+          this,
+          &LabelledLineEdit::textChanged);
+  //   connect(qobject_cast<QLineEdit*>(m_widget),
+  //           &QLineEdit::textChanged,
+  //           this,
+  //           &LabelledLineEdit::textHasChanged);
+  connect(qobject_cast<QLineEdit*>(m_widget),
+          &QLineEdit::textEdited,
+          this,
+          &LabelledLineEdit::textEdited);
+  //   connect(qobject_cast<QLineEdit*>(m_widget),
+  //           &QLineEdit::textEdited,
+  //           this,
+  //           &LabelledLineEdit::textHasEdited);
 }
 
-//void LabelledLineEdit::textHasChanged(const QString& text)
+// void LabelledLineEdit::textHasChanged(const QString& text)
 //{
 //   emit textChanged(text);
 //}
 
-//void LabelledLineEdit::textHasEdited(const QString& text)
+// void LabelledLineEdit::textHasEdited(const QString& text)
 //{
 //   emit textEdited(text);
 //}

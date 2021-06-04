@@ -47,50 +47,51 @@ ExtendedColorDialog::ExtendedColorDialog(QWidget* parent)
   initGui();
 }
 
-ExtendedColorDialog::ExtendedColorDialog(const QColor& initialColor,
+ExtendedColorDialog::ExtendedColorDialog(const QColor& primaryColor,
                                          QWidget* parent)
   : QDialog(parent)
-  , m_primaryColor(initialColor)
+  , m_primaryColor(primaryColor)
   , m_secondaryColor(Qt::white)
 {
   initGui();
-  setColor(ColorType::Primary, initialColor, "white");
+  setPrimaryColor(primaryColor, "white");
 }
 
-ExtendedColorDialog::ExtendedColorDialog(const QString& initialColor,
+ExtendedColorDialog::ExtendedColorDialog(const QString& primaryColor,
                                          QWidget* parent)
   : QDialog(parent)
 {
   initGui();
-  auto color = QColorConstants::svgOrX11Color(initialColor);
-  setColor(ColorType::Primary, color, initialColor);
-  setColor(ColorType::Secondary, color, initialColor);
+  auto color = QColorConstants::svgOrX11Color(primaryColor);
+  setPrimaryColor(color, primaryColor);
+  setSecondaryColor(color, primaryColor);
 }
 
-ExtendedColorDialog::ExtendedColorDialog(const QColor& initialColor,
+ExtendedColorDialog::ExtendedColorDialog(const QColor& primaryColor,
                                          const QColor& secondaryColor,
                                          QWidget* parent)
   : QDialog(parent)
 {
   initGui();
-  setColor(ColorType::Primary, initialColor);
-  setColor(ColorType::Secondary, secondaryColor);
+  auto pColor = QColorConstants::svgOrX11Name(primaryColor);
+  setPrimaryColor(primaryColor, pColor);
+  pColor = QColorConstants::svgOrX11Name(secondaryColor);
+  setSecondaryColor(secondaryColor, pColor);
 }
 
-ExtendedColorDialog::ExtendedColorDialog(const QString& initialColor,
+ExtendedColorDialog::ExtendedColorDialog(const QString& primaryColor,
                                          const QString& secondaryColor,
                                          QWidget* parent)
   : QDialog(parent)
 {
   initGui();
-  auto color = QColorConstants::svgOrX11Color(initialColor);
-  setColor(ColorType::Primary, color, initialColor);
-  initGui();
+  auto color = QColorConstants::svgOrX11Color(primaryColor);
+  setPrimaryColor(color, primaryColor);
   color = QColorConstants::svgOrX11Color(secondaryColor);
   if (color == Qt::white) {
-    setColor(ColorType::Secondary, color, "white");
+    setSecondaryColor(color, "white");
   } else {
-    setColor(ColorType::Secondary, color, initialColor);
+    setSecondaryColor(color, secondaryColor);
   }
 }
 
@@ -333,8 +334,7 @@ ExtendedColorDialog::secondaryTextColorMenuClicked()
   auto index = act->data().value<QModelIndex>();
   if (index.isValid()) {
     m_secondaryTextColor = index.data(Qt::BackgroundRole).value<QColor>();
-    m_secondaryTextName =
-      QColorConstants::svgOrX11Name(m_secondaryTextColor);
+    m_secondaryTextName = QColorConstants::svgOrX11Name(m_secondaryTextColor);
     m_display->setSecondaryTextColor(m_secondaryTextColor, m_secondaryTextName);
   }
 }
@@ -1062,35 +1062,79 @@ ExtendedColorDialog::textColor(ColorType type) const
 }
 
 void
-ExtendedColorDialog::setColor(ColorType type,
-                              const QColor& color,
-                              const QString& name)
+ExtendedColorDialog::setColor(ColorType type, const QColor& color)
 {
+  auto name = QColorConstants::svgOrX11Name(color);
   if (type == Secondary) {
-    m_secondaryColor = color;
-    m_secondaryName = name;
-    m_display->setSecondaryColor(color, name);
+    setSecondaryColor(color, name);
   } else {
-    m_primaryColor = color;
-    m_primaryName = name;
-    m_colorDlg->setCurrentColor(color);
-    m_display->setPrimaryColor(color, name);
+    setPrimaryColor(color, name);
   }
 }
 
 void
-ExtendedColorDialog::setTextColor(ColorType type,
-                                  const QColor& color,
-                                  const QString& name)
+ExtendedColorDialog::setColor(ColorType type, const QString& name)
 {
+  auto color = QColorConstants::svgOrX11Color(name);
   if (type == Secondary) {
-    m_secondaryTextColor = color;
-    m_secondaryTextName = name;
-    m_display->setSecondaryTextColor(color, name);
+    setSecondaryColor(color, name);
   } else {
-    m_primaryTextColor = color;
-    m_primaryTextName = name;
-    m_display->setPrimaryTextColor(color, name);
+    setPrimaryColor(color, name);
+  }
+}
+
+void
+ExtendedColorDialog::setPrimaryColor(QColor color, QString name)
+{
+  m_primaryColor = color;
+  m_primaryName = name;
+  m_colorDlg->setCurrentColor(color);
+  m_display->setPrimaryColor(color, name);
+}
+
+void
+ExtendedColorDialog::setPrimaryTextColor(QColor color, QString name)
+{
+  m_primaryTextColor = color;
+  m_primaryTextName = name;
+  m_display->setPrimaryTextColor(color, name);
+}
+
+void
+ExtendedColorDialog::setSecondaryColor(QColor color, QString name)
+{
+  m_secondaryColor = color;
+  m_secondaryName = name;
+  m_display->setSecondaryColor(color, name);
+}
+
+void
+ExtendedColorDialog::setSecondaryTextColor(QColor color, QString name)
+{
+  m_secondaryTextColor = color;
+  m_secondaryTextName = name;
+  m_display->setSecondaryTextColor(color, name);
+}
+
+void
+ExtendedColorDialog::setTextColor(ColorType type, const QColor& color)
+{
+  auto name = QColorConstants::svgOrX11Name(color);
+  if (type == Secondary) {
+    setSecondaryTextColor(color, name);
+  } else {
+    setPrimaryTextColor(color, name);
+  }
+}
+
+void
+ExtendedColorDialog::setTextColor(ColorType type, const QString& name)
+{
+  auto color = QColorConstants::svgOrX11Color(name);
+  if (type == Secondary) {
+    setSecondaryTextColor(color, name);
+  } else {
+    setPrimaryTextColor(color, name);
   }
 }
 
@@ -1205,8 +1249,8 @@ ExtendedColorDialog::hash(ColorType type, int alpha) const
   return QString();
 }
 
-//QString
-//ExtendedColorDialog::svgOrX11Name(const QColor& color)
+// QString
+// ExtendedColorDialog::svgOrX11Name(const QColor& color)
 //{
 //  auto name = QColorConstants::Svg::name(color);
 //  if (!name.isEmpty()) {
@@ -1220,8 +1264,8 @@ ExtendedColorDialog::hash(ColorType type, int alpha) const
 //  return QString();
 //}
 
-//QColor
-//ExtendedColorDialog::svgOrX11Color(const QString& initialColor)
+// QColor
+// ExtendedColorDialog::svgOrX11Color(const QString& initialColor)
 //{
 //  auto color = QColorConstants::Svg::color(initialColor);
 //  if (color.isValid()) {
@@ -1235,8 +1279,8 @@ ExtendedColorDialog::hash(ColorType type, int alpha) const
 //  return Qt::white;
 //}
 
-//bool
-//ExtendedColorDialog::isDark(const QColor& color)
+// bool
+// ExtendedColorDialog::isDark(const QColor& color)
 //{
 //  auto r = color.redF();
 //  auto g = color.greenF();

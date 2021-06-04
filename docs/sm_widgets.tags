@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<tagfile doxygen_version="1.9.1">
+  <compound kind="page">
+    <name>index</name>
+    <title>SM Libraries - A few useful Qt classes I have developed.</title>
+    <filename>index.html</filename>
+    <docanchor file="index.html" title="Introduction">intro</docanchor>
+    <docanchor file="index.html" title="Installation">install</docanchor>
+    <docanchor file="index.html" title="Step 1: Cloning the git repository.">gitclone</docanchor>
+    <docanchor file="index.html" title="Step 2: Building the library.">build</docanchor>
+  </compound>
+</tagfile>

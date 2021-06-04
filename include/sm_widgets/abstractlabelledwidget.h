@@ -213,17 +213,21 @@ private:
   virtual void initGui(const QString& text = QString());
 };
 
-class CustomLabelledWidget : public AbstractLabelledWidget
-{
-  Q_OBJECT
-public:
-  explicit CustomLabelledWidget(const QString& text, QWidget* parent);
+// class CustomLabelledWidget : public AbstractLabelledWidget
+//{
+//  Q_OBJECT
+// public:
+//  //! \brief Constructor for CustomLabelledWidget.
+//  explicit CustomLabelledWidget(const QString& text, QWidget* parent);
 
-  void setWidget(QWidget* widget);
+////  //! \brief Sets the widget for the CustomLabelledWidget.
+////  //!
+////  //! Allows the user to specify any widget in the labelled widget.
+////  void setWidget(QWidget* widget);
 
-private:
-  void initGui(const QString& = QString());
-};
+// private:
+//  void initGui(const QString& = QString());
+//};
 
 /*!
    \interface AlignableWidgetInterface abstractlabelledwidget.h

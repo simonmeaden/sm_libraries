@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<QtHelpProject version="1.0">
+    <virtualFolder>sm_libraries</virtualFolder>
+    <namespace>uk.org.smelecomp</namespace>
+    <filterSection>
+        <toc>
+            <section title="SM_Libraries" ref="index.html">
+                <section title="Find File" ref="./findfile.html">
+                    <section title="File Dialog" ref="./filedialog.html"></section>
+                    <section title="Wildcard Matching" ref="./wildcardmatching.html"></section>
+                    <section title="Browse" ref="./browse.html"></section>
+                </section>
+                <section title="Open File" ref="./openfile.html"></section>
+            </section>
+        </toc>
+        <keywords>
+            <keyword name="plants" id="plants" ref="plants.html"/>
+            <keyword name="temperature" id="temperature" ref="temperature.html"/>
+            <keyword name="rain" id="rain" ref="rain.html"/>
+            <keyword name="time" id="time" ref="time.html"/>
+            <keyword name="amount" id="amount" ref="amount.html"/>
+            <keyword name="source" id="source" ref="source.html"/>
+            <keyword name="filtering" id="filtering" ref="filter.html"/>
+        </keywords>
+        <files>
+        <file>html/index.html.html</file>
+        <file>html/abstractlabelledspinbox_8h__dep__incl.png</file>
+        <file>html/abstractlabelledspinbox_8h__incl.png</file>
+        <file>html/abstractlabelledwidget_8h__dep__incl.png</file>
+        <file>html/abstractlabelledwidget_8h__incl.png</file>
+        <file>html/circularbuffer_8h__incl.png</file>
+        <file>html/classAbstractLabelledSpinBox__coll__graph.png</file>
+        <file>html/classAbstractLabelledSpinBox__inherit__graph.png</file>
+        <file>html/classAbstractLabelledWidget__coll__graph.png</file>
+        <file>html/classAbstractLabelledWidget__inherit__graph.png</file>
+        <file>html/classAlignableWidgetInterface__inherit__graph.png</file>
+        <file>html/classExSpinBox__coll__graph.png</file>
+        <file>html/classExSpinBox__inherit__graph.png</file>
+        <file>html/classExtendedColorDialog__coll__graph.png</file>
+        <file>html/classExtendedColorDialog__inherit__graph.png</file>
+        <file>html/classHexFormatDelegate__coll__graph.png</file>
+        <file>html/classHexFormatDelegate__inherit__graph.png</file>
+        <file>html/classLabelledComboBox__coll__graph.png</file>
+        <file>html/classLabelledComboBox__inherit__graph.png</file>
+        <file>html/classLabelledDoubleSpinBox__coll__graph.png</file>
+        <file>html/classLabelledDoubleSpinBox__inherit__graph.png</file>
+        <file>html/classLabelledExSpinBox__coll__graph.png</file>
+        <file>html/classLabelledExSpinBox__inherit__graph.png</file>
+        <file>html/classLabelledLineEdit__coll__graph.png</file>
+        <file>html/classLabelledLineEdit__inherit__graph.png</file>
+        <file>html/classLabelledSpinBox__coll__graph.png</file>
+        <file>html/classLabelledSpinBox__inherit__graph.png</file>
+        <file>html/classLabelledTextField__coll__graph.png</file>
+        <file>html/classLabelledTextField__inherit__graph.png</file>
+        <file>html/classTextFormatInterface__inherit__graph.png</file>
+        <file>html/closed.png</file>
+        <file>html/doc.png</file>
+        <file>html/exspinbox_8h__dep__incl.png</file>
+        <file>html/exspinbox_8h__incl.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        <file>html/image.png</file>
+        </files>
+    </filterSection>
+</QtHelpProject>
+
+-rw-r--r--. 1 root root    132 May 25 16:24 .png
+-rw-r--r--. 1 root root    746 May 25 16:24 .png
+-rw-r--r--. 1 root root   6579 May 25 16:24 .png
+-rw-r--r--. 1 root root  14723 May 25 16:24 .png
+-rw-r--r--. 1 root root  65729 May 25 16:24 extendedcolordialog_8h__incl.png
+-rw-r--r--. 1 root root    616 May 25 16:24 folderclosed.png
+-rw-r--r--. 1 root root    597 May 25 16:24 folderopen.png
+-rw-r--r--. 1 root root  22569 May 25 16:24 graph_legend.png
+-rw-r--r--. 1 root root  11729 May 25 16:24 hexformatdelegate_8h__incl.png
+-rw-r--r--. 1 root root  32250 May 25 16:24 inherit_graph_0.png
+-rw-r--r--. 1 root root   5355 May 25 16:24 inherit_graph_1.png
+-rw-r--r--. 1 root root   3376 May 25 16:24 inherit_graph_2.png
+-rw-r--r--. 1 root root   3466 May 25 16:24 inherit_graph_3.png
+-rw-r--r--. 1 root root   3902 May 25 16:24 inherit_graph_4.png
+-rw-r--r--. 1 root root   4216 May 25 16:24 labelledcombobox_8h__dep__incl.png
+-rw-r--r--. 1 root root  22454 May 25 16:24 labelledcombobox_8h__incl.png
+-rw-r--r--. 1 root root   4177 May 25 16:24 labelleddoublespinbox_8h__dep__incl.png
+-rw-r--r--. 1 root root  24627 May 25 16:24 labelleddoublespinbox_8h__incl.png
+-rw-r--r--. 1 root root   3997 May 25 16:24 labelledexspinbox_8h__dep__incl.png
+-rw-r--r--. 1 root root  37438 May 25 16:24 labelledexspinbox_8h__incl.png
+-rw-r--r--. 1 root root   3497 May 25 16:24 labelledlineedit_8h__dep__incl.png
+-rw-r--r--. 1 root root  20986 May 25 16:24 labelledlineedit_8h__incl.png
+-rw-r--r--. 1 root root   3931 May 25 16:24 labelledspinbox_8h__dep__incl.png
+-rw-r--r--. 1 root root  24477 May 25 16:24 labelledspinbox_8h__incl.png
+-rw-r--r--. 1 root root   3601 May 25 16:24 labelledtextfield_8h__dep__incl.png
+-rw-r--r--. 1 root root  27227 May 25 16:24 labelledtextfield_8h__incl.png
+-rw-r--r--. 1 root root    153 May 25 16:24 nav_f.png
+-rw-r--r--. 1 root root     95 May 25 16:24 nav_g.png
+-rw-r--r--. 1 root root     98 May 25 16:24 nav_h.png
+-rw-r--r--. 1 root root    123 May 25 16:24 open.png
+-rw-r--r--. 1 root root    314 May 25 16:24 splitbar.png
+-rw-r--r--. 1 root root    853 May 25 16:24 sync_off.png
+-rw-r--r--. 1 root root    845 May 25 16:24 sync_on.png
+-rw-r--r--. 1 root root    142 May 25 16:24 tab_a.png
+-rw-r--r--. 1 root root    169 May 25 16:24 tab_b.png
+-rw-r--r--. 1 root root    177 May 25 16:24 tab_h.png
+-rw-r--r--. 1 root root    184 May 25 16:24 tab_s.png
+-rw-r--r--. 1 root root   8724 May 25 16:24 x11colors_8h__incl.png

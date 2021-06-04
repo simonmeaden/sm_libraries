@@ -21,215 +21,251 @@
 */
 #include "sm_widgets/labelledtextfield.h"
 
-LabelledTextField::LabelledTextField(QWidget* parent,
-                                     WidgetFactory const& factory)
-   : AbstractLabelledWidget(QString(), parent, factory)
-{
-   LabelledTextField::initGui();
-}
-
-LabelledTextField::LabelledTextField(const QString& labelText,
-                                     QWidget* parent,
-                                     const WidgetFactory& factory)
-   : AbstractLabelledWidget(labelText, parent, factory)
-{
-   LabelledTextField::initGui();
-}
+LabelledTextField::LabelledTextField(const QString& labelText, QWidget* parent)
+  : LabelledTextField(LabelledTextField::WidgetFactory(),
+                      labelText,
+                      QString(),
+                      parent)
+{}
 
 LabelledTextField::LabelledTextField(const QString& labelText,
                                      const QString& contents,
-                                     QWidget* parent,
-                                     const WidgetFactory& factory)
-   : AbstractLabelledWidget(labelText, parent, factory)
+                                     QWidget* parent)
+  : LabelledTextField(LabelledTextField::WidgetFactory(),
+                      labelText,
+                      contents,
+                      parent)
+{}
+
+LabelledTextField::LabelledTextField(const WidgetFactory& factory,
+                                     const QString& labelText,
+                                     const QString& contents,
+                                     QWidget* parent)
+  : AbstractLabelledWidget(labelText, parent, factory)
 {
-   initGui(contents);
+  LabelledTextField::initGui(contents);
 }
 
-QLabel *LabelledTextField::textfield() {
+QLabel*
+LabelledTextField::textfield()
+{
   return qobject_cast<QLabel*>(m_widget);
 }
 
-QString LabelledTextField::text() const
+QString
+LabelledTextField::text() const
 {
   return qobject_cast<QLabel*>(m_widget)->text();
 }
 
-void LabelledTextField::setText(const QString& text)
+void
+LabelledTextField::setText(const QString& text)
 {
-   qobject_cast<QLabel*>(m_widget)->setText(text);
+  qobject_cast<QLabel*>(m_widget)->setText(text);
 }
 
-Qt::TextFormat LabelledTextField::textFormat() const
+Qt::TextFormat
+LabelledTextField::textFormat() const
 {
-   return qobject_cast<QLabel*>(m_widget)->textFormat();
+  return qobject_cast<QLabel*>(m_widget)->textFormat();
 }
 
-void LabelledTextField::setTextFormat(Qt::TextFormat format)
+void
+LabelledTextField::setTextFormat(Qt::TextFormat format)
 {
-   qobject_cast<QLabel*>(m_widget)->setTextFormat(format);
+  qobject_cast<QLabel*>(m_widget)->setTextFormat(format);
 }
 
-QPixmap LabelledTextField::pixmap() const
+QPixmap
+LabelledTextField::pixmap() const
 {
 #if QT_DEPRECATED_SINCE(5, 15)
-   return qobject_cast<QLabel*>(m_widget)->pixmap(Qt::ReturnByValue);
+  return qobject_cast<QLabel*>(m_widget)->pixmap(Qt::ReturnByValue);
 #else
-   return qobject_cast<QLabel*>(m_widget)->pixmap(Qt::ReturnByValueConstant);
+  return qobject_cast<QLabel*>(m_widget)->pixmap(Qt::ReturnByValueConstant);
 #endif
 }
 
-void LabelledTextField::setPixmap(const QPixmap& pixmap)
+void
+LabelledTextField::setPixmap(const QPixmap& pixmap)
 {
-   qobject_cast<QLabel*>(m_widget)->setPixmap(pixmap);
+  qobject_cast<QLabel*>(m_widget)->setPixmap(pixmap);
 }
 
 #ifndef QT_NO_PICTURE
-QPicture LabelledTextField::picture() const
+QPicture
+LabelledTextField::picture() const
 {
 #if QT_DEPRECATED_SINCE(5, 15)
-   return qobject_cast<QLabel*>(m_widget)->picture(Qt::ReturnByValue);
+  return qobject_cast<QLabel*>(m_widget)->picture(Qt::ReturnByValue);
 #else
-   return qobject_cast<QLabel*>(m_widget)->picture(Qt::ReturnByValueConstant);
+  return qobject_cast<QLabel*>(m_widget)->picture(Qt::ReturnByValueConstant);
 #endif
 }
 
-void LabelledTextField::setPicture(const QPicture& picture)
+void
+LabelledTextField::setPicture(const QPicture& picture)
 {
-   qobject_cast<QLabel*>(m_widget)->setPicture(picture);
+  qobject_cast<QLabel*>(m_widget)->setPicture(picture);
 }
 #endif
 
 #if QT_CONFIG(movie)
-QMovie* LabelledTextField::movie() const
+QMovie*
+LabelledTextField::movie() const
 {
-   return qobject_cast<QLabel*>(m_widget)->movie();
+  return qobject_cast<QLabel*>(m_widget)->movie();
 }
 
-void LabelledTextField::setMovie(QMovie* movie)
+void
+LabelledTextField::setMovie(QMovie* movie)
 {
-   qobject_cast<QLabel*>(m_widget)->setMovie(movie);
+  qobject_cast<QLabel*>(m_widget)->setMovie(movie);
 }
 #endif
 
-bool LabelledTextField::hasScaledContents() const
+bool
+LabelledTextField::hasScaledContents() const
 {
-   return qobject_cast<QLabel*>(m_widget)->hasScaledContents();
+  return qobject_cast<QLabel*>(m_widget)->hasScaledContents();
 }
 
-void LabelledTextField::setScaledContents(bool scaled)
+void
+LabelledTextField::setScaledContents(bool scaled)
 {
-   qobject_cast<QLabel*>(m_widget)->setScaledContents(scaled);
+  qobject_cast<QLabel*>(m_widget)->setScaledContents(scaled);
 }
 
-Qt::Alignment LabelledTextField::widgetAlignment() const
+Qt::Alignment
+LabelledTextField::widgetAlignment() const
 {
-   return qobject_cast<QLabel*>(m_widget)->alignment();
+  return qobject_cast<QLabel*>(m_widget)->alignment();
 }
 
-void LabelledTextField::setWidgetAlignment(const Qt::Alignment& alignment)
+void
+LabelledTextField::setWidgetAlignment(const Qt::Alignment& alignment)
 {
-   qobject_cast<QLabel*>(m_widget)->setAlignment(alignment);
+  qobject_cast<QLabel*>(m_widget)->setAlignment(alignment);
 }
 
-bool LabelledTextField::wordWrap() const
+bool
+LabelledTextField::wordWrap() const
 {
-   return qobject_cast<QLabel*>(m_widget)->wordWrap();
+  return qobject_cast<QLabel*>(m_widget)->wordWrap();
 }
 
-void LabelledTextField::setWordWrap(bool on)
+void
+LabelledTextField::setWordWrap(bool on)
 {
-   qobject_cast<QLabel*>(m_widget)->setWordWrap(on);
+  qobject_cast<QLabel*>(m_widget)->setWordWrap(on);
 }
 
-int LabelledTextField::indent() const
+int
+LabelledTextField::indent() const
 {
-   return qobject_cast<QLabel*>(m_widget)->indent();
+  return qobject_cast<QLabel*>(m_widget)->indent();
 }
 
-void LabelledTextField::setIndent(int indent)
+void
+LabelledTextField::setIndent(int indent)
 {
-   qobject_cast<QLabel*>(m_widget)->setIndent(indent);
+  qobject_cast<QLabel*>(m_widget)->setIndent(indent);
 }
 
-int LabelledTextField::margin() const
+int
+LabelledTextField::margin() const
 {
-   return qobject_cast<QLabel*>(m_widget)->margin();
+  return qobject_cast<QLabel*>(m_widget)->margin();
 }
 
-void LabelledTextField::setMargin(int margin)
+void
+LabelledTextField::setMargin(int margin)
 {
-   qobject_cast<QLabel*>(m_widget)->setMargin(margin);
+  qobject_cast<QLabel*>(m_widget)->setMargin(margin);
 }
 
-bool LabelledTextField::openExternalLinks() const
+bool
+LabelledTextField::openExternalLinks() const
 {
-   return qobject_cast<QLabel*>(m_widget)->openExternalLinks();
+  return qobject_cast<QLabel*>(m_widget)->openExternalLinks();
 }
 
-void LabelledTextField::setOpenExternalLinks(bool open)
+void
+LabelledTextField::setOpenExternalLinks(bool open)
 {
-   qobject_cast<QLabel*>(m_widget)->setOpenExternalLinks(open);
+  qobject_cast<QLabel*>(m_widget)->setOpenExternalLinks(open);
 }
 
-void LabelledTextField::setSelection(int start, int length)
+void
+LabelledTextField::setSelection(int start, int length)
 {
-   qobject_cast<QLabel*>(m_widget)->setSelection(start, length);
+  qobject_cast<QLabel*>(m_widget)->setSelection(start, length);
 }
 
-bool LabelledTextField::hasSelectedText() const
+bool
+LabelledTextField::hasSelectedText() const
 {
-   return qobject_cast<QLabel*>(m_widget)->hasSelectedText();
+  return qobject_cast<QLabel*>(m_widget)->hasSelectedText();
 }
 
-QString LabelledTextField::selectedText() const
+QString
+LabelledTextField::selectedText() const
 {
-   return qobject_cast<QLabel*>(m_widget)->selectedText();
+  return qobject_cast<QLabel*>(m_widget)->selectedText();
 }
 
-int LabelledTextField::selectionStart() const
+int
+LabelledTextField::selectionStart() const
 {
-   return qobject_cast<QLabel*>(m_widget)->selectionStart();
+  return qobject_cast<QLabel*>(m_widget)->selectionStart();
 }
 
-int LabelledTextField::heightForWidth(int height) const
+int
+LabelledTextField::heightForWidth(int height) const
 {
-   return qobject_cast<QWidget*>(m_widget)->heightForWidth(height);
+  return qobject_cast<QWidget*>(m_widget)->heightForWidth(height);
 }
 
-void LabelledTextField::setTextInteractionFlags(Qt::TextInteractionFlags flags)
+void
+LabelledTextField::setTextInteractionFlags(Qt::TextInteractionFlags flags)
 {
-   qobject_cast<QLabel*>(m_widget)->setTextInteractionFlags(flags);
+  qobject_cast<QLabel*>(m_widget)->setTextInteractionFlags(flags);
 }
 
-Qt::TextInteractionFlags LabelledTextField::textInteractionFlags() const
+Qt::TextInteractionFlags
+LabelledTextField::textInteractionFlags() const
 {
-   return qobject_cast<QLabel*>(m_widget)->textInteractionFlags();
+  return qobject_cast<QLabel*>(m_widget)->textInteractionFlags();
 }
 
-void LabelledTextField::setNum(int num)
+void
+LabelledTextField::setNum(int num)
 {
-   qobject_cast<QLabel*>(m_widget)->setNum(num);
+  qobject_cast<QLabel*>(m_widget)->setNum(num);
 }
 
-void LabelledTextField::setNum(double num)
+void
+LabelledTextField::setNum(double num)
 {
-   qobject_cast<QLabel*>(m_widget)->setNum(num);
+  qobject_cast<QLabel*>(m_widget)->setNum(num);
 }
 
-void LabelledTextField::clearField()
+void
+LabelledTextField::clearField()
 {
-   qobject_cast<QLabel*>(m_widget)->clear();
+  qobject_cast<QLabel*>(m_widget)->clear();
 }
 
-void LabelledTextField::initGui(const QString& text)
+void
+LabelledTextField::initGui(const QString& text)
 {
-   setText(text);
-   connect(qobject_cast<QLabel*>(m_widget),
-           &QLabel::linkHovered,
-           this,
-           &LabelledTextField::linkHovered);
-   connect(qobject_cast<QLabel*>(m_widget),
-           &QLabel::linkActivated,
-           this,
-           &LabelledTextField::linkActivated);
+  setText(text);
+  connect(qobject_cast<QLabel*>(m_widget),
+          &QLabel::linkHovered,
+          this,
+          &LabelledTextField::linkHovered);
+  connect(qobject_cast<QLabel*>(m_widget),
+          &QLabel::linkActivated,
+          this,
+          &LabelledTextField::linkActivated);
 }

@@ -282,18 +282,19 @@ AbstractLabelledWidget::clearLabel()
   m_label->clear();
 }
 
-CustomLabelledWidget::CustomLabelledWidget(const QString& text, QWidget* parent)
-  : AbstractLabelledWidget(text, parent)
-{}
+// CustomLabelledWidget::CustomLabelledWidget(const QString& text, QWidget*
+// parent)
+//  : AbstractLabelledWidget(text, parent)
+//{}
 
-void
-CustomLabelledWidget::setWidget(QWidget* widget)
-{
-  m_widget->deleteLater();
-  m_widget = widget;
-  CustomLabelledWidget::initGui();
-}
+// void
+// CustomLabelledWidget::setWidget(QWidget* widget)
+//{
+//  m_widget->deleteLater();
+//  m_widget = widget;
+//  CustomLabelledWidget::initGui();
+//}
 
-void
-CustomLabelledWidget::initGui(const QString& )
-{}
+// void
+// CustomLabelledWidget::initGui(const QString& )
+//{}

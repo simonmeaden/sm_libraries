@@ -158,16 +158,6 @@ class SM_WIDGETS_SHARED_EXPORT ExSpinBox : public QSpinBox
    */
    Q_PROPERTY(bool negBeforePrefix READ negBeforePrefix WRITE setNegBeforePrefix)
 
-   /*!
-      \property ExSpinBox::prefix
-
-      \brief This property holds the spin box's prefix
-
-      @reimplements QSpinBox::prefix
-      @accessor %prefix(), %setPrefix()
-   */
-   Q_PROPERTY(QString prefix READ prefix WRITE setPrefix)
-
    Q_OBJECT
 public:
    /*!
@@ -193,6 +183,7 @@ public:
    explicit ExSpinBox(QWidget* parent = 0);
    //! Constructor for ExSpinBox, specifying the display type, and optional parent.
    //! \param displayType the ExSpinBox::DisplayType.
+   //! \param parent the parent widget.
    explicit ExSpinBox(DisplayType displayType, QWidget* parent = 0);
 
    /*!

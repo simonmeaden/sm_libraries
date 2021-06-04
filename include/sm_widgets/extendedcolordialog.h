@@ -27,11 +27,20 @@
 
 #include <bits/functional_hash.h>
 
+//! \brief The color dialog allows the user to set/recover primary and secondary
+//! colors.
+//!
+//! \sa color()
+//! \sa setColor()
+//! \sa textColor()
+//! \sa setTextColor()
 enum ColorType
 {
-  Primary,
-  Secondary,
+  Primary,   //! Used to set and return colors for the primary (left) display
+  Secondary, //! Used to set and return colors for the secondary (right) display
 };
+
+/// \cond DO_NOT_DOCUMENT
 
 class ColorDropDisplay : public QFrame
 {
@@ -175,13 +184,25 @@ private:
   QPixmap m_pixmap;
 };
 
+/// \endcond DO_NOT_DOCUMENT
 // clang-format off
+
 /*!
    \file extendedcolordialog.h extendedcolordialog.cpp
    \class ExtendedColorDialog extendedcolordialog.h
    \brief The ExtendedColorDialog class provides an extension of the standard
-          QColorDialog class that includes selection pages for both the SVG color name set and the
-          X11 color name set.
+          QColorDialog class that includes selection pages for both the SVG color
+          name set and the X11 color name set.
+
+  The dialog allows the user to display two different color fields with a text color
+  so that thet can be compared. Colors can be recovered using the color() and textColor()
+  methods and initially set using the setColor() and setTextColor() methods. The dialog
+  allows the user to switch between a standard color selection page and various SVG and
+  X11 color sslection pages. Clicking on a color will set the primary (left) display.
+  Alternatively the user can drag colors to either left or right display, or use the
+  context menu to set the color, or text color of either.
+
+
    \since 5.7.0
    \license The MIT License
    \copyright © 2020 - 2021 Simon Meaden. All rights reserved.
@@ -189,61 +210,154 @@ private:
 
 */
 // clang-format on
+
 class ExtendedColorDialog : public QDialog
 {
   Q_OBJECT
 
 public:
+  //! \brief Constructor for ExtendedColorDialog.
+  //!
+  //! Display background and text default to white on white.
+  //! \param parent - the parent widget.
   ExtendedColorDialog(QWidget* parent = nullptr);
-  ExtendedColorDialog(const QColor& initialColor, QWidget* parent = nullptr);
-  ExtendedColorDialog(const QString& initialColor, QWidget* parent = nullptr);
-  ExtendedColorDialog(const QColor& initialColor,
+
+  //! \brief Constructor for ExtendedColorDialog.
+  //!
+  //! Display primary (left) is set to primaryColor, with the text color set
+  //! to a complementary color. Text displays the color hash name \#ffffff
+  //! and a matching SVG or X11 color name if one exists.
+  //! \param primaryColor - the initial color as a QColor object.
+  //! \param parent - the parent widget.
+  ExtendedColorDialog(const QColor& primaryColor, QWidget* parent = nullptr);
+
+  //! \brief Constructor for ExtendedColorDialog.
+  //!
+  //! Display primary (left) is set to primaryColor, with the text color set
+  //! to a complementary color. Text displays the color hash name \#ffffff
+  //! and a matching SVG or X11 color name if one exists. If the string
+  //! is invalid (either invalid name or hash name) it will default to
+  //! white on white.
+  //! \param primaryColor - the initial primary color as a name string. This can
+  //! be either an SVG or X11 name string or a color hash \#ffffff string.
+  //! \param parent - the parent widget.
+  ExtendedColorDialog(const QString& primaryColor, QWidget* parent = nullptr);
+
+  //! \brief Constructor for ExtendedColorDialog.
+  //!
+  //! Display primary (left) is set to primaryColor, with the text color set
+  //! to a complementary color. Text displays the color hash name \#ffffff
+  //! and a matching SVG or X11 color name if one exists.
+  //! \param primaryColor - the initial primary color as a QColor object.
+  //! \param secondaryColor - the initial secondary color as a QColor object.
+  //! \param parent - the parent widget.
+  ExtendedColorDialog(const QColor& primaryColor,
                       const QColor& secondaryColor,
                       QWidget* parent = nullptr);
-  ExtendedColorDialog(const QString& initialColor,
+
+  //! \brief Constructor for ExtendedColorDialog.
+  //!
+  //! Display primary (left) is set to primaryColor, with the text color set
+  //! to a complementary color. Text displays the color hash name \#ffffff
+  //! and a matching SVG or X11 color name if one exists. If the string
+  //! is invalid (either invalid name or hash name) it will default to
+  //! white on white.
+  //! \param primaryColor - the initial primary color as a name string. This can
+  //! \param secondaryColor - the initial secondary color as a name string. This
+  //! can be either an SVG or X11 name string or a color hash \#ffffff string.
+  //! \param parent - the parent widget.
+  ExtendedColorDialog(const QString& primaryColor,
                       const QString& secondaryColor,
                       QWidget* parent = nullptr);
 
-  //! Returns the primary (left) color as a QColor object.
+  //! \brief Returns the color as a QColor object.
   //!
   //! This would be the 'background' property in a stylesheet.
+  //!
   //! type must be either ColorType::Primary for the left half of the display,
   //! or ColorType::Secondary for the right half.
+  //!
   //! If no color has been selected or  'Cancel' has been pressed then the
   //! color will be Invalid.
+  //!
+  //! \param type - either ColorType::Primary or ColorType::Secondary.
   //! \sa rgb()
   //! \sa hsv()
   //! \sa hsl()
   //! \sa name()
   //! \sa hash()
   QColor color(ColorType type) const;
-  //! Returns the primary (left) text color as a QColor object.
+
+  //! \brief Returns the the text color as a QColor object.
   //!
   //! This would be the 'color' property in a stylesheet.
+  //!
+  //! type must be either ColorType::Primary for the left half of the display,
+  //! or ColorType::Secondary for the right half.
+  //!
   //! If no color has been selected or  'Cancel' has been pressed then the
   //! color will be Invalid.
+  //!
+  //! \param type - either ColorType::Primary or ColorType::Secondary.
   //! \sa rgb()
   //! \sa hsv()
   //! \sa hsl()
   //! \sa name()
   //! \sa hash()
   QColor textColor(ColorType type) const;
-  //! Sets the initial primary (left) background color.
+
+  //! \brief Sets the initial background color as a QColor object.
+  //!
+  //! type must be either ColorType::Primary for the left half of the display,
+  //! or ColorType::Secondary for the right half.
+  //!
   //! If this color has a matching SVG or X11 name this will be set
-  //! automatically. \sa setSecondaryColor()
-  void setColor(ColorType type,
-                const QColor& color,
-                const QString& name = QString());
-  //! Sets the initial primary (left) text color.
-  //! \sa setSecondaryColor()
-  void setTextColor(ColorType type,
-                    const QColor& color,
-                    const QString& name = QString());
+  //! automatically.
+  //! \param type - either ColorType::Primary or ColorType::Secondary.
+  //! \param color - a QColor object.
+  void setColor(ColorType type, const QColor& color);
+
+  //! \brief Sets the initial background color.
+  //!
+  //! If the name is a valid SVG or X11 name, or a color hash \#ffffff string
+  //! the display will be set to this backfground color, otherwise it will be
+  //! ignored.
+  //!
+  //! type must be either ColorType::Primary for the left half of the display,
+  //! or ColorType::Secondary for the right half.
+  //!
+  //! If this color has a matching SVG or X11 name this will be displayed.
+  //! \param type - either ColorType::Primary or ColorType::Secondary.
+  //! \param name - an SVG or X11 color name or a color hash \#ffffff string.
+  void setColor(ColorType type, const QString& name);
+
+  //! \brief Sets the initial text color as a QColor object.
+  //!
+  //! type must be either ColorType::Primary for the left half of the display,
+  //! or ColorType::Secondary for the right half.
+  //!
+  //! \param type - either ColorType::Primary or ColorType::Secondary.
+  //! \param color - a QColor object.
+  void setTextColor(ColorType type, const QColor& color);
+
+  //! Sets the initial text color as a name string.
+  //!
+  //! type must be either ColorType::Primary for the left half of the display,
+  //! or ColorType::Secondary for the right half.
+
+  //! If the name is a valid SVG or X11 name, or a color hash \#ffffff string
+  //! the display will be set to this backfground color, otherwise it will be
+  //! ignored.
+  //!
+  //! \param type - either ColorType::Primary or ColorType::Secondary.
+  //! \param name - an SVG or X11 color name or a color hash \#ffffff string.
+  void setTextColor(ColorType type, const QString& name);
 
   //! Returns the selected color as a stylesheet rgb() string.
   //!
-  //! The type should be either ColorTye::Primary or ColorType::Secondary,
-  //! Primary by default. If alpha is specified an rgba() form will be returned.
+  //! The type should be either ColorType::Primary or ColorType::Secondary.
+  //!
+  //! If alpha is specified an rgba() form will be returned.
   //! The value of alpha must it must be between 0 (transparent) and 100
   //! (opaque), the default, otherwise it will be ignored. If no color has been
   //! selected or  'Cancel' has been pressed then an empty string is returned.
@@ -269,48 +383,37 @@ public:
 
   //! Returns the selected color as a stylesheet name string.
   //!
-  //! If no color has been selected then the color will be tested
+  //! If no name has been selected then the color will be tested
   //! against all possible X11 name strings and if one matches this
-  //! name will be returned.
+  //! name will be returned, otherwise an empty string will be returned.
   //! If 'Cancel' has been pressed then an empty string is returned.
   QString name(ColorType type) const;
 
-  //! Returns the selected color as a #ffffff style string.
+  //! Returns the selected color as a \#ffffff style string.
   //!
-  //! If alpha is specified a #ffffffff form will be returned. The value of
+  //! If alpha is specified a \#ffffffff form will be returned. The value of
   //! alpha must it must be between 0 (transparent)
   //! and 100 (opaque), the default, otherwise it will be ignored.
-  //! If no color has been selected or  'Cancel' has been pressed then
+  //! If no name has been selected or  'Cancel' has been pressed then
   //! an empty string is returned.
   QString hash(ColorType type, int alpha = false) const;
-
-//  //! Returns the Svg or X11 name for the color if one exists.
-//  //! The Svg name is returned in preference to the X11 name if it exists.
-//  static QString svgOrX11Name(const QColor& color);
-//  //! Returns the Svg or X11 color for the name string
-//  //! the name is tested against the Svg colors first.
-//  static QColor svgOrX11Color(const QString& initialColor);
-
-//  // This is based on the alternative HSP color model suggested by Darel Rex
-//  // Finley. http://alienryderflex.com/hsp.html public domain by Darel
-//  // Rex Finley, 2006
-//  //! Returns true if the color is a darker shade, otherwise return false.
-//  //!
-//  //! This can be used to select a text color that shows up well with the
-//  //! specified color.
-//  static bool isDark(const QColor& color);
 
 signals:
   //! This signal is emitted whenever the primary color changes in the dialog.
   //! The current color is specified by color.
   void primaryColorChanged(const QColor& color, const QString& name);
+  //! This signal is emitted whenever the primary text color changes in the
+  //! dialog. The current color is specified by color.
   void primaryTextColorChanged(const QColor& color, const QString& name);
   //! This signal is emitted whenever the secondary color changes in the dialog.
   //! The current color is specified by color.
   void secondaryColorChanged(const QColor& color, const QString& name);
+  //! This signal is emitted whenever the secondary text color changes in the
+  //! dialog. The current color is specified by color.
   void secondaryTextColorChanged(const QColor& color, const QString& name);
 
 protected:
+  //! overides QWidget::sizeHint()
   QSize sizeHint() const override;
 
 private:
@@ -346,6 +449,11 @@ private:
   void secondaryColorHasChanged(const QColor& color, const QString& name);
   void primaryTextColorHasChanged(const QColor& color, const QString& name);
   void secondaryTextColorHasChanged(const QColor& color, const QString& name);
+
+  void setPrimaryColor(QColor color, QString name);
+  void setPrimaryTextColor(QColor color, QString name);
+  void setSecondaryColor(QColor color, QString name);
+  void setSecondaryTextColor(QColor color, QString name);
 
   void colorClicked(const QModelIndex& index);
   void primaryColorMenuClicked();

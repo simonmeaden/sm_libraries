@@ -16,7 +16,7 @@
    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
    SOFTWARE.
 */
-#include "stylesheetedit/abstractlabelledspinbox.h"
+#include "sm_widgets/abstractlabelledspinbox.h"
 
 AbstractLabelledSpinBox::AbstractLabelledSpinBox(const QString& text,
       QWidget* parent, const WidgetFactory& factory)

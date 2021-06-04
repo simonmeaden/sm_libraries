@@ -4,4 +4,5 @@ add_executable(smwidgets_test
       src/mainwindow.h
    )
 
-target_link_libraries(smwidgets_test sm_widgets Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Quick)
+#target_link_libraries(smwidgets_test PRIVATE Qt5::Core Qt5::Gui Qt5::Widgets)
+target_link_libraries(smwidgets_test PRIVATE sm_widgets yaml-cpp qyamlcpp)

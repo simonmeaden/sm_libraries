@@ -1,27 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
-cmake_policy(VERSION 3.5)
-cmake_policy(SET CMP0048 NEW)
-cmake_policy(SET CMP0054 NEW)
-cmake_policy(SET CMP0076 NEW)
-#cmake_policy(SET CMP0079 NEW)
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-if (NOT CMAKE_INSTALL_PREFIX)
-   set(CMAKE_INSTALL_PREFIX /usr/local)
-endif()
-
-# The project version number.
-set(SMWIDGETS_VERSION_MAJOR   0   CACHE STRING "Project major version number.")
-set(SMWIDGETS_VERSION_MINOR   1   CACHE STRING "Project minor version number.")
-set(SMWIDGETS_VERSION_PATCH   0   CACHE STRING "Project patch version number.")
-set(SMWIDGETS_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-mark_as_advanced(SMWIDGETS_VERSION_MAJOR SMWIDGETS_VERSION_MINOR SMWIDGETS_VERSION_PATCH SMWIDGETS_VERSION)
+#cmake_policy(SET CMP0048 NEW)
+#cmake_policy(SET CMP0054 NEW)
 
 project(SMLibraries
         VERSION     0.1.0
@@ -29,140 +8,49 @@ project(SMLibraries
         LANGUAGES   CXX C
         )
 
-set(CMAKE_DEBUG_POSTFIX d)
-
-#set(WIDGET_HEADER_FILES
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/exspinbox.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/hexformatdelegate.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/abstractlabelledwidget.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/abstractlabelledspinbox.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/labelledspinbox.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/labelledexspinbox.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/labelleddoublespinbox.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/labelledcombobox.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/labelledlineedit.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/labelledtextfield.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/labelledwidgets.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/extabwidget.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/sm_widgets_global.h
-#   )
-set(EXTRA_FILES
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/ExTabWidget
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/ExSpinBox
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/LabelledComboBox
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/LabelledDoubleSpinBox
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/LabelledExSpinBox
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/LabelledSpinBox
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/LabelledLineEdit
-   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/LabelledTextField
-)
-#set(WIDGET_HEADER_FILES_P
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/private/extabwidget_p.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/private/clockwidget.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/private/loginwidget.h
-#   ${CMAKE_CURRENT_SOURCE_DIR}/include/sm_widgets/private/simplecrypt.h
-#)
-#set(WIDGET_SOURCE_FILES
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/exspinbox.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/extabwidget.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/hexformatdelegate.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/abstractlabelledwidget.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/abstractlabelledspinbox.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/labelledspinbox.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/labelledexspinbox.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/labelleddoublespinbox.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/labelledcombobox.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/labelledlineedit.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/labelledtextfield.cpp
-#   )
-#set(WIDGET_SOURCE_FILES_P
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/private/extabwidget_p.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/private/clockwidget.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/private/loginwidget.cpp
-#   ${CMAKE_CURRENT_SOURCE_DIR}/src/private/simplecrypt.cpp
-#)
-
-# required libraries
-# Make certain the project is set BEFORE find_package
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-
-#==== Qt 5 core gui and widgets ==================================
-include("CMakeLists.qt5.in")
-#==== DOxygen ====================================================
-include("CMakeLists.doxy.in")
-#====GoogleTest ==================================================
-#include("CMakeLists.gtest.in")
-#==== end of standard includes====================================
-
 set(MIN_YAMLCPP_VERSION 0.6.0)
-find_package(yaml-cpp ${MIN_YAMLCPP_VERSION} REQUIRED CONFIG)
-set(MIN_QYAMLCPP_VERSION 0.1.0)
-find_package(qyamlcpp ${MIN_QYAMLCPP_VERSION} REQUIRED CONFIG)
+find_package(yaml-cpp REQUIRED)
 
-add_library(sm_widgets STATIC "")
-target_sources(sm_widgets
-   PUBLIC
+if (${QT_MAJOR_VERSION} STREQUAL "5")
+  find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets REQUIRED)
+elseif (${QT_MAJOR_VERSION} STREQUAL "6")
+  find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets REQUIRED)
+endif()
 
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/sm_widgets_global.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/abstractlabelledwidget.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/exspinbox.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/hexformatdelegate.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledspinbox.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledexspinbox.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelleddoublespinbox.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledcombobox.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledlineedit.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledtextfield.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/labelledwidgets.h>
-#      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/loginwidget.h>
-#      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/extabwidget.h>
-#      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/simplecrypt.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/extendedcolordialog.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/x11colors.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/CircularBuffer.h>
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include/sm_widgets/circularbuffer.h>
+set(PUBLIC_EXTRAS
+  #  QYamlCpp
+  include/qyamlcpp/QYamlCpp
+  # SMWidgets
+  include/sm_widgets/labelledwidgets.h
+  include/sm_widgets/LabelledComboBox
+  include/sm_widgets/LabelledDoubleSpinBox
+  include/sm_widgets/LabelledExSpinBox
+  include/sm_widgets/LabelledLineEdit
+  include/sm_widgets/LabelledSpinBox
+  include/sm_widgets/LabelledTextField
+  )
 
-      $<INSTALL_INTERFACE:include/sm_widgets/sm_widgets_global.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/abstractlabelledwidget.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/exspinbox.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/hexformatdelegate.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/labelledspinbox.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/labelledexspinbox.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/labelleddoublespinbox.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/labelledcombobox.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/labelledlineedit.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/labelledtextfield.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/labelledwidgets.h>
-#      $<INSTALL_INTERFACE:include/sm_widgets/loginwidget.h>
-#      $<INSTALL_INTERFACE:include/sm_widgets/extabwidget.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/extendedcolordialog.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/x11colors.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/CircularBuffer.h>
-      $<INSTALL_INTERFACE:include/sm_widgets/circularbuffer.h>
+add_library(smlibraries STATIC
+  #  QYamlCpp
+  # SMWidgets
+    src/abstractlabelledspinbox.cpp
+    src/abstractlabelledwidget.cpp
+    src/exspinbox.cpp
+    src/extendedcolordialog.cpp
+    src/hexformatdelegate.cpp
+    src/labelledcombobox.cpp
+    src/labelleddoublespinbox.cpp
+    src/labelledexspinbox.cpp
+    src/labelledlineedit.cpp
+    src/labelledspinbox.cpp
+    src/labelledtextfield.cpp
+    src/sm_widgets_global.h
+    src/x11colors.cpp
+  )
 
-   PRIVATE
-      src/abstractlabelledwidget.cpp
-#      src/clockwidget.h
-#      src/clockwidget.cpp
-#      src/messagewidget.h
-#      src/messagewidget.cpp
-#      src/loginwidget.cpp
-#      src/simplecrypt.cpp
-      src/exspinbox.cpp
-#      src/extabwidget.cpp
-#      src/extabwidget_p.cpp
-      src/hexformatdelegate.cpp
-      src/labelledcombobox.cpp
-      src/labelleddoublespinbox.cpp
-      src/labelledexspinbox.cpp
-      src/labelledlineedit.cpp
-      src/labelledspinbox.cpp
-      src/labelledtextfield.cpp
-      src/extendedcolordialog.cpp
+add_library(SMLibraries::smlibraries ALIAS smlibraries)
 
-   )
-
-target_include_directories(sm_widgets
+target_include_directories(smlibraries
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -170,52 +58,73 @@ target_include_directories(sm_widgets
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-target_link_libraries(sm_widgets Qt5::Core Qt5::Gui Qt5::Widgets)
-#target_link_libraries(test_sm_widgets yaml-cpp qyamlcpp sm_widgets)
+# Handle library documentation using OOxygen and helpgenerator.
+add_subdirectory("docs")
 
-# Install target
+target_compile_options(smlibraries PRIVATE -Werror)
+
+target_compile_features(smlibraries PRIVATE cxx_std_17)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+target_link_libraries(smlibraries
+  PUBLIC
+    Qt::Core Qt::Gui Qt::Widgets
+    yaml-cpp
+)
+
 include(GNUInstallDirs)
-set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/sm_widgets)
+set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/SMLibraries)
 
-
-install(TARGETS sm_widgets
-    EXPORT sm_widgets-targets
+install(TARGETS smlibraries
+    EXPORT smlibraries-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
+#This is required so that the exported target has the name SMLibraries and not smlibraries
+set_target_properties(smlibraries PROPERTIES EXPORT_NAME SMLibraries)
 
-install(DIRECTORY include/sm_widgets DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-#Export the targets to a script
-install(EXPORT sm_widgets-targets
-    FILE
-        sm_widgetsTargets.cmake
-    DESTINATION
-        ${INSTALL_CONFIGDIR}
+install(EXPORT smlibraries-targets
+  FILE
+    SMLibrariesTargets.cmake
+  NAMESPACE
+    SMLibraries::
+  DESTINATION
+    ${CMAKE_INSTALL_LIBDIR}/cmake/smlibraries
 )
 
 #Create a ConfigVersion.cmake file
 include(CMakePackageConfigHelpers)
-
-message("Install directory : " ${INSTALL_CONFIGDIR})
-
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/sm_widgetsConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/SMlibrariesConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 
-configure_package_config_file(
-   ${CMAKE_CURRENT_LIST_DIR}/cmake/sm_widgetsConfig.cmake.in
-   ${CMAKE_CURRENT_BINARY_DIR}/sm_widgetsConfig.cmake
-   INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
+configure_package_config_file(${CMAKE_CURRENT_LIST_DIR}/cmake/SMLibrariesConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/SMLibrariesConfig.cmake
+    INSTALL_DESTINATION ${INSTALL_CONFIGDIR}
 )
 
-#Install the config, config version and custom find modules
+#Install the config, configversion and custom find modules
 install(FILES
-    ${CMAKE_CURRENT_LIST_DIR}/cmake/FindSMWidgetsConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/sm_widgetsConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/sm_widgetsConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/SMLibrariesConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/SMLibrariesConfigVersion.cmake
     DESTINATION ${INSTALL_CONFIGDIR}
 )
+
+##############################################
+## Exporting from the build tree
+export(EXPORT smlibraries-targets
+    FILE ${CMAKE_CURRENT_BINARY_DIR}/SMLibrariesTargets.cmake
+    NAMESPACE SMLibraries::)
+
+#Register package in the User Package Registry
+export(PACKAGE SMLibraries)
+
+
 

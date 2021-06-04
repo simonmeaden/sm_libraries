@@ -28,7 +28,7 @@
 #include <QList>
 #include <QVector>
 
-#include "sm_libraries/private/circularbuffer.h"
+#include "circularbuffer.h"
 #include "sm_widgets_global.h"
 #include <list>
 #include <stddef.h>
@@ -53,12 +53,12 @@
   accordingly. Please note that if the capcity set is smaller than the supplied
   list/vector then only the last N items will be retained.
 
-  It is also possible to push() a QList/QVector of items onto the buffer, or
-  alternatively use CircularBuffer::iterator which are basically a typedef of
+  It is also possible to push() a QList or a QVector of items onto the buffer,
+  or alternatively use CircularBuffer::iterator which are basically a typedef of
   std::iterator. CircularBuffer has a begin() and end() iterator, also cbegin(),
   cend(), constBegin(), constEnd(), rbegin() and rend() in exactly the same way
   as QVector, which makes sense as the underlying class to CircularBuffer is
-  a QVector(). A furth option is to push items using the operator<<() which
+  a QVector(). A further option is to push items using the operator<<() which
   allows the pushing of a single item of type T, or alternatively a
   QVector<value_type> or a QList<value_type>.
 
@@ -88,25 +88,17 @@ class CircularBuffer
 public:
   /// \cond DO_NOT_DOCUMENT
   typedef circular_buffer<T> self_type;
-  //  typedef circular_buffer<T> allocator_type;
-
-  //  typedef typename circular_buffer<T>::cbuf_type cbuf_type;
   typedef typename circular_buffer<T>::value_type value_type;
   typedef typename circular_buffer<T>::pointer pointer;
   typedef typename circular_buffer<T>::const_pointer const_pointer;
   typedef typename circular_buffer<T>::reference reference;
   typedef typename circular_buffer<T>::const_reference const_reference;
-
-  //  typedef typename circular_buffer<T>::size_type size_type;
   typedef typename circular_buffer<T>::difference_type difference_type;
-
   typedef typename circular_buffer<T>::iterator iterator;
   typedef typename circular_buffer<T>::const_iterator const_iterator;
   typedef typename circular_buffer<T>::reverse_iterator reverse_iterator;
   typedef
-  typename circular_buffer<T>::const_reverse_iterator const_reverse_iterator;
-  //  typedef const_iterator ConstIterator;
-  //  typedef iterator Iterator;
+    typename circular_buffer<T>::const_reverse_iterator const_reverse_iterator;
   /// \endcond
 
   /*!
@@ -125,33 +117,38 @@ public:
   /*!
     \brief Constructor of the CircularBuffer
 
-    Creates a new circular buffer, using the size and contents of the list, unless
-    the optional capacity is used in which this value is used. If the capcity
-    is less than the size of the supplied QList, only the last N values are stored.
-    Primitive types like int and double, as well as for pointer types, the C++
-    language doesn't specify any initialization; in those cases, Qt's containers
-    automatically initialize the value to 0.
+    Creates a new circular buffer, using the size and contents of the list,
+    unless the optional capacity is used in which this value is used. If the
+    capcity is less than the size of the supplied QList, only the last N values
+    are stored. Primitive types like int and double, as well as for pointer
+    types, the C++ language doesn't specify any initialization; in those cases,
+    Qt's containers automatically initialize the value to 0.
 
     \param items - a QList<value_type> containig the items to push.
     \param capacity - an optional capacity for the buffer.
   */
   CircularBuffer(const QList<value_type>& items, int capacity = -1)
-    : m_buffer(new circular_buffer<value_type>(capacity == -1 ? items.size() : capacity)) {
+    : m_buffer(new circular_buffer<value_type>(capacity == -1 ? items.size()
+                                                              : capacity))
+  {
     push(items);
   }
 
   /*!
     \brief Constructor of the CircularBuffer
 
-    Creates a new circular buffer, using the size and contents of the vector, unless
-    the optional capacity is used in which this value is used. If the capacity
-    is less than the size of the supplied QVector, only the last N values are stored.
+    Creates a new circular buffer, using the size and contents of the vector,
+    unless the optional capacity is used in which this value is used. If the
+    capacity is less than the size of the supplied QVector, only the last N
+    values are stored.
 
     \param items - a QVector<value_type> containing the items to push.
     \param capacity - an optional capacity for the buffer.
   */
   CircularBuffer(const QVector<value_type>& items, int capacity = -1)
-    : m_buffer(new circular_buffer<value_type>(capacity == -1 ? items.size() : capacity)) {
+    : m_buffer(new circular_buffer<value_type>(capacity == -1 ? items.size()
+                                                              : capacity))
+  {
     push(items);
   }
 
@@ -168,113 +165,85 @@ public:
      \brief Returns an STL-style iterator pointing to the first item in the
      vector.
   */
-  iterator begin() {
-    return m_buffer->begin();
-  }
+  iterator begin() { return m_buffer->begin(); }
 
   /*!
      \brief This is an overloaded function.
   */
-  const_iterator begin() const {
-    return m_buffer->begin();
-  }
+  const_iterator begin() const { return m_buffer->begin(); }
 
   /*!
      \brief Returns an constant STL-style iterator pointing to the first item in
      the vector.
   */
-  const_iterator cbegin() const {
-    return m_buffer->begin();
-  }
+  const_iterator cbegin() const { return m_buffer->begin(); }
 
   /*!
      \brief Returns an constant STL-style iterator pointing to the first item in
      the vector.
   */
-  const_iterator constBegin() const {
-    return m_buffer->begin();
-  }
+  const_iterator constBegin() const { return m_buffer->begin(); }
 
   /*!
      \brief Returns an STL-style iterator pointing to the last item in the
      vector.
   */
-  iterator end() {
-    return m_buffer->end();
-  }
+  iterator end() { return m_buffer->end(); }
   /*!
 
      \brief Returns an constant STL-style iterator pointing to the last item in
      the vector.
   */
-  const_iterator end() const noexcept {
-    return m_buffer->end();
-  }
+  const_iterator end() const noexcept { return m_buffer->end(); }
 
   /*!
      \brief Returns an constant STL-style iterator pointing to the last item in
      the vector.
   */
 
-  const_iterator cend() const noexcept {
-    return m_buffer->end();
-  }
+  const_iterator cend() const noexcept { return m_buffer->end(); }
 
   /*!
      \brief Returns a const STL-style iterator pointing to the imaginary item
      after the last item in the CircularBuffer.
   */
-  const_iterator constEnd() const noexcept {
-    return m_buffer->end();
-  }
+  const_iterator constEnd() const noexcept { return m_buffer->end(); }
 
   /*!
      \brief Returns a STL-style reverse iterator pointing to the first item in
      the vector, in reverse order.
   */
-  reverse_iterator rbegin() {
-    return m_buffer->rbegin();
-  }
+  reverse_iterator rbegin() { return m_buffer->rbegin(); }
 
   /*!
      \brief Returns a STL-style reverse iterator pointing to the last item in
      the vector, in reverse order.
   */
-  reverse_iterator rend() {
-    return m_buffer->rend();
-  }
+  reverse_iterator rend() { return m_buffer->rend(); }
 
   /*!
      \brief Returns a const STL-style reverse iterator pointing to the first
      item in the vector, in reverse order.
   */
-  const_reverse_iterator rbegin() const {
-    return m_buffer->rbegin();
-  }
+  const_reverse_iterator rbegin() const { return m_buffer->rbegin(); }
 
   /*!
      \brief Returns a constant STL-style reverse iterator pointing to the last
      item in the vector, in reverse order.
   */
-  const_reverse_iterator rend() const {
-    return m_buffer->rend();
-  }
+  const_reverse_iterator rend() const { return m_buffer->rend(); }
 
   /*!
      \brief Returns a const STL-style reverse iterator pointing to the first
      item in the vector, in reverse order.
   */
-  const_reverse_iterator crbegin() const {
-    return m_buffer->rbegin();
-  }
+  const_reverse_iterator crbegin() const { return m_buffer->rbegin(); }
 
   /*!
      \brief Returns a const STL-style reverse iterator pointing to the last item
      in the vector, in reverse order.
   */
-  const_reverse_iterator crend() const {
-    return m_buffer->rend();
-  }
+  const_reverse_iterator crend() const { return m_buffer->rend(); }
 
   /*!
      \brief Deletes the first element.
@@ -282,45 +251,35 @@ public:
      To access the first element use CircularBuffer::front() or
      CircularBuffer::first().
   */
-  void pop() {
-    m_buffer->pop_front();
-  }
+  void pop() { m_buffer->pop_front(); }
 
   /*!
      \brief Deletes the first element.
 
     This is an overloaded function. It is the equivalent of pop().
   */
-  inline void removeFirst() {
-    pop();
-  }
+  inline void removeFirst() { pop(); }
 
   /*!
      \brief Deletes the first element.
 
     This is an overloaded function. It is the equivalent of pop().
   */
-  inline void pop_front() {
-    pop();
-  }
+  inline void pop_front() { pop(); }
 
   /*!
      \brief Deletes the first element.
 
     This is an overloaded function. It is the equivalent of pop().
   */
-  inline void popFront() {
-    pop();
-  }
+  inline void popFront() { pop(); }
 
   /*!
      \brief Deletes the first element.
 
     This is an overloaded function. It is the equivalent of pop().
   */
-  inline void popFirst() {
-    pop();
-  }
+  inline void popFirst() { pop(); }
 
   /*!
     \brief Pushes a new item at the head position.
@@ -331,9 +290,7 @@ public:
 
     \param value - an object of type value_type.
   */
-  void push(const value_type& value) {
-    m_buffer->push_back(value);
-  }
+  void push(const value_type& value) { m_buffer->push_back(value); }
 
   /*!
     \brief Pushes a new item at the head position.
@@ -346,9 +303,7 @@ public:
 
     \param value - an object of type value_type.
   */
-  inline void push_back(const value_type& value) {
-    push(value);
-  }
+  inline void push_back(const value_type& value) { push(value); }
 
   /*!
     \brief Pushes a new item at the head position.
@@ -361,9 +316,7 @@ public:
 
     \param value - an object of type value_type.
   */
-  inline void append(const value_type& value) {
-    push(value);
-  }
+  inline void append(const value_type& value) { push(value); }
 
   /*!
      \brief Pushes a list of items to the buffer.
@@ -374,7 +327,8 @@ public:
 
      \param values - a QList of type value_type.
   */
-  void push(const QList<value_type> values) {
+  void push(const QList<value_type> values)
+  {
     for (const_reference value : values) {
       push(value);
     }
@@ -392,9 +346,7 @@ public:
 
     \param values - an object of type value_type.
   */
-  inline void append(const QList<value_type> values) {
-    push(values);
-  }
+  inline void append(const QList<value_type> values) { push(values); }
 
   /*!
      \brief Pushes a vector of items to the buffer.
@@ -406,7 +358,8 @@ public:
      \param values - a QVector of type value_type.
      \sa push()
   */
-  void push(const QVector<value_type>& values) {
+  void push(const QVector<value_type>& values)
+  {
     for (const value_type value : values) {
       push(value);
     }
@@ -424,9 +377,7 @@ public:
     \param values - a QVector of type value_type.
     \sa push()
   */
-  inline void append(const QVector<value_type>& values) {
-    push(values);
-  }
+  inline void append(const QVector<value_type>& values) { push(values); }
 
   /*!
     \brief pulls an item from the front position and returns it.
@@ -435,7 +386,8 @@ public:
 
     \return - an object of type value_type.
   */
-  const value_type get() {
+  const value_type get()
+  {
     const value_type value = front();
     pop();
     return value;
@@ -451,9 +403,7 @@ public:
     \return - an object of type value_type.
     \sa pull()
   */
-  inline const value_type takeFirst() {
-    return get();
-  }
+  inline const value_type takeFirst() { return get(); }
 
   /*!
     \brief pulls an item from the front position and returns it.
@@ -465,9 +415,7 @@ public:
     \return - an object of type value_type.
     \sa pull()
   */
-  inline const value_type takeFront() {
-    return get();
-  }
+  inline const value_type takeFront() { return get(); }
 
   /*!
     \brief pulls an count items from the front position.
@@ -477,7 +425,8 @@ public:
 
     \return - an object of type value_type.
   */
-  const QVector<value_type> get(int count) {
+  const QVector<value_type> get(int count)
+  {
     QVector<value_type> vec;
 
     for (int i = 0; i < (count < size() ? count : size()); i++) {
@@ -501,7 +450,8 @@ public:
      \param value - the value_type value to fill the buffer with.
     \param size - the number of slots to fill.
   */
-  void fill(value_type& value, int size = -1) {
+  void fill(value_type& value, int size = -1)
+  {
 
     int s = (size == -1 ? count() : (size > count() ? count() : size));
 
@@ -518,7 +468,8 @@ public:
      \param index - the index within the buffer.
     \return an object of type value_type.
   */
-  reference at(int index) {
+  reference at(int index)
+  {
     Q_ASSERT(index >= 0 && index < size());
     return m_buffer->at(index);
   }
@@ -531,7 +482,8 @@ public:
     \param index - an int offset value.
     \return an object of type value_type.
   */
-  const_reference at(int index) const {
+  const_reference at(int index) const
+  {
     Q_ASSERT(index >= 0 && index < size());
     return m_buffer->at(index);
   }
@@ -546,7 +498,8 @@ public:
     \param index - the index within the buffer.
     \return an object of type value_type.
   */
-  value_type value(int index) {
+  value_type value(int index)
+  {
     if (index >= 0 && index < size()) {
       return m_buffer->at(index);
 
@@ -570,7 +523,8 @@ public:
     \param defaultValue - the default item to use to fill the buffer.
     \return an object of type value_type.
   */
-  value_type value(int index, const value_type defaultValue) {
+  value_type value(int index, const value_type defaultValue)
+  {
     if (index >= 0 && index < size()) {
       return m_buffer->at(index);
 
@@ -586,9 +540,7 @@ public:
 
     \return a reference to the first item in the vector.
   */
-  reference first() {
-    return m_buffer->front();
-  }
+  reference first() { return m_buffer->front(); }
 
   /*!
      \brief Access the first element.
@@ -598,9 +550,7 @@ public:
 
     \return a const reference to the first item in the vector.
   */
-  const_reference& first() const {
-    return m_buffer->front();
-  }
+  const_reference& first() const { return m_buffer->front(); }
 
   /*!
      \brief Access the first element.
@@ -612,9 +562,7 @@ public:
 
     \return a reference to the first item in the vector.
   */
-  inline reference front() {
-    return first();
-  }
+  inline reference front() { return first(); }
 
   /*!
      \brief Access the first element.
@@ -626,9 +574,7 @@ public:
 
     \return a const reference to the first item in the vector.
   */
-  inline const_reference front() const {
-    return first();
-  }
+  inline const_reference front() const { return first(); }
 
   /*!
      \brief Access the first element.
@@ -638,9 +584,7 @@ public:
 
     \return a const reference to the first item in the vector.
   */
-  inline const_reference& constFirst() const {
-    return first();
-  }
+  inline const_reference& constFirst() const { return first(); }
 
   /*!
      \brief Access the first element.
@@ -650,9 +594,7 @@ public:
 
     \return a const reference to the first item in the vector.
   */
-  inline const_reference& constFront() const {
-    return first();
-  }
+  inline const_reference& constFront() const { return first(); }
 
   /*!
      \brief Access the last element.
@@ -663,9 +605,7 @@ public:
 
     \return a reference to the last item in the vector.
   */
-  inline reference back() {
-    return last();
-  }
+  inline reference back() { return last(); }
 
   /*!
      \brief Access the last element.
@@ -676,9 +616,7 @@ public:
 
     \return a const reference to the last item in the vector.
   */
-  inline const_reference back() const {
-    return last();
-  }
+  inline const_reference back() const { return last(); }
 
   /*!
      \brief Access the last element.
@@ -687,9 +625,7 @@ public:
 
     \return a const reference to the last item in the vector.
   */
-  reference last() {
-    return m_buffer->back();
-  }
+  reference last() { return m_buffer->back(); }
 
   /*!
      \brief Access the last element.
@@ -700,9 +636,7 @@ public:
 
     \return a const reference to the last item in the vector.
   */
-  inline const_reference last() const {
-    return m_buffer->back();
-  }
+  inline const_reference last() const { return m_buffer->back(); }
 
   /*!
      \brief Access the last element.
@@ -712,9 +646,7 @@ public:
 
     \return a const reference to the last item in the vector.
   */
-  inline const_reference constLast() const {
-    return back();
-  }
+  inline const_reference constLast() const { return back(); }
 
   /*!
     \brief Access the data as a QVector.
@@ -723,7 +655,8 @@ public:
 
     \return a QVector of values.
   */
-  const QVector<value_type> toVector() {
+  const QVector<value_type> toVector()
+  {
     QVector<value_type> vec(begin(), end());
     return vec;
   }
@@ -734,7 +667,8 @@ public:
     \return a QVector of values.
     \sa toVector()
   */
-  const QVector<value_type> pullVector() {
+  const QVector<value_type> pullVector()
+  {
     QVector<value_type> vec = toVector();
     clear();
     return vec;
@@ -747,7 +681,8 @@ public:
 
     \return a vector of values.
   */
-  const std::vector<value_type> toStdVector() {
+  const std::vector<value_type> toStdVector()
+  {
     return std::vector<value_type>(begin(), end());
   }
 
@@ -757,7 +692,8 @@ public:
     \return a vector of values.
     \sa toStdVector()
   */
-  const std::vector<value_type> pullStdVector() {
+  const std::vector<value_type> pullStdVector()
+  {
     std::vector<value_type> svec = toStdVector();
     clear();
     return svec;
@@ -770,9 +706,7 @@ public:
 
     \return a vector of values.
   */
-  const QList<value_type> toList() {
-    return QList<value_type>(begin(), end());
-  }
+  const QList<value_type> toList() { return QList<value_type>(begin(), end()); }
 
   /*!
     \brief Access the data as a QList.
@@ -782,7 +716,8 @@ public:
     \return a vector of values.
     \sa toList()
   */
-  const QList<value_type> pullList() {
+  const QList<value_type> pullList()
+  {
     QList<value_type> list = toList();
     clear();
     return list;
@@ -795,7 +730,8 @@ public:
 
     \return a vector of values.
   */
-  const std::list<value_type> toStdList() {
+  const std::list<value_type> toStdList()
+  {
     return std::list<value_type>(begin(), end());
   }
 
@@ -807,7 +743,8 @@ public:
     \return a vector of values.
     \sa toStdList()
   */
-  const std::list<value_type> pullStdList() {
+  const std::list<value_type> pullStdList()
+  {
     std::list<value_type> list = toStdList();
     m_buffer->clear();
     return list;
@@ -816,75 +753,57 @@ public:
   /*!
     \brief Returns the number of items stored in the buffer.
   */
-  int size() const {
-    return m_buffer->size();
-  }
+  int size() const { return m_buffer->size(); }
 
   /*!
     \brief Returns the number of items stored in the buffer.
 
     This is an overloaded function, the equivalent of size().
   */
-  inline int count() const {
-    return size();
-  }
+  inline int count() const { return size(); }
 
   /*!
     \brief Returns the number of items stored in the buffer.
 
     This is an overloaded function, the equivalent of size().
   */
-  inline int length() const {
-    return size();
-  }
+  inline int length() const { return size(); }
 
   /*!
      \brief Gets the total capacity of the buffer.
 
      \return - an int value.
   */
-  int capacity() const {
-    return m_buffer->capacity();
-  }
+  int capacity() const { return m_buffer->capacity(); }
 
   /*!
      \brief Gets the total free space still available to the buffer.
   */
-  int available() const {
-    return m_buffer->available();
-  }
+  int available() const { return m_buffer->available(); }
 
   /*!
      \brief Checks if the buffer is empty.
   */
-  bool empty() const {
-    return m_buffer->empty();
-  }
+  bool empty() const { return m_buffer->empty(); }
 
   /*!
      \brief Checks if the buffer is empty.
 
     This is an overloaded function, the equivalent of empty().
   */
-  inline bool isEmpty() const {
-    return empty();
-  }
+  inline bool isEmpty() const { return empty(); }
 
   /*!
      \brief Checks if the buffer is full.
 
      \return true if full, otherwise false.
   */
-  bool isFull() const {
-    return (m_buffer->size() == m_buffer->capacity());
-  }
+  bool isFull() const { return (m_buffer->size() == m_buffer->capacity()); }
 
   /*!
      \brief Removes all the elements from the vector.
   */
-  void clear() {
-    m_buffer->clear();
-  }
+  void clear() { m_buffer->clear(); }
 
   /*!
     \brief Resizes the buffer to a new capacity.
@@ -895,9 +814,7 @@ public:
 
     \param capacity - the capacity value.
   */
-  void reserve(const int capacity) {
-    m_buffer->reserve(capacity);
-  }
+  void reserve(const int capacity) { m_buffer->reserve(capacity); }
 
   /*!
     \brief Gets the value at the index, relative to the tail of the buffer.
@@ -910,9 +827,7 @@ public:
     \param index - an int offset value.
     \return a reference to the item at index.
   */
-  reference operator[](int index) {
-    return reference((*m_buffer)[index]);
-  }
+  reference operator[](int index) { return reference((*m_buffer)[index]); }
 
   /*!
     \brief Gets the value at the index, relative to the tail of the buffer.
@@ -925,14 +840,16 @@ public:
     \param index - an int offset value.
     \return a const reference to the item at index.
   */
-  const_reference operator[](int index) const {
+  const_reference operator[](int index) const
+  {
     return const_reference((*m_buffer)[index]);
   }
 
   /*!
      \brief Assigns other to this buffer and returns a reference to this buffer.
   */
-  CircularBuffer& operator=(self_type& other) {
+  CircularBuffer& operator=(self_type& other)
+  {
     m_buffer = other.m_buffer;
     return *this;
   }
@@ -940,7 +857,8 @@ public:
   /*!
      \brief Assigns other to this buffer and returns a reference to this buffer.
   */
-  CircularBuffer& operator=(const self_type& other) {
+  CircularBuffer& operator=(const self_type& other)
+  {
     m_buffer = other.m_buffer;
     return *this;
   }
@@ -955,7 +873,8 @@ public:
     \param value - an constant object of type value_type.
     \sa CircularBuffer::push()
   */
-  CircularBuffer<value_type>& operator<<(const value_type value) {
+  CircularBuffer<value_type>& operator<<(const value_type value)
+  {
     m_buffer->push_back(value);
     return *this;
   }
@@ -970,7 +889,8 @@ public:
      \param other - a const QVector of type value_type.
      \sa CircularBuffer::push(QVector<value_type>)
   */
-  CircularBuffer<value_type>& operator<<(const QVector<value_type>& other) {
+  CircularBuffer<value_type>& operator<<(const QVector<value_type>& other)
+  {
     push(other);
     return *this;
   }
@@ -985,7 +905,8 @@ public:
      \param other - a const QList of type value_type.
      \sa CircularBuffer::push(QVector<value_type>)
   */
-  CircularBuffer<value_type>& operator<<(const QList<value_type>& other) {
+  CircularBuffer<value_type>& operator<<(const QList<value_type>& other)
+  {
     push(other);
     return *this;
   }

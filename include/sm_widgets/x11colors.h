@@ -30,7 +30,7 @@
 // clang-format off
 /*!
    \file x11colors.h
-   \brief An extension of the QColorConstants namespace which supplies extra functions
+   \brief An extension of the  namespace which supplies extra functions
           to the standard Svg namespace and adds an extra X11 namespace that matches
           the Svg color set with an set that matches the X11 rgb.txt colors.
    \since 5.7.0
@@ -40,6 +40,8 @@
    The Svg color set evolved from the X11 rgb.txt  color set, with many of the names
    being the same. However some of the names generate a similar, but different color.
    The X11 set is also larger and offers a more extended set of color name options.
+
+   Similarly to QColorConstants::Svg:color_name you can use QColorConstants::X11::color_name.
 
    The extended functions, namely name(QColor) and color(QString) which exist as
    QColorConstants::Svg::name(), QColorConstants::Svg::color().QColorConstants::X11::name()
@@ -53,6 +55,10 @@
 
    \note I admit that QColorConstants is not the best place for these functions, but I
    am unsure exactly where the best place is.
+
+   X11 Colors
+   ==========
+
 
 */
 // clang-format on
