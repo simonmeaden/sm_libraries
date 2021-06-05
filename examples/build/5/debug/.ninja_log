@@ -1,6 +1,0 @@
-# ninja log v5
-0	1042	1621077202366546194	smwidgets_test_autogen/timestamp	1e52094a7e10949a
-1043	5683	1621077207004618991	CMakeFiles/smwidgets_test.dir/src/main.cpp.o	be90771ad593ff7b
-1042	5880	1621077207201622083	CMakeFiles/smwidgets_test.dir/smwidgets_test_autogen/mocs_compilation.cpp.o	57a9be6efab55368
-4	5088	1621077664066792806	CMakeFiles/smwidgets_test.dir/src/mainwindow.cpp.o	b71b622616b5e254
-5088	5537	1621077664514799837	smwidgets_test	254896e9e641ef2a

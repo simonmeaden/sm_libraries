@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
-#cmake_policy(SET CMP0048 NEW)
-#cmake_policy(SET CMP0054 NEW)
 
 project(SMLibraries
         VERSION     0.1.0
         DESCRIPTION "Various of my widgets and non-widget stuff."
         LANGUAGES   CXX C
-        )
+)
 
 set(MIN_YAMLCPP_VERSION 0.6.0)
 find_package(yaml-cpp REQUIRED)
@@ -17,10 +15,7 @@ elseif (${QT_MAJOR_VERSION} STREQUAL "6")
   find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets REQUIRED)
 endif()
 
-set(PUBLIC_EXTRAS
-  #  QYamlCpp
-  include/qyamlcpp/QYamlCpp
-  # SMWidgets
+set(SMWIDGETS_EXTRAS
   include/sm_widgets/labelledwidgets.h
   include/sm_widgets/LabelledComboBox
   include/sm_widgets/LabelledDoubleSpinBox
@@ -29,10 +24,11 @@ set(PUBLIC_EXTRAS
   include/sm_widgets/LabelledSpinBox
   include/sm_widgets/LabelledTextField
   )
+set(QYAMLCPP_EXTRAS
+  include/qyamlcpp/QYamlCpp
+  )
 
 add_library(smlibraries STATIC
-  #  QYamlCpp
-  # SMWidgets
     src/abstractlabelledspinbox.cpp
     src/abstractlabelledwidget.cpp
     src/exspinbox.cpp
@@ -61,6 +57,8 @@ target_include_directories(smlibraries
 # Handle library documentation using OOxygen and helpgenerator.
 add_subdirectory("docs")
 
+add_subdirectory("examples")
+
 target_compile_options(smlibraries PRIVATE -Werror)
 
 target_compile_features(smlibraries PRIVATE cxx_std_17)
@@ -76,7 +74,6 @@ target_link_libraries(smlibraries
 )
 
 include(GNUInstallDirs)
-set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/SMLibraries)
 
 install(TARGETS smlibraries
     EXPORT smlibraries-targets
@@ -98,9 +95,10 @@ install(EXPORT smlibraries-targets
 )
 
 #Create a ConfigVersion.cmake file
+set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/SMLibraries)
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/SMlibrariesConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/SMLibrariesConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
@@ -122,6 +120,17 @@ install(FILES
 export(EXPORT smlibraries-targets
     FILE ${CMAKE_CURRENT_BINARY_DIR}/SMLibrariesTargets.cmake
     NAMESPACE SMLibraries::)
+
+# install additional files
+set(INSTALL_INCLUDE_DIR "include")
+install(FILES ${SMWIDGETS_EXTRAS}
+  DESTINATION ${INSTALL_INCLUDE_DIR}/sm_widgets
+  CONFIGURATIONS Release
+  )
+install(FILES ${QYAMLCPP_EXTRAS}
+  DESTINATION ${INSTALL_INCLUDE_DIR}/qyamlcpp
+  CONFIGURATIONS Release
+  )
 
 #Register package in the User Package Registry
 export(PACKAGE SMLibraries)
